@@ -262,6 +262,7 @@ declare namespace SDK {
   };
 
   type CreateInteractionRequest = {
+    projectId: string;
     body: InterationDoc;
   };
 

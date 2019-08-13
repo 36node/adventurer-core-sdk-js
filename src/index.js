@@ -66,7 +66,7 @@ export default class SDK {
       if (!repositoryId)
         throw new Error("repositoryId is required for getRepository");
 
-      return fetch(`${this.base}/repositories/${dirverId}/${repositoryId}`, {
+      return fetch(`${this.base}/repositories/${driverId}/${repositoryId}`, {
         method: "GET",
         headers: { Authorization: this.auth, ...headers },
       });
@@ -229,8 +229,10 @@ export default class SDK {
      * @returns {Promise<CreateInteractionResponse>} The project created
      */
     createInteraction: (req = {}) => {
-      const { headers, body } = req;
+      const { projectId, headers, body } = req;
 
+      if (!projectId)
+        throw new Error("projectId is required for createInteraction");
       if (!body)
         throw new Error("requetBody is required for createInteraction");
 
@@ -240,6 +242,7 @@ export default class SDK {
         headers: { Authorization: this.auth, ...headers },
       });
     },
+
     /**
      * Find interation by id
      *

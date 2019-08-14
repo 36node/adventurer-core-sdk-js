@@ -113,7 +113,6 @@ declare namespace SDK {
 
       filter: {
         id?: string;
-        driver: string;
       };
     };
   };
@@ -145,7 +144,6 @@ declare namespace SDK {
         id?: string;
         repository?: string;
         interation?: string;
-        driver: string;
       };
     };
   };
@@ -398,31 +396,62 @@ declare namespace SDK {
     planEndAt: string;
     project: string;
   };
+  type DriverUser = {
+    id: string;
+    username: string;
+    avatarUrl: string;
+    url: string;
+    htmlUrl: string;
+    type: "User" | "Organization";
+  };
   type Repository = {
+    id: string;
     name: string;
     fullName: string;
     gitUrl: string;
     htmlUrl: string;
-    owner: string;
+    owner: {
+      id: string;
+      username: string;
+      avatarUrl: string;
+      url: string;
+      htmlUrl: string;
+      type: "User" | "Organization";
+    };
     private: boolean;
     pushedAt: string;
     readme: string;
     topics: [string];
     driver: "GITHUB" | "GITLAB";
-    refId: string;
   };
   type Issue = {
+    id: string;
     title: string;
     repository: string;
     interation: string;
     number: number;
     labels: [string];
-    state: "OPEN" | "CLOSE";
-    createBy: string;
+    state: "OPEN" | "CLOSED";
     closeAt: string;
-    closeBy: string;
+    user: {
+      id: string;
+      username: string;
+      avatarUrl: string;
+      url: string;
+      htmlUrl: string;
+      type: "User" | "Organization";
+    };
+    assignees: [
+      {
+        id: string;
+        username: string;
+        avatarUrl: string;
+        url: string;
+        htmlUrl: string;
+        type: "User" | "Organization";
+      }
+    ];
     driver: "GITHUB" | "GITLAB";
-    refId: string;
   };
   type TicketDoc = {
     issue: string;

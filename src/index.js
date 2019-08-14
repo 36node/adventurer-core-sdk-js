@@ -45,8 +45,6 @@ export default class SDK {
     listRepositories: (req = {}) => {
       const { query, headers } = req;
 
-      if (!query) throw new Error("query is required for repository");
-
       return fetch(`${this.base}/repositories`, {
         method: "GET",
         query: denormalize(query),
@@ -84,8 +82,6 @@ export default class SDK {
      */
     listIssues: (req = {}) => {
       const { query, headers } = req;
-
-      if (!query) throw new Error("query is required for issue");
 
       return fetch(`${this.base}/issues`, {
         method: "GET",
@@ -242,7 +238,6 @@ export default class SDK {
         headers: { Authorization: this.auth, ...headers },
       });
     },
-
     /**
      * Find interation by id
      *

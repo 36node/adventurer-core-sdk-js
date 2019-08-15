@@ -361,6 +361,7 @@ declare namespace SDK {
     planStartAt: string;
     planEndAt: string;
     state: "DOING" | "ARCHIVED";
+    logo: string;
   };
   type TicketStats = {
     planningCount: number;
@@ -380,6 +381,7 @@ declare namespace SDK {
     planStartAt: string;
     planEndAt: string;
     state: "DOING" | "ARCHIVED";
+    logo: string;
   };
   type InterationDoc = {
     name: string;

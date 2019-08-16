@@ -355,8 +355,8 @@ declare namespace SDK {
   type ProjectDoc = {
     name: string;
     description: string;
-    po: string;
-    cm: string;
+    po: [string];
+    cm: [string];
     repositories: [string];
     planStartAt: string;
     planEndAt: string;
@@ -375,8 +375,8 @@ declare namespace SDK {
     createdAt: string;
     name: string;
     description: string;
-    po: string;
-    cm: string;
+    po: [string];
+    cm: [string];
     repositories: [string];
     planStartAt: string;
     planEndAt: string;

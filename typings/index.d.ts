@@ -143,7 +143,7 @@ declare namespace SDK {
       filter: {
         id?: string;
         repository?: string;
-        interation?: string;
+        state?: "OPEN" | "CLOSED";
       };
     };
   };
@@ -435,6 +435,7 @@ declare namespace SDK {
     labels: [string];
     state: "OPEN" | "CLOSED";
     closeAt: string;
+    htmlUrl: string;
     user: {
       id: string;
       username: string;
@@ -478,7 +479,17 @@ declare namespace SDK {
     ];
     events: [
       {
-        name: "TAKE" | "BACKOUT" | "LEVEL" | "PRIORITY" | "BOUNDS" | "DEADLINE" | "DONE" | "LABEL";
+        name:
+          | "PUBLISH"
+          | "UNPUBLISH"
+          | "TAKE"
+          | "BACKOUT"
+          | "LEVEL"
+          | "PRIORITY"
+          | "BOUNDS"
+          | "DEADLINE"
+          | "DONE"
+          | "LABEL";
         user: string;
         level: 0 | 1 | 2 | 3 | 4 | 5 | 6;
         createdAt: string;
@@ -502,7 +513,17 @@ declare namespace SDK {
     color: string;
   };
   type TicketEvent = {
-    name: "TAKE" | "BACKOUT" | "LEVEL" | "PRIORITY" | "BOUNDS" | "DEADLINE" | "DONE" | "LABEL";
+    name:
+      | "PUBLISH"
+      | "UNPUBLISH"
+      | "TAKE"
+      | "BACKOUT"
+      | "LEVEL"
+      | "PRIORITY"
+      | "BOUNDS"
+      | "DEADLINE"
+      | "DONE"
+      | "LABEL";
     user: string;
     level: 0 | 1 | 2 | 3 | 4 | 5 | 6;
     createdAt: string;
@@ -545,7 +566,17 @@ declare namespace SDK {
     ];
     events: [
       {
-        name: "TAKE" | "BACKOUT" | "LEVEL" | "PRIORITY" | "BOUNDS" | "DEADLINE" | "DONE" | "LABEL";
+        name:
+          | "PUBLISH"
+          | "UNPUBLISH"
+          | "TAKE"
+          | "BACKOUT"
+          | "LEVEL"
+          | "PRIORITY"
+          | "BOUNDS"
+          | "DEADLINE"
+          | "DONE"
+          | "LABEL";
         user: string;
         level: 0 | 1 | 2 | 3 | 4 | 5 | 6;
         createdAt: string;

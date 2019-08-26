@@ -11,6 +11,7 @@ declare class SDK {
   issue: SDK.IssueAPI;
   ticket: SDK.TicketAPI;
   project: SDK.ProjectAPI;
+  summary: SDK.SummaryAPI;
 }
 
 declare namespace SDK {
@@ -102,6 +103,26 @@ declare namespace SDK {
      * Delete project
      */
     deleteProject(req: DeleteProjectRequest): Promise<DeleteProjectResponse>;
+  }
+  export interface SummaryAPI {
+    /**
+     * List all projects summary
+     */
+    listProjectSummaries(req: ListProjectSummariesRequest): Promise<ListProjectSummariesResponse>;
+    /**
+     * Find project by id
+     */
+    getProjectSummary(req: GetProjectSummaryRequest): Promise<GetProjectSummaryResponse>;
+    /**
+     * List all interations summary
+     */
+    listInterationSummaries(
+      req: ListInterationSummariesRequest
+    ): Promise<ListInterationSummariesResponse>;
+    /**
+     * Find interation summary by id
+     */
+    getInterationSummary(req: GetInterationSummaryRequest): Promise<GetInterationSummaryResponse>;
   }
 
   type ListRepositoriesRequest = {
@@ -312,6 +333,7 @@ declare namespace SDK {
           $gt?: string;
           $lt?: string;
         };
+        id?: string;
       };
     };
   };
@@ -352,6 +374,80 @@ declare namespace SDK {
     projectId: string;
   };
 
+  type ListProjectSummariesRequest = {
+    query: {
+      limit?: number;
+      offset?: number;
+      sort?: string;
+
+      filter: {
+        name?: string;
+        po?: string;
+        cm?: string;
+        state?: "DOING" | "ARCHIVED";
+        planStart: {
+          $gt?: string;
+          $lt?: string;
+        };
+        planEnd: {
+          $gt?: string;
+          $lt?: string;
+        };
+        id?: string;
+      };
+    };
+  };
+
+  type ListProjectSummariesResponse = {
+    body: [ProjectSummary];
+    headers: {
+      xTotalCount: number;
+    };
+  };
+
+  type GetProjectSummaryRequest = {
+    projectId: string;
+  };
+
+  type GetProjectSummaryResponse = {
+    body: ProjectSummary;
+  };
+
+  type ListInterationSummariesRequest = {
+    query: {
+      limit?: number;
+      offset?: number;
+      sort?: string;
+
+      filter: {
+        planStart: {
+          $gt?: string;
+          $lt?: string;
+        };
+        planEnd: {
+          $gt?: string;
+          $lt?: string;
+        };
+        id?: string;
+      };
+    };
+  };
+
+  type ListInterationSummariesResponse = {
+    body: [ProjectSummary];
+    headers: {
+      xTotalCount: number;
+    };
+  };
+
+  type GetInterationSummaryRequest = {
+    interationId: string;
+  };
+
+  type GetInterationSummaryResponse = {
+    body: InterationSummary;
+  };
+
   type ProjectDoc = {
     name: string;
     description: string;
@@ -363,11 +459,13 @@ declare namespace SDK {
     state: "DOING" | "ARCHIVED";
     logo: string;
   };
-  type TicketStats = {
+  type ProjectSummary = {
+    id: string;
     planningCount: number;
     todoCount: number;
     doingCount: number;
     doneCount: number;
+    ticketsTotal: number;
   };
   type Project = {
     id: string;
@@ -397,6 +495,14 @@ declare namespace SDK {
     planStartAt: string;
     planEndAt: string;
     project: string;
+  };
+  type InterationSummary = {
+    id: string;
+    planningCount: number;
+    todoCount: number;
+    doingCount: number;
+    doneCount: number;
+    ticketsTotal: number;
   };
   type DriverUser = {
     id: string;
@@ -482,13 +588,14 @@ declare namespace SDK {
         name:
           | "PUBLISH"
           | "UNPUBLISH"
-          | "TAKE"
-          | "BACKOUT"
+          | "ASSIGN"
+          | "UNASSIGN"
           | "LEVEL"
           | "PRIORITY"
           | "BOUNDS"
           | "DEADLINE"
           | "DONE"
+          | "REOPEN"
           | "LABEL";
         user: string;
         level: 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -516,13 +623,14 @@ declare namespace SDK {
     name:
       | "PUBLISH"
       | "UNPUBLISH"
-      | "TAKE"
-      | "BACKOUT"
+      | "ASSIGN"
+      | "UNASSIGN"
       | "LEVEL"
       | "PRIORITY"
       | "BOUNDS"
       | "DEADLINE"
       | "DONE"
+      | "REOPEN"
       | "LABEL";
     user: string;
     level: 0 | 1 | 2 | 3 | 4 | 5 | 6;
@@ -569,13 +677,14 @@ declare namespace SDK {
         name:
           | "PUBLISH"
           | "UNPUBLISH"
-          | "TAKE"
-          | "BACKOUT"
+          | "ASSIGN"
+          | "UNASSIGN"
           | "LEVEL"
           | "PRIORITY"
           | "BOUNDS"
           | "DEADLINE"
           | "DONE"
+          | "REOPEN"
           | "LABEL";
         user: string;
         level: 0 | 1 | 2 | 3 | 4 | 5 | 6;

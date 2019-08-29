@@ -396,66 +396,19 @@ export default class SDK {
    */
   summary = {
     /**
-     * List all projects summary
+     * Get tickets summary
      *
-     * @param {ListProjectSummariesRequest} req listProjectSummaries request
-     * @returns {Promise<ListProjectSummariesResponse>} A paged array of project summaries
+     * @param {GetTicketsSummaryRequest} req getTicketsSummary request
+     * @returns {Promise<GetTicketsSummaryResponse>} A paged array of tickets summaries
      */
-    listProjectSummaries: (req = {}) => {
+    getTicketsSummary: (req = {}) => {
       const { query, headers } = req;
 
-      return fetch(`${this.base}/summaries/projects`, {
+      if (!query) throw new Error("query is required for summary");
+
+      return fetch(`${this.base}/summary/tickets`, {
         method: "GET",
         query: denormalize(query),
-        headers: { Authorization: this.auth, ...headers },
-      });
-    },
-    /**
-     * Find project by id
-     *
-     * @param {GetProjectSummaryRequest} req getProjectSummary request
-     * @returns {Promise<GetProjectSummaryResponse>} Expected response to a valid request
-     */
-    getProjectSummary: (req = {}) => {
-      const { projectId, headers } = req;
-
-      if (!projectId)
-        throw new Error("projectId is required for getProjectSummary");
-
-      return fetch(`${this.base}/summaries/projects/${projectId}`, {
-        method: "GET",
-        headers: { Authorization: this.auth, ...headers },
-      });
-    },
-    /**
-     * List all interations summary
-     *
-     * @param {ListInterationSummariesRequest} req listInterationSummaries request
-     * @returns {Promise<ListInterationSummariesResponse>} A paged array of project summaries
-     */
-    listInterationSummaries: (req = {}) => {
-      const { query, headers } = req;
-
-      return fetch(`${this.base}/summaries/interations`, {
-        method: "GET",
-        query: denormalize(query),
-        headers: { Authorization: this.auth, ...headers },
-      });
-    },
-    /**
-     * Find interation summary by id
-     *
-     * @param {GetInterationSummaryRequest} req getInterationSummary request
-     * @returns {Promise<GetInterationSummaryResponse>} Expected response to a valid request
-     */
-    getInterationSummary: (req = {}) => {
-      const { interationId, headers } = req;
-
-      if (!interationId)
-        throw new Error("interationId is required for getInterationSummary");
-
-      return fetch(`${this.base}/summaries/interations/${interationId}`, {
-        method: "GET",
         headers: { Authorization: this.auth, ...headers },
       });
     },

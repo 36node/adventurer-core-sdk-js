@@ -106,23 +106,9 @@ declare namespace SDK {
   }
   export interface SummaryAPI {
     /**
-     * List all projects summary
+     * Get tickets summary
      */
-    listProjectSummaries(req: ListProjectSummariesRequest): Promise<ListProjectSummariesResponse>;
-    /**
-     * Find project by id
-     */
-    getProjectSummary(req: GetProjectSummaryRequest): Promise<GetProjectSummaryResponse>;
-    /**
-     * List all interations summary
-     */
-    listInterationSummaries(
-      req: ListInterationSummariesRequest
-    ): Promise<ListInterationSummariesResponse>;
-    /**
-     * Find interation summary by id
-     */
-    getInterationSummary(req: GetInterationSummaryRequest): Promise<GetInterationSummaryResponse>;
+    getTicketsSummary(req: GetTicketsSummaryRequest): Promise<GetTicketsSummaryResponse>;
   }
 
   type ListRepositoriesRequest = {
@@ -216,6 +202,9 @@ declare namespace SDK {
         takenAt: {
           $gt?: string;
           $lt?: string;
+        };
+        title: {
+          $regex?: string;
         };
         takenBy?: string;
       };
@@ -374,78 +363,21 @@ declare namespace SDK {
     projectId: string;
   };
 
-  type ListProjectSummariesRequest = {
+  type GetTicketsSummaryRequest = {
     query: {
-      limit?: number;
-      offset?: number;
-      sort?: string;
+      group: [string];
 
       filter: {
-        name?: string;
-        po?: string;
-        cm?: string;
-        state?: "DOING" | "ARCHIVED";
-        planStart: {
-          $gt?: string;
-          $lt?: string;
-        };
-        planEnd: {
-          $gt?: string;
-          $lt?: string;
-        };
-        id?: string;
+        state?: "PLANNING" | "TODO" | "DOING" | "DONE";
+        takenBy?: string;
+        project?: string;
+        interation?: string;
       };
     };
   };
 
-  type ListProjectSummariesResponse = {
-    body: [ProjectSummary];
-    headers: {
-      xTotalCount: number;
-    };
-  };
-
-  type GetProjectSummaryRequest = {
-    projectId: string;
-  };
-
-  type GetProjectSummaryResponse = {
-    body: ProjectSummary;
-  };
-
-  type ListInterationSummariesRequest = {
-    query: {
-      limit?: number;
-      offset?: number;
-      sort?: string;
-
-      filter: {
-        planStart: {
-          $gt?: string;
-          $lt?: string;
-        };
-        planEnd: {
-          $gt?: string;
-          $lt?: string;
-        };
-        id?: string;
-      };
-    };
-  };
-
-  type ListInterationSummariesResponse = {
-    body: [ProjectSummary];
-    headers: {
-      xTotalCount: number;
-    };
-  };
-
-  type GetInterationSummaryRequest = {
-    interationId: string;
-  };
-
-  type GetInterationSummaryResponse = {
-    body: InterationSummary;
+  type GetTicketsSummaryResponse = {
+    body: [TicketsSummary];
   };
 
   type ProjectDoc = {
@@ -458,14 +390,6 @@ declare namespace SDK {
     planEndAt: string;
     state: "DOING" | "ARCHIVED";
     logo: string;
-  };
-  type ProjectSummary = {
-    id: string;
-    planningCount: number;
-    todoCount: number;
-    doingCount: number;
-    doneCount: number;
-    ticketsTotal: number;
   };
   type Project = {
     id: string;
@@ -496,14 +420,7 @@ declare namespace SDK {
     planEndAt: string;
     project: string;
   };
-  type InterationSummary = {
-    id: string;
-    planningCount: number;
-    todoCount: number;
-    doingCount: number;
-    doneCount: number;
-    ticketsTotal: number;
-  };
+  type TicketsSummary = {};
   type DriverUser = {
     id: string;
     username: string;
@@ -530,7 +447,7 @@ declare namespace SDK {
     pushedAt: string;
     readme: string;
     topics: [string];
-    driver: "GITHUB" | "GITLAB";
+    driver: string;
   };
   type Issue = {
     id: string;
@@ -564,6 +481,7 @@ declare namespace SDK {
   };
   type TicketDoc = {
     issue: string;
+    title: string;
     repository: string;
     driver: string;
     level: number;
@@ -653,6 +571,7 @@ declare namespace SDK {
     updatedAt: string;
     createdAt: string;
     issue: string;
+    title: string;
     repository: string;
     driver: string;
     level: number;

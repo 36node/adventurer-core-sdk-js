@@ -447,7 +447,7 @@ declare namespace SDK {
     pushedAt: string;
     readme: string;
     topics: [string];
-    driver: string;
+    driver: "GITHUB" | "GITLAB";
   };
   type Issue = {
     id: string;
@@ -493,6 +493,7 @@ declare namespace SDK {
     takenBy: string;
     takenAt: string;
     doneAt: string;
+    publishedAt: string;
     remark: string;
     bounds: number;
     labels: [
@@ -583,6 +584,7 @@ declare namespace SDK {
     takenBy: string;
     takenAt: string;
     doneAt: string;
+    publishedAt: string;
     remark: string;
     bounds: number;
     labels: [

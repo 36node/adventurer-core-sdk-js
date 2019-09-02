@@ -716,6 +716,7 @@ declare namespace SDK {
     companyEmail: string;
     google: string;
     icloud: string;
+    github: string;
     avatar: string;
   };
   type Staff = {
@@ -737,6 +738,7 @@ declare namespace SDK {
     companyEmail: string;
     google: string;
     icloud: string;
+    github: string;
     avatar: string;
   };
   type StaffWalletDoc = {

@@ -12,6 +12,7 @@ declare class SDK {
   ticket: SDK.TicketAPI;
   project: SDK.ProjectAPI;
   summary: SDK.SummaryAPI;
+  staff: SDK.StaffAPI;
 }
 
 declare namespace SDK {
@@ -109,6 +110,28 @@ declare namespace SDK {
      * Get tickets summary
      */
     getTicketsSummary(req: GetTicketsSummaryRequest): Promise<GetTicketsSummaryResponse>;
+  }
+  export interface StaffAPI {
+    /**
+     * List staffs
+     */
+    listStaffs(req: ListStaffsRequest): Promise<ListStaffsResponse>;
+    /**
+     * Upsert a staff
+     */
+    upsertStaff(req: UpsertStaffRequest): Promise<UpsertStaffResponse>;
+    /**
+     * update a staff
+     */
+    updateStaff(req: UpdateStaffRequest): Promise<UpdateStaffResponse>;
+    /**
+     * Find staff by id
+     */
+    getStaff(req: GetStaffRequest): Promise<GetStaffResponse>;
+    /**
+     * Delete staff
+     */
+    deleteStaff(req: DeleteStaffRequest): Promise<DeleteStaffResponse>;
   }
 
   type ListRepositoriesRequest = {
@@ -380,6 +403,57 @@ declare namespace SDK {
     body: [TicketsSummary];
   };
 
+  type ListStaffsRequest = {
+    query: {
+      limit?: number;
+      offset?: number;
+      sort?: string;
+      select?: string;
+
+      filter: {
+        name?: string;
+        type?: string;
+        position?: string;
+      };
+    };
+  };
+
+  type ListStaffsResponse = {
+    body: [Staff];
+    headers: {
+      xTotalCount: number;
+    };
+  };
+
+  type UpsertStaffRequest = {
+    body: StaffDoc;
+  };
+
+  type UpsertStaffResponse = {
+    body: Staff;
+  };
+
+  type UpdateStaffRequest = {
+    staffId: string;
+    body: StaffDoc;
+  };
+
+  type UpdateStaffResponse = {
+    body: Staff;
+  };
+
+  type GetStaffRequest = {
+    staffId: string;
+  };
+
+  type GetStaffResponse = {
+    body: Staff;
+  };
+
+  type DeleteStaffRequest = {
+    staffId: string;
+  };
+
   type ProjectDoc = {
     name: string;
     description: string;
@@ -624,6 +698,134 @@ declare namespace SDK {
         ];
       }
     ];
+  };
+  type StaffDoc = {
+    id: string;
+    number: number;
+    name: string;
+    type: "36NODE" | "ADVENTURE";
+    position: "PM" | "DEVELOPER" | "DESIGNER";
+    level: number;
+    base: number;
+    bankCard: string;
+    idNumber: string;
+    city: string;
+    weixin: string;
+    phone: string;
+    email: string;
+    companyEmail: string;
+    google: string;
+    icloud: string;
+    avatar: string;
+  };
+  type Staff = {
+    id: string;
+    updatedAt: string;
+    createdAt: string;
+    number: number;
+    name: string;
+    type: "36NODE" | "ADVENTURE";
+    position: "PM" | "DEVELOPER" | "DESIGNER";
+    level: number;
+    base: number;
+    bankCard: string;
+    idNumber: string;
+    city: string;
+    weixin: string;
+    phone: string;
+    email: string;
+    companyEmail: string;
+    google: string;
+    icloud: string;
+    avatar: string;
+  };
+  type StaffWalletDoc = {
+    balance: string;
+    staff: string;
+  };
+  type StaffWallet = {
+    id: string;
+    updatedAt: string;
+    createdAt: string;
+    balance: string;
+    staff: string;
+  };
+  type ProjectWalletDoc = {
+    project: string;
+    total: number;
+    balance: string;
+  };
+  type ProjectWallet = {
+    id: string;
+    updatedAt: string;
+    createdAt: string;
+    project: string;
+    total: number;
+    balance: string;
+  };
+  type ProjectTradingRecordDoc = {
+    project: string;
+    wallet: string;
+    type: "SHARED_EXP" | "TICKET_EXP";
+    amount: number;
+    balance: string;
+    handler: string;
+    ticketExp: {
+      ticket: string;
+      staff: string;
+    };
+    sharedExp: [
+      {
+        staff: string;
+        position: "CM" | "PO";
+        percent: number;
+      }
+    ];
+  };
+  type ProjectTradingRecord = {
+    id: string;
+    updatedAt: string;
+    createdAt: string;
+    project: string;
+    wallet: string;
+    type: "SHARED_EXP" | "TICKET_EXP";
+    amount: number;
+    balance: string;
+    handler: string;
+    ticketExp: {
+      ticket: string;
+      staff: string;
+    };
+    sharedExp: [
+      {
+        staff: string;
+        position: "CM" | "PO";
+        percent: number;
+      }
+    ];
+  };
+  type StaffTradingRecordDoc = {
+    tradeNo: string;
+    type: "TICKET_IN" | "PROJECT_SHARED_IN" | "SETTLE_EXP";
+    amount: number;
+    project: string;
+    ticket: string;
+    handler: string;
+    balance: string;
+    wallet: string;
+  };
+  type StaffTradingRecord = {
+    id: string;
+    updatedAt: string;
+    createdAt: string;
+    tradeNo: string;
+    type: "TICKET_IN" | "PROJECT_SHARED_IN" | "SETTLE_EXP";
+    amount: number;
+    project: string;
+    ticket: string;
+    handler: string;
+    balance: string;
+    wallet: string;
   };
   type MongoDefault = {
     id: string;

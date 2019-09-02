@@ -413,4 +413,91 @@ export default class SDK {
       });
     },
   };
+  /**
+   * staff's methods
+   */
+  staff = {
+    /**
+     * List staffs
+     *
+     * @param {ListStaffsRequest} req listStaffs request
+     * @returns {Promise<ListStaffsResponse>} A paged array of staffs
+     */
+    listStaffs: (req = {}) => {
+      const { query, headers } = req;
+
+      return fetch(`${this.base}/staffs`, {
+        method: "GET",
+        query: denormalize(query),
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
+     * Upsert a staff
+     *
+     * @param {UpsertStaffRequest} req upsertStaff request
+     * @returns {Promise<UpsertStaffResponse>} The ticket created
+     */
+    upsertStaff: (req = {}) => {
+      const { headers, body } = req;
+
+      if (!body) throw new Error("requetBody is required for upsertStaff");
+
+      return fetch(`${this.base}/staffs`, {
+        method: "POST",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
+     * update a staff
+     *
+     * @param {UpdateStaffRequest} req updateStaff request
+     * @returns {Promise<UpdateStaffResponse>} The ticket updated
+     */
+    updateStaff: (req = {}) => {
+      const { staffId, headers, body } = req;
+
+      if (!staffId) throw new Error("staffId is required for updateStaff");
+      if (!body) throw new Error("requetBody is required for updateStaff");
+
+      return fetch(`${this.base}/staffs/${staffId}`, {
+        method: "PATCH",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
+     * Find staff by id
+     *
+     * @param {GetStaffRequest} req getStaff request
+     * @returns {Promise<GetStaffResponse>} Expected response to a valid request
+     */
+    getStaff: (req = {}) => {
+      const { staffId, headers } = req;
+
+      if (!staffId) throw new Error("staffId is required for getStaff");
+
+      return fetch(`${this.base}/staffs/${staffId}`, {
+        method: "GET",
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
+     * Delete staff
+     *
+     * @param {DeleteStaffRequest} req deleteStaff request
+     * @returns {Promise<DeleteStaffResponse>} staff deleted
+     */
+    deleteStaff: (req = {}) => {
+      const { staffId, headers } = req;
+
+      if (!staffId) throw new Error("staffId is required for deleteStaff");
+
+      return fetch(`${this.base}/staffs/${staffId}`, {
+        method: "DELETE",
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+  };
 }

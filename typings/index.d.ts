@@ -13,8 +13,6 @@ declare class SDK {
   project: SDK.ProjectAPI;
   summary: SDK.SummaryAPI;
   staff: SDK.StaffAPI;
-  wallet: SDK.WalletAPI;
-  trade: SDK.TradeAPI;
 }
 
 declare namespace SDK {
@@ -106,20 +104,18 @@ declare namespace SDK {
      * Delete project
      */
     deleteProject(req: DeleteProjectRequest): Promise<DeleteProjectResponse>;
-    /**
-     * Create a project event
-     */
-    createProjectEvent(req: CreateProjectEventRequest): Promise<CreateProjectEventResponse>;
   }
   export interface SummaryAPI {
+    /**
+     * Get interations summary
+     */
+    getInteractionsSummary(
+      req: GetInteractionsSummaryRequest
+    ): Promise<GetInteractionsSummaryResponse>;
     /**
      * Get tickets summary
      */
     getTicketsSummary(req: GetTicketsSummaryRequest): Promise<GetTicketsSummaryResponse>;
-    /**
-     * Get trades summary
-     */
-    getTradeSummary(req: GetTradeSummaryRequest): Promise<GetTradeSummaryResponse>;
   }
   export interface StaffAPI {
     /**
@@ -143,26 +139,6 @@ declare namespace SDK {
      */
     deleteStaff(req: DeleteStaffRequest): Promise<DeleteStaffResponse>;
   }
-  export interface WalletAPI {
-    /**
-     * Find staff wallet by id
-     */
-    getStaffWallet(req: GetStaffWalletRequest): Promise<GetStaffWalletResponse>;
-    /**
-     * List wallets
-     */
-    listWallets(req: ListWalletsRequest): Promise<ListWalletsResponse>;
-  }
-  export interface TradeAPI {
-    /**
-     * List trades
-     */
-    listTrades(req: ListTradesRequest): Promise<ListTradesResponse>;
-    /**
-     * Create a trade
-     */
-    createTrade(req: CreateTradeRequest): Promise<CreateTradeResponse>;
-  }
 
   type ListRepositoriesRequest = {
     query: {
@@ -185,7 +161,6 @@ declare namespace SDK {
   };
 
   type GetRepositoryRequest = {
-    driverId: string;
     repositoryId: string;
   };
 
@@ -216,7 +191,6 @@ declare namespace SDK {
   };
 
   type GetIssueRequest = {
-    driverId: string;
     issueId: string;
   };
 
@@ -416,13 +390,26 @@ declare namespace SDK {
     projectId: string;
   };
 
-  type CreateProjectEventRequest = {
-    projectId: string;
-    body: ProjectEvent;
+  type GetInteractionsSummaryRequest = {
+    query: {
+      group: [string];
+
+      filter: {
+        project?: string;
+        planStart: {
+          $gt?: string;
+          $lt?: string;
+        };
+        planEnd: {
+          $gt?: string;
+          $lt?: string;
+        };
+      };
+    };
   };
 
-  type CreateProjectEventResponse = {
-    body: Project;
+  type GetInteractionsSummaryResponse = {
+    body: [InterationSummary];
   };
 
   type GetTicketsSummaryRequest = {
@@ -440,20 +427,6 @@ declare namespace SDK {
 
   type GetTicketsSummaryResponse = {
     body: [TicketsSummary];
-  };
-
-  type GetTradeSummaryRequest = {
-    query: {
-      group: [string];
-
-      filter: {
-        project?: string;
-      };
-    };
-  };
-
-  type GetTradeSummaryResponse = {
-    body: [TradeSummary];
   };
 
   type ListStaffsRequest = {
@@ -507,69 +480,6 @@ declare namespace SDK {
     staffId: string;
   };
 
-  type GetStaffWalletRequest = {
-    staffId: string;
-  };
-
-  type GetStaffWalletResponse = {
-    body: Wallet;
-  };
-
-  type ListWalletsRequest = {
-    query: {
-      limit?: number;
-      offset?: number;
-      sort?: string;
-      select?: string;
-
-      filter: {
-        staff?: string;
-      };
-    };
-  };
-
-  type ListWalletsResponse = {
-    body: [Wallet];
-    headers: {
-      xTotalCount: number;
-    };
-  };
-
-  type ListTradesRequest = {
-    query: {
-      limit?: number;
-      offset?: number;
-      sort?: string;
-      select?: string;
-
-      filter: {
-        staff?: string;
-        type?: string;
-        staffName?: string;
-        staffGithub?: string;
-        createdAt: {
-          $gt?: string;
-          $lt?: string;
-        };
-      };
-    };
-  };
-
-  type ListTradesResponse = {
-    body: [Trade];
-    headers: {
-      xTotalCount: number;
-    };
-  };
-
-  type CreateTradeRequest = {
-    body: TradeDoc;
-  };
-
-  type CreateTradeResponse = {
-    body: Trade;
-  };
-
   type ProjectDoc = {
     name: string;
     description: string;
@@ -595,21 +505,6 @@ declare namespace SDK {
     state: "DOING" | "ARCHIVED";
     logo: string;
   };
-  type ProjectEvent = {
-    name: "CHANGE_TOTAL" | "SHARED";
-    total: number;
-    shared: {
-      total: number;
-      remark: string;
-      detail: [
-        {
-          staff: string;
-          position: "PO" | "CM";
-          percent: number;
-        }
-      ];
-    };
-  };
   type InterationDoc = {
     name: string;
     planStartAt: string;
@@ -626,7 +521,8 @@ declare namespace SDK {
     project: string;
   };
   type TicketsSummary = {};
-  type DriverUser = {
+  type InterationSummary = {};
+  type GithubUser = {
     id: string;
     username: string;
     avatarUrl: string;
@@ -640,19 +536,12 @@ declare namespace SDK {
     fullName: string;
     gitUrl: string;
     htmlUrl: string;
-    owner: {
-      id: string;
-      username: string;
-      avatarUrl: string;
-      url: string;
-      htmlUrl: string;
-      type: "User" | "Organization";
-    };
+    owner: string;
     private: boolean;
     pushedAt: string;
     readme: string;
     topics: [string];
-    driver: "GITHUB" | "GITLAB";
+    contributors: [string];
   };
   type Issue = {
     id: string;
@@ -664,25 +553,8 @@ declare namespace SDK {
     state: "OPEN" | "CLOSED";
     closeAt: string;
     htmlUrl: string;
-    user: {
-      id: string;
-      username: string;
-      avatarUrl: string;
-      url: string;
-      htmlUrl: string;
-      type: "User" | "Organization";
-    };
-    assignees: [
-      {
-        id: string;
-        username: string;
-        avatarUrl: string;
-        url: string;
-        htmlUrl: string;
-        type: "User" | "Organization";
-      }
-    ];
-    driver: "GITHUB" | "GITLAB";
+    user: string;
+    assignees: [string];
   };
   type TicketDoc = {
     issue: string;
@@ -846,6 +718,7 @@ declare namespace SDK {
     type: "36NODE" | "ADVENTURE";
     position: "PM" | "DEVELOPER" | "DESIGNER";
     level: number;
+    base: number;
     bankCard: string;
     idNumber: string;
     city: string;
@@ -867,6 +740,7 @@ declare namespace SDK {
     type: "36NODE" | "ADVENTURE";
     position: "PM" | "DEVELOPER" | "DESIGNER";
     level: number;
+    base: number;
     bankCard: string;
     idNumber: string;
     city: string;
@@ -879,43 +753,93 @@ declare namespace SDK {
     github: string;
     avatar: string;
   };
-  type WalletDoc = {
-    balance: number;
+  type StaffWalletDoc = {
+    balance: string;
     staff: string;
   };
-  type Wallet = {
+  type StaffWallet = {
     id: string;
     updatedAt: string;
     createdAt: string;
-    balance: number;
+    balance: string;
     staff: string;
   };
-  type TradeDoc = {
+  type ProjectWalletDoc = {
     project: string;
-    staff: string;
-    type: "SHARED" | "TICKET" | "SETTLE";
-    amount: number;
-    handler: string;
-    staffName: string;
-    staffGithub: string;
+    total: number;
+    balance: string;
   };
-  type Trade = {
+  type ProjectWallet = {
     id: string;
     updatedAt: string;
     createdAt: string;
     project: string;
-    staff: string;
-    type: "SHARED" | "TICKET" | "SETTLE";
-    amount: number;
-    handler: string;
-    staffName: string;
-    staffGithub: string;
+    total: number;
+    balance: string;
   };
-  type TradeSummary = {
+  type ProjectTradingRecordDoc = {
     project: string;
-    staff: string;
+    wallet: string;
+    type: "SHARED_EXP" | "TICKET_EXP";
+    amount: number;
+    balance: string;
     handler: string;
-    totalExp: string;
+    ticketExp: {
+      ticket: string;
+      staff: string;
+    };
+    sharedExp: [
+      {
+        staff: string;
+        position: "CM" | "PO";
+        percent: number;
+      }
+    ];
+  };
+  type ProjectTradingRecord = {
+    id: string;
+    updatedAt: string;
+    createdAt: string;
+    project: string;
+    wallet: string;
+    type: "SHARED_EXP" | "TICKET_EXP";
+    amount: number;
+    balance: string;
+    handler: string;
+    ticketExp: {
+      ticket: string;
+      staff: string;
+    };
+    sharedExp: [
+      {
+        staff: string;
+        position: "CM" | "PO";
+        percent: number;
+      }
+    ];
+  };
+  type StaffTradingRecordDoc = {
+    tradeNo: string;
+    type: "TICKET_IN" | "PROJECT_SHARED_IN" | "SETTLE_EXP";
+    amount: number;
+    project: string;
+    ticket: string;
+    handler: string;
+    balance: string;
+    wallet: string;
+  };
+  type StaffTradingRecord = {
+    id: string;
+    updatedAt: string;
+    createdAt: string;
+    tradeNo: string;
+    type: "TICKET_IN" | "PROJECT_SHARED_IN" | "SETTLE_EXP";
+    amount: number;
+    project: string;
+    ticket: string;
+    handler: string;
+    balance: string;
+    wallet: string;
   };
   type MongoDefault = {
     id: string;

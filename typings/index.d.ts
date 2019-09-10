@@ -590,6 +590,7 @@ declare namespace SDK {
     interation: string;
     project: string;
     takenBy: string;
+    publishBy: string;
     takenAt: string;
     doneAt: string;
     publishedAt: string;
@@ -620,6 +621,7 @@ declare namespace SDK {
         interation: string;
         bounds: number;
         takenBy: string;
+        publishBy: string;
         foreignTakenBy: string;
         labels: [string];
         remark: string;
@@ -654,6 +656,7 @@ declare namespace SDK {
     interation: string;
     bounds: number;
     takenBy: string;
+    publishBy: string;
     foreignTakenBy: string;
     labels: [string];
     remark: string;
@@ -672,6 +675,7 @@ declare namespace SDK {
     interation: string;
     project: string;
     takenBy: string;
+    publishBy: string;
     takenAt: string;
     doneAt: string;
     publishedAt: string;
@@ -702,6 +706,7 @@ declare namespace SDK {
         interation: string;
         bounds: number;
         takenBy: string;
+        publishBy: string;
         foreignTakenBy: string;
         labels: [string];
         remark: string;

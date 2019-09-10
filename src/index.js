@@ -106,6 +106,26 @@ export default class SDK {
     },
   };
   /**
+   * label's methods
+   */
+  label = {
+    /**
+     * List all all labels
+     *
+     * @param {ListLabelsRequest} req listLabels request
+     * @returns {Promise<ListLabelsResponse>} A paged array of labels
+     */
+    listLabels: (req = {}) => {
+      const { query, headers } = req;
+
+      return fetch(`${this.base}/labels`, {
+        method: "GET",
+        query: denormalize(query),
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+  };
+  /**
    * ticket's methods
    */
   ticket = {

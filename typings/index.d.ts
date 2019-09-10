@@ -9,6 +9,7 @@ declare class SDK {
 
   repository: SDK.RepositoryAPI;
   issue: SDK.IssueAPI;
+  label: SDK.LabelAPI;
   ticket: SDK.TicketAPI;
   project: SDK.ProjectAPI;
   summary: SDK.SummaryAPI;
@@ -40,6 +41,12 @@ declare namespace SDK {
      * Find issue by id and driver
      */
     getIssue(req: GetIssueRequest): Promise<GetIssueResponse>;
+  }
+  export interface LabelAPI {
+    /**
+     * List all all labels
+     */
+    listLabels(req: ListLabelsRequest): Promise<ListLabelsResponse>;
   }
   export interface TicketAPI {
     /**
@@ -196,6 +203,27 @@ declare namespace SDK {
 
   type GetIssueResponse = {
     body: Issue;
+  };
+
+  type ListLabelsRequest = {
+    query: {
+      limit?: number;
+      offset?: number;
+      sort?: string;
+      select?: string;
+
+      filter: {
+        id?: string;
+        name?: string;
+      };
+    };
+  };
+
+  type ListLabelsResponse = {
+    body: [Label];
+    headers: {
+      xTotalCount: number;
+    };
   };
 
   type CreateTicketRequest = {
@@ -522,14 +550,6 @@ declare namespace SDK {
   };
   type TicketsSummary = {};
   type InterationSummary = {};
-  type GithubUser = {
-    id: string;
-    username: string;
-    avatarUrl: string;
-    url: string;
-    htmlUrl: string;
-    type: "User" | "Organization";
-  };
   type Repository = {
     id: string;
     name: string;
@@ -539,6 +559,8 @@ declare namespace SDK {
     owner: string;
     private: boolean;
     pushedAt: string;
+    createdAt: string;
+    updatedAt: string;
     readme: string;
     topics: [string];
     contributors: [string];
@@ -547,7 +569,6 @@ declare namespace SDK {
     id: string;
     title: string;
     repository: string;
-    interation: string;
     number: number;
     labels: [string];
     state: "OPEN" | "CLOSED";
@@ -555,12 +576,13 @@ declare namespace SDK {
     htmlUrl: string;
     user: string;
     assignees: [string];
+    createdAt: string;
+    updatedAt: string;
   };
   type TicketDoc = {
     issue: string;
     title: string;
     repository: string;
-    driver: string;
     level: number;
     state: "PLANNING" | "TODO" | "DOING" | "DONE";
     priority: 0 | 1 | 2;
@@ -573,12 +595,7 @@ declare namespace SDK {
     publishedAt: string;
     remark: string;
     bounds: number;
-    labels: [
-      {
-        name: string;
-        color: string;
-      }
-    ];
+    labels: [string];
     events: [
       {
         name:
@@ -604,17 +621,13 @@ declare namespace SDK {
         bounds: number;
         takenBy: string;
         foreignTakenBy: string;
-        labels: [
-          {
-            name: string;
-            color: string;
-          }
-        ];
+        labels: [string];
         remark: string;
       }
     ];
   };
-  type TicketLabel = {
+  type Label = {
+    id: string;
     name: string;
     color: string;
   };
@@ -642,12 +655,7 @@ declare namespace SDK {
     bounds: number;
     takenBy: string;
     foreignTakenBy: string;
-    labels: [
-      {
-        name: string;
-        color: string;
-      }
-    ];
+    labels: [string];
     remark: string;
   };
   type Ticket = {
@@ -657,7 +665,6 @@ declare namespace SDK {
     issue: string;
     title: string;
     repository: string;
-    driver: string;
     level: number;
     state: "PLANNING" | "TODO" | "DOING" | "DONE";
     priority: 0 | 1 | 2;
@@ -670,12 +677,7 @@ declare namespace SDK {
     publishedAt: string;
     remark: string;
     bounds: number;
-    labels: [
-      {
-        name: string;
-        color: string;
-      }
-    ];
+    labels: [string];
     events: [
       {
         name:
@@ -701,12 +703,7 @@ declare namespace SDK {
         bounds: number;
         takenBy: string;
         foreignTakenBy: string;
-        labels: [
-          {
-            name: string;
-            color: string;
-          }
-        ];
+        labels: [string];
         remark: string;
       }
     ];

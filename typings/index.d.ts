@@ -14,6 +14,7 @@ declare class SDK {
   project: SDK.ProjectAPI;
   summary: SDK.SummaryAPI;
   staff: SDK.StaffAPI;
+  invitation: SDK.InvitationAPI;
 }
 
 declare namespace SDK {
@@ -145,6 +146,12 @@ declare namespace SDK {
      * Delete staff
      */
     deleteStaff(req: DeleteStaffRequest): Promise<DeleteStaffResponse>;
+  }
+  export interface InvitationAPI {
+    /**
+     * Create invitation 可以用于发送邀请码
+     */
+    createInvitation(req: CreateInvitationRequest): Promise<CreateInvitationResponse>;
   }
 
   type ListRepositoriesRequest = {
@@ -480,7 +487,7 @@ declare namespace SDK {
   };
 
   type UpsertStaffRequest = {
-    body: StaffDoc;
+    body: CreateStaffDoc;
   };
 
   type UpsertStaffResponse = {
@@ -506,6 +513,14 @@ declare namespace SDK {
 
   type DeleteStaffRequest = {
     staffId: string;
+  };
+
+  type CreateInvitationRequest = {
+    body: CreateInvitationBody;
+  };
+
+  type CreateInvitationResponse = {
+    body: Invitation;
   };
 
   type ProjectDoc = {
@@ -563,7 +578,7 @@ declare namespace SDK {
     updatedAt: string;
     readme: string;
     topics: [string];
-    contributors: [string];
+    collaborators: [string];
   };
   type Issue = {
     id: string;
@@ -755,6 +770,27 @@ declare namespace SDK {
     github: string;
     avatar: string;
   };
+  type CreateStaffDoc = {
+    code: string;
+    id: string;
+    number: number;
+    name: string;
+    type: "36NODE" | "ADVENTURE";
+    position: "PM" | "DEVELOPER" | "DESIGNER";
+    level: number;
+    base: number;
+    bankCard: string;
+    idNumber: string;
+    city: string;
+    weixin: string;
+    phone: string;
+    email: string;
+    companyEmail: string;
+    google: string;
+    icloud: string;
+    github: string;
+    avatar: string;
+  };
   type StaffWalletDoc = {
     balance: string;
     staff: string;
@@ -842,6 +878,35 @@ declare namespace SDK {
     handler: string;
     balance: string;
     wallet: string;
+  };
+  type CreateInvitationBody = {
+    expiredAt: string;
+    email: string;
+  };
+  type InvitationDoc = {
+    code: string;
+    email: string;
+    sent: boolean;
+    expiredAt: string;
+    used: boolean;
+    usedAt: string;
+    user: string;
+    source: string;
+    comment: string;
+  };
+  type Invitation = {
+    id: string;
+    updatedAt: string;
+    createdAt: string;
+    code: string;
+    email: string;
+    sent: boolean;
+    expiredAt: string;
+    used: boolean;
+    usedAt: string;
+    user: string;
+    source: string;
+    comment: string;
   };
   type MongoDefault = {
     id: string;

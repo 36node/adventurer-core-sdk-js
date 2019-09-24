@@ -535,4 +535,26 @@ export default class SDK {
       });
     },
   };
+  /**
+   * invitation's methods
+   */
+  invitation = {
+    /**
+     * Create invitation 可以用于发送邀请码
+     *
+     * @param {CreateInvitationRequest} req createInvitation request
+     * @returns {Promise<CreateInvitationResponse>} The invitaion created
+     */
+    createInvitation: (req = {}) => {
+      const { headers, body } = req;
+
+      if (!body) throw new Error("requetBody is required for createInvitation");
+
+      return fetch(`${this.base}/invitations`, {
+        method: "POST",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+  };
 }

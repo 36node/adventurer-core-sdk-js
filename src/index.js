@@ -408,6 +408,45 @@ export default class SDK {
         headers: { Authorization: this.auth, ...headers },
       });
     },
+    /**
+     * Create a project document
+     *
+     * @param {CreateProjectDocRequest} req createProjectDoc request
+     * @returns {Promise<CreateProjectDocResponse>} The project document created
+     */
+    createProjectDoc: (req = {}) => {
+      const { projectId, headers, body } = req;
+
+      if (!projectId)
+        throw new Error("projectId is required for createProjectDoc");
+      if (!body) throw new Error("requetBody is required for createProjectDoc");
+
+      return fetch(`${this.base}/projects/${projectId}/docs`, {
+        method: "POST",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
+     * Update a project document
+     *
+     * @param {UpdateProjectDocRequest} req updateProjectDoc request
+     * @returns {Promise<UpdateProjectDocResponse>} The interation
+     */
+    updateProjectDoc: (req = {}) => {
+      const { projectId, docId, headers, body } = req;
+
+      if (!projectId)
+        throw new Error("projectId is required for updateProjectDoc");
+      if (!docId) throw new Error("docId is required for updateProjectDoc");
+      if (!body) throw new Error("requetBody is required for updateProjectDoc");
+
+      return fetch(`${this.base}/projects/${projectId}/docs/${docId}`, {
+        method: "PATCH",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
   };
   /**
    * summary's methods

@@ -112,6 +112,14 @@ declare namespace SDK {
      * Delete project
      */
     deleteProject(req: DeleteProjectRequest): Promise<DeleteProjectResponse>;
+    /**
+     * Create a project document
+     */
+    createProjectDoc(req: CreateProjectDocRequest): Promise<CreateProjectDocResponse>;
+    /**
+     * Update a project document
+     */
+    updateProjectDoc(req: UpdateProjectDocRequest): Promise<UpdateProjectDocResponse>;
   }
   export interface SummaryAPI {
     /**
@@ -425,6 +433,25 @@ declare namespace SDK {
     projectId: string;
   };
 
+  type CreateProjectDocRequest = {
+    projectId: string;
+    body: ProjectDocument;
+  };
+
+  type CreateProjectDocResponse = {
+    body: ProjectDocument;
+  };
+
+  type UpdateProjectDocRequest = {
+    projectId: string;
+    docId: string;
+    body: ProjectDocument;
+  };
+
+  type UpdateProjectDocResponse = {
+    body: Project;
+  };
+
   type GetInteractionsSummaryRequest = {
     query: {
       group: [string];
@@ -553,6 +580,21 @@ declare namespace SDK {
     planStartAt: string;
     planEndAt: string;
     project: string;
+  };
+  type ProjectDocumentDoc = {
+    title: string;
+    content: string;
+    updatedBy: string;
+    createdBy: string;
+  };
+  type ProjectDocument = {
+    id: string;
+    updatedAt: string;
+    createdAt: string;
+    title: string;
+    content: string;
+    updatedBy: string;
+    createdBy: string;
   };
   type Interation = {
     id: string;

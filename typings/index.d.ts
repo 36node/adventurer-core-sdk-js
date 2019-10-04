@@ -42,6 +42,10 @@ declare namespace SDK {
      * Find issue by id and driver
      */
     getIssue(req: GetIssueRequest): Promise<GetIssueResponse>;
+    /**
+     * Find issue comments by issue&#x27;s id and driver
+     */
+    getComments(req: GetCommentsRequest): Promise<GetCommentsResponse>;
   }
   export interface LabelAPI {
     /**
@@ -218,6 +222,14 @@ declare namespace SDK {
 
   type GetIssueResponse = {
     body: Issue;
+  };
+
+  type GetCommentsRequest = {
+    issueId: string;
+  };
+
+  type GetCommentsResponse = {
+    body: [IssueComment];
   };
 
   type ListLabelsRequest = {
@@ -635,6 +647,13 @@ declare namespace SDK {
     assignees: [string];
     createdAt: string;
     updatedAt: string;
+  };
+  type IssueComment = {
+    body: string;
+    user: string;
+    updatedAt: string;
+    htmlUrl: string;
+    authorAssociation: string;
   };
   type TicketDoc = {
     issue: string;

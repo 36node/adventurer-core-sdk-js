@@ -104,6 +104,22 @@ export default class SDK {
         headers: { Authorization: this.auth, ...headers },
       });
     },
+    /**
+     * Find issue comments by issue&#x27;s id and driver
+     *
+     * @param {GetCommentsRequest} req getComments request
+     * @returns {Promise<GetCommentsResponse>} Expected response to a valid request
+     */
+    getComments: (req = {}) => {
+      const { issueId, headers } = req;
+
+      if (!issueId) throw new Error("issueId is required for getComments");
+
+      return fetch(`${this.base}/issues/${issueId}/comments`, {
+        method: "GET",
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
   };
   /**
    * label's methods

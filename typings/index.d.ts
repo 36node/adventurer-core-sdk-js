@@ -160,6 +160,10 @@ declare namespace SDK {
      */
     createStaff(req: CreateStaffRequest): Promise<CreateStaffResponse>;
     /**
+     * upsert staff(only for development)
+     */
+    upsertStaff(req: UpsertStaffRequest): Promise<UpsertStaffResponse>;
+    /**
      * update a staff
      */
     updateStaff(req: UpdateStaffRequest): Promise<UpdateStaffResponse>;
@@ -590,6 +594,14 @@ declare namespace SDK {
   };
 
   type CreateStaffResponse = {
+    body: Staff;
+  };
+
+  type UpsertStaffRequest = {
+    body: CreateStaffDoc;
+  };
+
+  type UpsertStaffResponse = {
     body: Staff;
   };
 

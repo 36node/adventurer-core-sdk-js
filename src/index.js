@@ -596,10 +596,27 @@ export default class SDK {
       });
     },
     /**
+     * upsert staff(only for development)
+     *
+     * @param {UpsertStaffRequest} req upsertStaff request
+     * @returns {Promise<UpsertStaffResponse>} The staff updated
+     */
+    upsertStaff: (req = {}) => {
+      const { headers, body } = req;
+
+      if (!body) throw new Error("requetBody is required for upsertStaff");
+
+      return fetch(`${this.base}/staffs`, {
+        method: "PUT",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
      * update a staff
      *
      * @param {UpdateStaffRequest} req updateStaff request
-     * @returns {Promise<UpdateStaffResponse>} The ticket updated
+     * @returns {Promise<UpdateStaffResponse>} The staff updated
      */
     updateStaff: (req = {}) => {
       const { staffId, headers, body } = req;

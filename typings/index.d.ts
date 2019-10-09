@@ -14,7 +14,8 @@ declare class SDK {
   project: SDK.ProjectAPI;
   summary: SDK.SummaryAPI;
   staff: SDK.StaffAPI;
-  invitation: SDK.InvitationAPI;
+  wallet: SDK.WalletAPI;
+  trade: SDK.TradeAPI;
 }
 
 declare namespace SDK {
@@ -32,6 +33,10 @@ declare namespace SDK {
      * Find repository by id
      */
     getRepository(req: GetRepositoryRequest): Promise<GetRepositoryResponse>;
+    /**
+     * Update repository by id
+     */
+    updateRepository(req: UpdateRepositoryRequest): Promise<UpdateRepositoryResponse>;
   }
   export interface IssueAPI {
     /**
@@ -124,6 +129,10 @@ declare namespace SDK {
      * Update a project document
      */
     updateProjectDoc(req: UpdateProjectDocRequest): Promise<UpdateProjectDocResponse>;
+    /**
+     * Create a project event
+     */
+    createProjectEvent(req: CreateProjectEventRequest): Promise<CreateProjectEventResponse>;
   }
   export interface SummaryAPI {
     /**
@@ -136,6 +145,10 @@ declare namespace SDK {
      * Get tickets summary
      */
     getTicketsSummary(req: GetTicketsSummaryRequest): Promise<GetTicketsSummaryResponse>;
+    /**
+     * Get trades summary
+     */
+    getTradeSummary(req: GetTradeSummaryRequest): Promise<GetTradeSummaryResponse>;
   }
   export interface StaffAPI {
     /**
@@ -143,9 +156,9 @@ declare namespace SDK {
      */
     listStaffs(req: ListStaffsRequest): Promise<ListStaffsResponse>;
     /**
-     * Upsert a staff
+     * Create a staff
      */
-    upsertStaff(req: UpsertStaffRequest): Promise<UpsertStaffResponse>;
+    createStaff(req: CreateStaffRequest): Promise<CreateStaffResponse>;
     /**
      * update a staff
      */
@@ -159,11 +172,25 @@ declare namespace SDK {
      */
     deleteStaff(req: DeleteStaffRequest): Promise<DeleteStaffResponse>;
   }
-  export interface InvitationAPI {
+  export interface WalletAPI {
     /**
-     * Create invitation 可以用于发送邀请码
+     * Find staff wallet by id
      */
-    createInvitation(req: CreateInvitationRequest): Promise<CreateInvitationResponse>;
+    getStaffWallet(req: GetStaffWalletRequest): Promise<GetStaffWalletResponse>;
+    /**
+     * List wallets
+     */
+    listWallets(req: ListWalletsRequest): Promise<ListWalletsResponse>;
+  }
+  export interface TradeAPI {
+    /**
+     * List trades
+     */
+    listTrades(req: ListTradesRequest): Promise<ListTradesResponse>;
+    /**
+     * Create a trade
+     */
+    createTrade(req: CreateTradeRequest): Promise<CreateTradeResponse>;
   }
 
   type ListRepositoriesRequest = {
@@ -191,6 +218,15 @@ declare namespace SDK {
   };
 
   type GetRepositoryResponse = {
+    body: Repository;
+  };
+
+  type UpdateRepositoryRequest = {
+    repositoryId: string;
+    body: Repository;
+  };
+
+  type UpdateRepositoryResponse = {
     body: Repository;
   };
 
@@ -464,6 +500,15 @@ declare namespace SDK {
     body: Project;
   };
 
+  type CreateProjectEventRequest = {
+    projectId: string;
+    body: ProjectEvent;
+  };
+
+  type CreateProjectEventResponse = {
+    body: Project;
+  };
+
   type GetInteractionsSummaryRequest = {
     query: {
       group: [string];
@@ -503,6 +548,21 @@ declare namespace SDK {
     body: [TicketsSummary];
   };
 
+  type GetTradeSummaryRequest = {
+    query: {
+      group: [string];
+
+      filter: {
+        project?: string;
+        staff?: string;
+      };
+    };
+  };
+
+  type GetTradeSummaryResponse = {
+    body: [TradeSummary];
+  };
+
   type ListStaffsRequest = {
     query: {
       limit?: number;
@@ -525,11 +585,11 @@ declare namespace SDK {
     };
   };
 
-  type UpsertStaffRequest = {
+  type CreateStaffRequest = {
     body: CreateStaffDoc;
   };
 
-  type UpsertStaffResponse = {
+  type CreateStaffResponse = {
     body: Staff;
   };
 
@@ -554,12 +614,67 @@ declare namespace SDK {
     staffId: string;
   };
 
-  type CreateInvitationRequest = {
-    body: CreateInvitationBody;
+  type GetStaffWalletRequest = {
+    staffId: string;
   };
 
-  type CreateInvitationResponse = {
-    body: Invitation;
+  type GetStaffWalletResponse = {
+    body: Wallet;
+  };
+
+  type ListWalletsRequest = {
+    query: {
+      limit?: number;
+      offset?: number;
+      sort?: string;
+      select?: string;
+
+      filter: {
+        staff?: string;
+      };
+    };
+  };
+
+  type ListWalletsResponse = {
+    body: [Wallet];
+    headers: {
+      xTotalCount: number;
+    };
+  };
+
+  type ListTradesRequest = {
+    query: {
+      limit?: number;
+      offset?: number;
+      sort?: string;
+      select?: string;
+
+      filter: {
+        staff?: string;
+        type?: string;
+        staffName?: string;
+        staffGithub?: string;
+        createdAt: {
+          $gt?: string;
+          $lt?: string;
+        };
+      };
+    };
+  };
+
+  type ListTradesResponse = {
+    body: [Trade];
+    headers: {
+      xTotalCount: number;
+    };
+  };
+
+  type CreateTradeRequest = {
+    body: TradeDoc;
+  };
+
+  type CreateTradeResponse = {
+    body: Trade;
   };
 
   type ProjectDoc = {
@@ -586,6 +701,21 @@ declare namespace SDK {
     planEndAt: string;
     state: "DOING" | "ARCHIVED";
     logo: string;
+  };
+  type ProjectEvent = {
+    name: "CHANGE_TOTAL" | "SHARED";
+    total: number;
+    shared: {
+      total: number;
+      remark: string;
+      detail: [
+        {
+          staff: string;
+          position: "PO" | "CM";
+          percent: number;
+        }
+      ];
+    };
   };
   type InterationDoc = {
     name: string;
@@ -796,7 +926,6 @@ declare namespace SDK {
     type: "36NODE" | "ADVENTURE";
     position: "PM" | "DEVELOPER" | "DESIGNER";
     level: number;
-    base: number;
     bankCard: string;
     idNumber: string;
     city: string;
@@ -818,7 +947,6 @@ declare namespace SDK {
     type: "36NODE" | "ADVENTURE";
     position: "PM" | "DEVELOPER" | "DESIGNER";
     level: number;
-    base: number;
     bankCard: string;
     idNumber: string;
     city: string;
@@ -839,7 +967,6 @@ declare namespace SDK {
     type: "36NODE" | "ADVENTURE";
     position: "PM" | "DEVELOPER" | "DESIGNER";
     level: number;
-    base: number;
     bankCard: string;
     idNumber: string;
     city: string;
@@ -852,97 +979,48 @@ declare namespace SDK {
     github: string;
     avatar: string;
   };
-  type StaffWalletDoc = {
-    balance: string;
+  type WalletDoc = {
+    balance: number;
     staff: string;
   };
-  type StaffWallet = {
+  type Wallet = {
     id: string;
     updatedAt: string;
     createdAt: string;
-    balance: string;
+    balance: number;
     staff: string;
   };
-  type ProjectWalletDoc = {
+  type TradeDoc = {
     project: string;
-    total: number;
-    balance: string;
+    staff: string;
+    type: "SHARED" | "TICKET" | "SETTLE";
+    amount: number;
+    handler: string;
+    staffName: string;
+    staffGithub: string;
   };
-  type ProjectWallet = {
+  type Trade = {
     id: string;
     updatedAt: string;
     createdAt: string;
     project: string;
-    total: number;
-    balance: string;
-  };
-  type ProjectTradingRecordDoc = {
-    project: string;
-    wallet: string;
-    type: "SHARED_EXP" | "TICKET_EXP";
+    staff: string;
+    type: "SHARED" | "TICKET" | "SETTLE";
     amount: number;
-    balance: string;
     handler: string;
-    ticketExp: {
-      ticket: string;
-      staff: string;
-    };
-    sharedExp: [
-      {
-        staff: string;
-        position: "CM" | "PO";
-        percent: number;
-      }
-    ];
+    staffName: string;
+    staffGithub: string;
   };
-  type ProjectTradingRecord = {
-    id: string;
-    updatedAt: string;
-    createdAt: string;
+  type TradeSummary = {
     project: string;
-    wallet: string;
-    type: "SHARED_EXP" | "TICKET_EXP";
-    amount: number;
-    balance: string;
+    staff: string;
     handler: string;
-    ticketExp: {
-      ticket: string;
-      staff: string;
-    };
-    sharedExp: [
-      {
-        staff: string;
-        position: "CM" | "PO";
-        percent: number;
-      }
-    ];
-  };
-  type StaffTradingRecordDoc = {
-    tradeNo: string;
-    type: "TICKET_IN" | "PROJECT_SHARED_IN" | "SETTLE_EXP";
-    amount: number;
-    project: string;
-    ticket: string;
-    handler: string;
-    balance: string;
-    wallet: string;
-  };
-  type StaffTradingRecord = {
-    id: string;
-    updatedAt: string;
-    createdAt: string;
-    tradeNo: string;
-    type: "TICKET_IN" | "PROJECT_SHARED_IN" | "SETTLE_EXP";
-    amount: number;
-    project: string;
-    ticket: string;
-    handler: string;
-    balance: string;
-    wallet: string;
+    totalExp: string;
   };
   type CreateInvitationBody = {
     expiredAt: string;
     email: string;
+    remark: string;
   };
   type InvitationDoc = {
     code: string;
@@ -951,9 +1029,7 @@ declare namespace SDK {
     expiredAt: string;
     used: boolean;
     usedAt: string;
-    user: string;
-    source: string;
-    comment: string;
+    remark: string;
   };
   type Invitation = {
     id: string;
@@ -965,9 +1041,7 @@ declare namespace SDK {
     expiredAt: string;
     used: boolean;
     usedAt: string;
-    user: string;
-    source: string;
-    comment: string;
+    remark: string;
   };
   type MongoDefault = {
     id: string;

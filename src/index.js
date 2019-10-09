@@ -68,6 +68,25 @@ export default class SDK {
         headers: { Authorization: this.auth, ...headers },
       });
     },
+    /**
+     * Update repository by id
+     *
+     * @param {UpdateRepositoryRequest} req updateRepository request
+     * @returns {Promise<UpdateRepositoryResponse>} The repository
+     */
+    updateRepository: (req = {}) => {
+      const { repositoryId, headers, body } = req;
+
+      if (!repositoryId)
+        throw new Error("repositoryId is required for updateRepository");
+      if (!body) throw new Error("requetBody is required for updateRepository");
+
+      return fetch(`${this.base}/repositories/${repositoryId}`, {
+        method: "PATCH",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
   };
   /**
    * issue's methods
@@ -463,6 +482,26 @@ export default class SDK {
         headers: { Authorization: this.auth, ...headers },
       });
     },
+    /**
+     * Create a project event
+     *
+     * @param {CreateProjectEventRequest} req createProjectEvent request
+     * @returns {Promise<CreateProjectEventResponse>} The project event created
+     */
+    createProjectEvent: (req = {}) => {
+      const { projectId, headers, body } = req;
+
+      if (!projectId)
+        throw new Error("projectId is required for createProjectEvent");
+      if (!body)
+        throw new Error("requetBody is required for createProjectEvent");
+
+      return fetch(`${this.base}/projects/${projectId}/events`, {
+        method: "POST",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
   };
   /**
    * summary's methods
@@ -502,6 +541,23 @@ export default class SDK {
         headers: { Authorization: this.auth, ...headers },
       });
     },
+    /**
+     * Get trades summary
+     *
+     * @param {GetTradeSummaryRequest} req getTradeSummary request
+     * @returns {Promise<GetTradeSummaryResponse>} A paged array of tickets summaries
+     */
+    getTradeSummary: (req = {}) => {
+      const { query, headers } = req;
+
+      if (!query) throw new Error("query is required for summary");
+
+      return fetch(`${this.base}/summary/trades`, {
+        method: "GET",
+        query: denormalize(query),
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
   };
   /**
    * staff's methods
@@ -523,15 +579,15 @@ export default class SDK {
       });
     },
     /**
-     * Upsert a staff
+     * Create a staff
      *
-     * @param {UpsertStaffRequest} req upsertStaff request
-     * @returns {Promise<UpsertStaffResponse>} The ticket created
+     * @param {CreateStaffRequest} req createStaff request
+     * @returns {Promise<CreateStaffResponse>} The ticket created
      */
-    upsertStaff: (req = {}) => {
+    createStaff: (req = {}) => {
       const { headers, body } = req;
 
-      if (!body) throw new Error("requetBody is required for upsertStaff");
+      if (!body) throw new Error("requetBody is required for createStaff");
 
       return fetch(`${this.base}/staffs`, {
         method: "POST",
@@ -591,21 +647,72 @@ export default class SDK {
     },
   };
   /**
-   * invitation's methods
+   * wallet's methods
    */
-  invitation = {
+  wallet = {
     /**
-     * Create invitation 可以用于发送邀请码
+     * Find staff wallet by id
      *
-     * @param {CreateInvitationRequest} req createInvitation request
-     * @returns {Promise<CreateInvitationResponse>} The invitaion created
+     * @param {GetStaffWalletRequest} req getStaffWallet request
+     * @returns {Promise<GetStaffWalletResponse>} Expected response to a valid request
      */
-    createInvitation: (req = {}) => {
+    getStaffWallet: (req = {}) => {
+      const { staffId, headers } = req;
+
+      if (!staffId) throw new Error("staffId is required for getStaffWallet");
+
+      return fetch(`${this.base}/staffs/${staffId}/wallet`, {
+        method: "GET",
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
+     * List wallets
+     *
+     * @param {ListWalletsRequest} req listWallets request
+     * @returns {Promise<ListWalletsResponse>} A paged array of staffs
+     */
+    listWallets: (req = {}) => {
+      const { query, headers } = req;
+
+      return fetch(`${this.base}/wallets`, {
+        method: "GET",
+        query: denormalize(query),
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+  };
+  /**
+   * trade's methods
+   */
+  trade = {
+    /**
+     * List trades
+     *
+     * @param {ListTradesRequest} req listTrades request
+     * @returns {Promise<ListTradesResponse>} A paged array of trade
+     */
+    listTrades: (req = {}) => {
+      const { query, headers } = req;
+
+      return fetch(`${this.base}/trades`, {
+        method: "GET",
+        query: denormalize(query),
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
+     * Create a trade
+     *
+     * @param {CreateTradeRequest} req createTrade request
+     * @returns {Promise<CreateTradeResponse>} The trade created
+     */
+    createTrade: (req = {}) => {
       const { headers, body } = req;
 
-      if (!body) throw new Error("requetBody is required for createInvitation");
+      if (!body) throw new Error("requetBody is required for createTrade");
 
-      return fetch(`${this.base}/invitations`, {
+      return fetch(`${this.base}/trades`, {
         method: "POST",
         body,
         headers: { Authorization: this.auth, ...headers },

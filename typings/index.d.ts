@@ -16,6 +16,7 @@ declare class SDK {
   staff: SDK.StaffAPI;
   wallet: SDK.WalletAPI;
   trade: SDK.TradeAPI;
+  invitation: SDK.InvitationAPI;
 }
 
 declare namespace SDK {
@@ -195,6 +196,12 @@ declare namespace SDK {
      * Create a trade
      */
     createTrade(req: CreateTradeRequest): Promise<CreateTradeResponse>;
+  }
+  export interface InvitationAPI {
+    /**
+     * Create a invitation, 用于发送邀请码
+     */
+    createInvitation(req: CreateInvitationRequest): Promise<CreateInvitationResponse>;
   }
 
   type ListRepositoriesRequest = {
@@ -687,6 +694,14 @@ declare namespace SDK {
 
   type CreateTradeResponse = {
     body: Trade;
+  };
+
+  type CreateInvitationRequest = {
+    body: InvitationDoc;
+  };
+
+  type CreateInvitationResponse = {
+    body: Invitation;
   };
 
   type ProjectDoc = {

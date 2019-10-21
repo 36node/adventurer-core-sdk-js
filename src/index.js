@@ -87,46 +87,6 @@ export default class SDK {
         headers: { Authorization: this.auth, ...headers },
       });
     },
-    /**
-     * Find invite repo by repo id
-     *
-     * @param {CreateRepoInvitationRequest} req createRepoInvitation request
-     * @returns {Promise<CreateRepoInvitationResponse>} invite staff success
-     */
-    createRepoInvitation: (req = {}) => {
-      const { repositoryId, headers, body } = req;
-
-      if (!repositoryId)
-        throw new Error("repositoryId is required for createRepoInvitation");
-      if (!body)
-        throw new Error("requetBody is required for createRepoInvitation");
-
-      return fetch(`${this.base}/repositories/${repositoryId}/invitation`, {
-        method: "POST",
-        body,
-        headers: { Authorization: this.auth, ...headers },
-      });
-    },
-    /**
-     * Delete collaborators
-     *
-     * @param {DeleteCollaboratorsRequest} req deleteCollaborators request
-     * @returns {Promise<DeleteCollaboratorsResponse>} collaborator deleted
-     */
-    deleteCollaborators: (req = {}) => {
-      const { repositoryId, headers, body } = req;
-
-      if (!repositoryId)
-        throw new Error("repositoryId is required for deleteCollaborators");
-      if (!body)
-        throw new Error("requetBody is required for deleteCollaborators");
-
-      return fetch(`${this.base}/repositories/${repositoryId}/invitation`, {
-        method: "PATCH",
-        body,
-        headers: { Authorization: this.auth, ...headers },
-      });
-    },
   };
   /**
    * issue's methods
@@ -619,15 +579,15 @@ export default class SDK {
       });
     },
     /**
-     * Upsert a staff
+     * Create a staff
      *
-     * @param {UpsertStaffRequest} req upsertStaff request
-     * @returns {Promise<UpsertStaffResponse>} The ticket created
+     * @param {CreateStaffRequest} req createStaff request
+     * @returns {Promise<CreateStaffResponse>} The ticket created
      */
-    upsertStaff: (req = {}) => {
+    createStaff: (req = {}) => {
       const { headers, body } = req;
 
-      if (!body) throw new Error("requetBody is required for upsertStaff");
+      if (!body) throw new Error("requetBody is required for createStaff");
 
       return fetch(`${this.base}/staffs`, {
         method: "POST",
@@ -636,10 +596,27 @@ export default class SDK {
       });
     },
     /**
+     * upsert staff(only for development)
+     *
+     * @param {UpsertStaffRequest} req upsertStaff request
+     * @returns {Promise<UpsertStaffResponse>} The staff updated
+     */
+    upsertStaff: (req = {}) => {
+      const { headers, body } = req;
+
+      if (!body) throw new Error("requetBody is required for upsertStaff");
+
+      return fetch(`${this.base}/staffs`, {
+        method: "PUT",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
      * update a staff
      *
      * @param {UpdateStaffRequest} req updateStaff request
-     * @returns {Promise<UpdateStaffResponse>} The ticket updated
+     * @returns {Promise<UpdateStaffResponse>} The staff updated
      */
     updateStaff: (req = {}) => {
       const { staffId, headers, body } = req;
@@ -753,6 +730,28 @@ export default class SDK {
       if (!body) throw new Error("requetBody is required for createTrade");
 
       return fetch(`${this.base}/trades`, {
+        method: "POST",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+  };
+  /**
+   * invitation's methods
+   */
+  invitation = {
+    /**
+     * Create a invitation, 用于发送邀请码
+     *
+     * @param {CreateInvitationRequest} req createInvitation request
+     * @returns {Promise<CreateInvitationResponse>} The invitation created
+     */
+    createInvitation: (req = {}) => {
+      const { headers, body } = req;
+
+      if (!body) throw new Error("requetBody is required for createInvitation");
+
+      return fetch(`${this.base}/invitations`, {
         method: "POST",
         body,
         headers: { Authorization: this.auth, ...headers },

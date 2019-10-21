@@ -16,6 +16,7 @@ declare class SDK {
   staff: SDK.StaffAPI;
   wallet: SDK.WalletAPI;
   trade: SDK.TradeAPI;
+  invitation: SDK.InvitationAPI;
 }
 
 declare namespace SDK {
@@ -37,14 +38,6 @@ declare namespace SDK {
      * Update repository by id
      */
     updateRepository(req: UpdateRepositoryRequest): Promise<UpdateRepositoryResponse>;
-    /**
-     * Find invite repo by repo id
-     */
-    createRepoInvitation(req: CreateRepoInvitationRequest): Promise<CreateRepoInvitationResponse>;
-    /**
-     * Delete collaborators
-     */
-    deleteCollaborators(req: DeleteCollaboratorsRequest): Promise<DeleteCollaboratorsResponse>;
   }
   export interface IssueAPI {
     /**
@@ -164,7 +157,11 @@ declare namespace SDK {
      */
     listStaffs(req: ListStaffsRequest): Promise<ListStaffsResponse>;
     /**
-     * Upsert a staff
+     * Create a staff
+     */
+    createStaff(req: CreateStaffRequest): Promise<CreateStaffResponse>;
+    /**
+     * upsert staff(only for development)
      */
     upsertStaff(req: UpsertStaffRequest): Promise<UpsertStaffResponse>;
     /**
@@ -199,6 +196,12 @@ declare namespace SDK {
      * Create a trade
      */
     createTrade(req: CreateTradeRequest): Promise<CreateTradeResponse>;
+  }
+  export interface InvitationAPI {
+    /**
+     * Create a invitation, 用于发送邀请码
+     */
+    createInvitation(req: CreateInvitationRequest): Promise<CreateInvitationResponse>;
   }
 
   type ListRepositoriesRequest = {
@@ -235,20 +238,6 @@ declare namespace SDK {
   };
 
   type UpdateRepositoryResponse = {
-    body: Repository;
-  };
-
-  type CreateRepoInvitationRequest = {
-    repositoryId: string;
-    body: TicketDoc;
-  };
-
-  type CreateRepoInvitationResponse = {
-    body: Repository;
-  };
-
-  type DeleteCollaboratorsRequest = {
-    repositoryId: string;
     body: Repository;
   };
 
@@ -607,6 +596,14 @@ declare namespace SDK {
     };
   };
 
+  type CreateStaffRequest = {
+    body: CreateStaffDoc;
+  };
+
+  type CreateStaffResponse = {
+    body: Staff;
+  };
+
   type UpsertStaffRequest = {
     body: CreateStaffDoc;
   };
@@ -697,6 +694,14 @@ declare namespace SDK {
 
   type CreateTradeResponse = {
     body: Trade;
+  };
+
+  type CreateInvitationRequest = {
+    body: InvitationDoc;
+  };
+
+  type CreateInvitationResponse = {
+    body: Invitation;
   };
 
   type ProjectDoc = {
@@ -1042,6 +1047,7 @@ declare namespace SDK {
   type CreateInvitationBody = {
     expiredAt: string;
     email: string;
+    remark: string;
   };
   type InvitationDoc = {
     code: string;
@@ -1050,9 +1056,7 @@ declare namespace SDK {
     expiredAt: string;
     used: boolean;
     usedAt: string;
-    user: string;
-    source: string;
-    comment: string;
+    remark: string;
   };
   type Invitation = {
     id: string;
@@ -1064,9 +1068,7 @@ declare namespace SDK {
     expiredAt: string;
     used: boolean;
     usedAt: string;
-    user: string;
-    source: string;
-    comment: string;
+    remark: string;
   };
   type MongoDefault = {
     id: string;

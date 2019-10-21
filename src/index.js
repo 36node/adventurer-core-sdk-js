@@ -87,6 +87,46 @@ export default class SDK {
         headers: { Authorization: this.auth, ...headers },
       });
     },
+    /**
+     * Find invite repo by repo id
+     *
+     * @param {CreateRepoInvitationRequest} req createRepoInvitation request
+     * @returns {Promise<CreateRepoInvitationResponse>} invite staff success
+     */
+    createRepoInvitation: (req = {}) => {
+      const { repositoryId, headers, body } = req;
+
+      if (!repositoryId)
+        throw new Error("repositoryId is required for createRepoInvitation");
+      if (!body)
+        throw new Error("requetBody is required for createRepoInvitation");
+
+      return fetch(`${this.base}/repositories/${repositoryId}/invitation`, {
+        method: "POST",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
+     * Delete collaborators
+     *
+     * @param {DeleteCollaboratorsRequest} req deleteCollaborators request
+     * @returns {Promise<DeleteCollaboratorsResponse>} collaborator deleted
+     */
+    deleteCollaborators: (req = {}) => {
+      const { repositoryId, headers, body } = req;
+
+      if (!repositoryId)
+        throw new Error("repositoryId is required for deleteCollaborators");
+      if (!body)
+        throw new Error("requetBody is required for deleteCollaborators");
+
+      return fetch(`${this.base}/repositories/${repositoryId}/invitation`, {
+        method: "PATCH",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
   };
   /**
    * issue's methods

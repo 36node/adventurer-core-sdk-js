@@ -88,44 +88,46 @@ export default class SDK {
       });
     },
     /**
-     * Find invite repo by repo id
+     * add repository collaborator
      *
-     * @param {CreateRepoInvitationRequest} req createRepoInvitation request
-     * @returns {Promise<CreateRepoInvitationResponse>} invite staff success
+     * @param {AddCollaboratorRequest} req addCollaborator request
+     * @returns {Promise<AddCollaboratorResponse>} invite collaborators success
      */
-    createRepoInvitation: (req = {}) => {
-      const { repositoryId, headers, body } = req;
+    addCollaborator: (req = {}) => {
+      const { repositoryId, github, headers } = req;
 
       if (!repositoryId)
-        throw new Error("repositoryId is required for createRepoInvitation");
-      if (!body)
-        throw new Error("requetBody is required for createRepoInvitation");
+        throw new Error("repositoryId is required for addCollaborator");
+      if (!github) throw new Error("github is required for addCollaborator");
 
-      return fetch(`${this.base}/repositories/${repositoryId}/invitation`, {
-        method: "POST",
-        body,
-        headers: { Authorization: this.auth, ...headers },
-      });
+      return fetch(
+        `${this.base}/repositories/${repositoryId}/collaborator/${github}`,
+        {
+          method: "PUT",
+          headers: { Authorization: this.auth, ...headers },
+        }
+      );
     },
     /**
-     * Delete collaborators
+     * Delete collaborator
      *
-     * @param {DeleteCollaboratorsRequest} req deleteCollaborators request
-     * @returns {Promise<DeleteCollaboratorsResponse>} collaborator deleted
+     * @param {DeleteCollaboratorRequest} req deleteCollaborator request
+     * @returns {Promise<DeleteCollaboratorResponse>} collaborator deleted
      */
-    deleteCollaborators: (req = {}) => {
-      const { repositoryId, headers, body } = req;
+    deleteCollaborator: (req = {}) => {
+      const { repositoryId, github, headers } = req;
 
       if (!repositoryId)
-        throw new Error("repositoryId is required for deleteCollaborators");
-      if (!body)
-        throw new Error("requetBody is required for deleteCollaborators");
+        throw new Error("repositoryId is required for deleteCollaborator");
+      if (!github) throw new Error("github is required for deleteCollaborator");
 
-      return fetch(`${this.base}/repositories/${repositoryId}/invitation`, {
-        method: "PATCH",
-        body,
-        headers: { Authorization: this.auth, ...headers },
-      });
+      return fetch(
+        `${this.base}/repositories/${repositoryId}/collaborator/${github}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: this.auth, ...headers },
+        }
+      );
     },
   };
   /**

@@ -39,13 +39,13 @@ declare namespace SDK {
      */
     updateRepository(req: UpdateRepositoryRequest): Promise<UpdateRepositoryResponse>;
     /**
-     * Find invite repo by repo id
+     * add repository collaborator
      */
-    createRepoInvitation(req: CreateRepoInvitationRequest): Promise<CreateRepoInvitationResponse>;
+    addCollaborator(req: AddCollaboratorRequest): Promise<AddCollaboratorResponse>;
     /**
-     * Delete collaborators
+     * Delete collaborator
      */
-    deleteCollaborators(req: DeleteCollaboratorsRequest): Promise<DeleteCollaboratorsResponse>;
+    deleteCollaborator(req: DeleteCollaboratorRequest): Promise<DeleteCollaboratorResponse>;
   }
   export interface IssueAPI {
     /**
@@ -249,18 +249,18 @@ declare namespace SDK {
     body: Repository;
   };
 
-  type CreateRepoInvitationRequest = {
+  type AddCollaboratorRequest = {
     repositoryId: string;
-    body: TicketDoc;
+    github: string;
   };
 
-  type CreateRepoInvitationResponse = {
+  type AddCollaboratorResponse = {
     body: Repository;
   };
 
-  type DeleteCollaboratorsRequest = {
+  type DeleteCollaboratorRequest = {
     repositoryId: string;
-    body: Repository;
+    github: string;
   };
 
   type ListIssuesRequest = {

@@ -1,6 +1,6 @@
 {
   "name": "@36node/core-sdk-js",
-  "version": "0.0.24",
+  "version": "0.0.25",
   "description": "A SDK boilerplate.",
   "repository": {
     "url": "https://github.com/36node/adventurer-core-sdk-js",

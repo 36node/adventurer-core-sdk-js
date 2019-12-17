@@ -254,6 +254,7 @@ declare namespace SDK {
   };
 
   type CreateReleaseRequest = {
+    repositoryId: string;
     body: Release;
   };
 

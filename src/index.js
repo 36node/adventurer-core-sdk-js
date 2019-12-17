@@ -94,8 +94,10 @@ export default class SDK {
      * @returns {Promise<CreateReleaseResponse>} The release created
      */
     createRelease: (req = {}) => {
-      const { headers, body } = req;
+      const { repositoryId, headers, body } = req;
 
+      if (!repositoryId)
+        throw new Error("repositoryId is required for createRelease");
       if (!body) throw new Error("requetBody is required for createRelease");
 
       return fetch(`${this.base}/repositories/${repositoryId}/release`, {

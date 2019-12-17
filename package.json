@@ -24,7 +24,7 @@
   "scripts": {
     "build": "sketch build",
     "format": "prettier --trailing-comma es5 --write 'src/**/*.js'",
-    "gen": "swagen sdk ../core/openapi.yml",
+    "gen": "swagen sdk https://api.adventurer.tech/core/v0-uat/openapi.yml",
     "lint": "sketch lint src",
     "release": "standard-version",
     "start": "bin/mock-server.js",

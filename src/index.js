@@ -88,6 +88,23 @@ export default class SDK {
       });
     },
     /**
+     * Create a release
+     *
+     * @param {CreateReleaseRequest} req createRelease request
+     * @returns {Promise<CreateReleaseResponse>} The release created
+     */
+    createRelease: (req = {}) => {
+      const { headers, body } = req;
+
+      if (!body) throw new Error("requetBody is required for createRelease");
+
+      return fetch(`${this.base}/repositories/${repositoryId}/release`, {
+        method: "POST",
+        body,
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
      * add repository collaborator
      *
      * @param {AddCollaboratorRequest} req addCollaborator request

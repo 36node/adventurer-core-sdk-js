@@ -39,6 +39,10 @@ declare namespace SDK {
      */
     updateRepository(req: UpdateRepositoryRequest): Promise<UpdateRepositoryResponse>;
     /**
+     * Create a release
+     */
+    createRelease(req: CreateReleaseRequest): Promise<CreateReleaseResponse>;
+    /**
      * add repository collaborator
      */
     addCollaborator(req: AddCollaboratorRequest): Promise<AddCollaboratorResponse>;
@@ -247,6 +251,14 @@ declare namespace SDK {
 
   type UpdateRepositoryResponse = {
     body: Repository;
+  };
+
+  type CreateReleaseRequest = {
+    body: Release;
+  };
+
+  type CreateReleaseResponse = {
+    body: Release;
   };
 
   type AddCollaboratorRequest = {
@@ -1091,6 +1103,9 @@ declare namespace SDK {
     used: boolean;
     usedAt: string;
     remark: string;
+  };
+  type Release = {
+    version: string;
   };
   type MongoDefault = {
     id: string;

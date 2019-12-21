@@ -784,6 +784,7 @@ declare namespace SDK {
     planStartAt: string;
     planEndAt: string;
     project: string;
+    description: string;
   };
   type ProjectDocumentDoc = {
     title: string;
@@ -808,6 +809,7 @@ declare namespace SDK {
     planStartAt: string;
     planEndAt: string;
     project: string;
+    description: string;
   };
   type TicketsSummary = {};
   type InterationSummary = {};

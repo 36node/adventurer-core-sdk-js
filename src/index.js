@@ -524,6 +524,23 @@ export default class SDK {
       });
     },
     /**
+     * get a project summary
+     *
+     * @param {GetProjectSummaryRequest} req getProjectSummary request
+     * @returns {Promise<GetProjectSummaryResponse>} Expected response to a valid request
+     */
+    getProjectSummary: (req = {}) => {
+      const { projectId, headers } = req;
+
+      if (!projectId)
+        throw new Error("projectId is required for getProjectSummary");
+
+      return fetch(`${this.base}/projects/${projectId}/summary`, {
+        method: "GET",
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
      * Update a project document
      *
      * @param {UpdateProjectDocRequest} req updateProjectDoc request

@@ -139,6 +139,10 @@ declare namespace SDK {
      */
     createProjectDoc(req: CreateProjectDocRequest): Promise<CreateProjectDocResponse>;
     /**
+     * get a project summary
+     */
+    getProjectSummary(req: GetProjectSummaryRequest): Promise<GetProjectSummaryResponse>;
+    /**
      * Update a project document
      */
     updateProjectDoc(req: UpdateProjectDocRequest): Promise<UpdateProjectDocResponse>;
@@ -536,6 +540,14 @@ declare namespace SDK {
     body: ProjectDocument;
   };
 
+  type GetProjectSummaryRequest = {
+    projectId: string;
+  };
+
+  type GetProjectSummaryResponse = {
+    body: ProjectSummary;
+  };
+
   type UpdateProjectDocRequest = {
     projectId: string;
     docId: string;
@@ -786,6 +798,18 @@ declare namespace SDK {
     project: string;
     description: string;
   };
+  type ProjectSummary = [
+    {
+      type: string;
+      data: [
+        {
+          name: string;
+          value: string;
+        }
+      ];
+      total: number;
+    }
+  ];
   type ProjectDocumentDoc = {
     title: string;
     content: string;

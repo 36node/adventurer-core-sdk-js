@@ -636,6 +636,21 @@ export default class SDK {
         headers: { Authorization: this.auth, ...headers },
       });
     },
+    /**
+     * Get trades summary by month
+     *
+     * @param {GetTradeSummaryByMonthRequest} req getTradeSummaryByMonth request
+     * @returns {Promise<GetTradeSummaryByMonthResponse>} A paged array of tickets summaries
+     */
+    getTradeSummaryByMonth: (req = {}) => {
+      const { query, headers } = req;
+
+      return fetch(`${this.base}/summary/tradesByMonth`, {
+        method: "GET",
+        query: denormalize(query),
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
   };
   /**
    * staff's methods

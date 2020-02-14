@@ -166,6 +166,12 @@ declare namespace SDK {
      * Get trades summary
      */
     getTradeSummary(req: GetTradeSummaryRequest): Promise<GetTradeSummaryResponse>;
+    /**
+     * Get trades summary by month
+     */
+    getTradeSummaryByMonth(
+      req: GetTradeSummaryByMonthRequest
+    ): Promise<GetTradeSummaryByMonthResponse>;
   }
   export interface StaffAPI {
     /**
@@ -621,6 +627,18 @@ declare namespace SDK {
     body: [TradeSummary];
   };
 
+  type GetTradeSummaryByMonthRequest = {
+    query: {
+      filter: {
+        staff?: string;
+      };
+    };
+  };
+
+  type GetTradeSummaryByMonthResponse = {
+    body: [TradeSummary];
+  };
+
   type ListStaffsRequest = {
     query: {
       limit?: number;
@@ -889,7 +907,7 @@ declare namespace SDK {
     doneAt: string;
     publishedAt: string;
     remark: string;
-    bounds: number;
+    bonus: number;
     labels: [string];
     events: [
       {
@@ -900,7 +918,7 @@ declare namespace SDK {
           | "UNASSIGN"
           | "LEVEL"
           | "PRIORITY"
-          | "BOUNDS"
+          | "BONUS"
           | "DEADLINE"
           | "DONE"
           | "REOPEN"
@@ -913,7 +931,7 @@ declare namespace SDK {
         priority: 0 | 1 | 2;
         deadline: string;
         interation: string;
-        bounds: number;
+        bonus: number;
         takenBy: string;
         publishBy: string;
         foreignTakenBy: string;
@@ -921,6 +939,8 @@ declare namespace SDK {
         remark: string;
       }
     ];
+    reopened: boolean;
+    reopenedAt: string;
   };
   type Label = {
     id: string;
@@ -935,7 +955,7 @@ declare namespace SDK {
       | "UNASSIGN"
       | "LEVEL"
       | "PRIORITY"
-      | "BOUNDS"
+      | "BONUS"
       | "DEADLINE"
       | "DONE"
       | "REOPEN"
@@ -948,7 +968,7 @@ declare namespace SDK {
     priority: 0 | 1 | 2;
     deadline: string;
     interation: string;
-    bounds: number;
+    bonus: number;
     takenBy: string;
     publishBy: string;
     foreignTakenBy: string;
@@ -974,7 +994,7 @@ declare namespace SDK {
     doneAt: string;
     publishedAt: string;
     remark: string;
-    bounds: number;
+    bonus: number;
     labels: [string];
     events: [
       {
@@ -985,7 +1005,7 @@ declare namespace SDK {
           | "UNASSIGN"
           | "LEVEL"
           | "PRIORITY"
-          | "BOUNDS"
+          | "BONUS"
           | "DEADLINE"
           | "DONE"
           | "REOPEN"
@@ -998,7 +1018,7 @@ declare namespace SDK {
         priority: 0 | 1 | 2;
         deadline: string;
         interation: string;
-        bounds: number;
+        bonus: number;
         takenBy: string;
         publishBy: string;
         foreignTakenBy: string;
@@ -1006,6 +1026,8 @@ declare namespace SDK {
         remark: string;
       }
     ];
+    reopened: boolean;
+    reopenedAt: string;
   };
   type StaffDoc = {
     id: string;

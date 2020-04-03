@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.1](https://github.com/36node/adventurer-core-sdk-js/compare/v0.2.0...v0.2.1) (2020-04-03)
+
+
+### Bug Fixes
+
+* update openapi.yml, fix auth token function ([437cc73](https://github.com/36node/adventurer-core-sdk-js/commit/437cc73))
+
+
+
 ## [0.2.0](https://github.com/36node/adventurer-core-sdk-js/compare/v0.1.5...v0.2.0) (2020-02-14)
 
 

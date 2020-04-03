@@ -29,6 +29,17 @@
     node-fetch "^2.2.0"
     wxapp-http "^3.1.0"
 
+"@36node/mock-server@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@36node/mock-server/-/mock-server-0.0.15.tgz#f778a90b8b6a45e06bd16bce52e4ef8fded0eb86"
+  integrity sha512-ZiuXImO5ujUeDo+KdxPByIVdjtUdvtJOHdB+vgsb/K4UFeEbcv8Yfu/ShVrZ6jAxawRlvBLhyyZqCtnnMgGtSA==
+  dependencies:
+    express "^4.17.0"
+    humps "^2.0.1"
+    json-server "^0.15.0"
+    lodash "^4.17.11"
+    moment "^2.24.0"
+
 "@36node/mock-server@^0.0.9":
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/@36node/mock-server/-/mock-server-0.0.9.tgz#8caeee07cf459f6a35ae448e1f88e9d2c5c3a380"
@@ -48,13 +59,21 @@
     humps "^2.0.1"
     lodash "^4.17.11"
 
-"@36node/sketch@^0.13.13":
-  version "0.13.13"
-  resolved "https://registry.yarnpkg.com/@36node/sketch/-/sketch-0.13.13.tgz#e5ccee7419849bf9deaa2087322a13e5d4bf2058"
-  integrity sha512-0jdCjOIyabSdXpbN+JZFKfP+/9f2jYWPdc8QTUfPYozkSXwhzG2dR7XPGkSHBH8RvIfzVZ1fTdFbdhhjqyDoOQ==
+"@36node/query-normalizr@^0.4.8":
+  version "0.4.8"
+  resolved "https://registry.yarnpkg.com/@36node/query-normalizr/-/query-normalizr-0.4.8.tgz#481323d4d2d51f3c5fd014e975ee297c0020b856"
+  integrity sha512-hVoU5xHDtV+KaMM1hR7GHq/3TyD39sznB0KrpMqvmWsn+qdXFc4ql6tw0x98jxHGBvyWAhGjIV2KRAnZJq5u4g==
   dependencies:
-    "@36node/mock-server" "^0.0.9"
-    "@36node/query-normalizr" "^0.4.6"
+    humps "^2.0.1"
+    lodash "^4.17.11"
+
+"@36node/sketch@^0.13.29":
+  version "0.13.29"
+  resolved "https://registry.yarnpkg.com/@36node/sketch/-/sketch-0.13.29.tgz#c7088c61cbea3956a49ff46937027ea09cfd9c8d"
+  integrity sha512-4B0goj1pK/zDgtOBEi9Qhpn+giPDZxHcImzb/asUkiga2pat/ynSkII7vnC0Te82lGNbex0uOcpo71Z6udt9bQ==
+  dependencies:
+    "@36node/mock-server" "^0.0.15"
+    "@36node/query-normalizr" "^0.4.8"
     "@babel/plugin-proposal-decorators" "7.4.4"
     babel-loader "8.0.5"
     babel-plugin-import "1.11.0"
@@ -69,11 +88,12 @@
     import-cwd "^2.1.0"
     inquirer "^6.0.0"
     jest "24.7.1"
-    jest-styled-components "6.3.1"
+    jest-styled-components "^7.0.0"
     json-server "^0.15.0"
     jsonfile "^4.0.0"
+    klaw-sync "^6.0.0"
     lerna-alias "^3.0.2"
-    less "^3.9.0"
+    less "~3.9.0"
     less-loader "^4.1.0"
     lodash "^4.17.15"
     microbundle "0.11.0"
@@ -88,21 +108,22 @@
     rollup-plugin-replace "^1.1.1"
     tar "^4.4.4"
     tmp "^0.0.33"
+    webpack-dev-server "3.2.1"
     webpack-filter-warnings-plugin "^1.2.1"
 
-"@36node/swagen@^0.13.4":
-  version "0.13.4"
-  resolved "https://registry.yarnpkg.com/@36node/swagen/-/swagen-0.13.4.tgz#494fc414e4aa7c77082e24d275b79feef57a1766"
-  integrity sha512-uToyei0UUu+gP2HP6Ac2PMIbb+Mqi9QG5W0qzp53WQdL1Ggetzuejb5+zcFcrPCeRASp0oeZ4Vdu7sZJMTsv6A==
+"@36node/swagen@^0.13.8":
+  version "0.13.8"
+  resolved "https://registry.yarnpkg.com/@36node/swagen/-/swagen-0.13.8.tgz#f68563fe1c38e9f6a51653e867826c2a174cc93e"
+  integrity sha512-JrwjFQKltjpspU53m938LPPod2RHkPnQAsnw1dtPVYw6IRuRXyMw560wJua2vsIiqARqhyCkNNtF/bq6fexmvA==
   dependencies:
-    "@36node/query-normalizr" "^0.4.6"
+    "@36node/query-normalizr" "^0.4.8"
     handlebars "^4.0.12"
     handlebars-helpers "^0.10.0"
     js-yaml "^3.12.0"
     jsonfile "^5.0.0"
     lodash "^4.17.11"
     postman-collection "^3.3.0"
-    prettier "1.17.1"
+    prettier "^1.18.2"
     request "^2.88.0"
     require-directory "^2.1.1"
     swagger-parser "^6.0.1"
@@ -7573,10 +7594,10 @@ jest-snapshot@^24.8.0:
     pretty-format "^24.8.0"
     semver "^5.5.0"
 
-jest-styled-components@6.3.1:
-  version "6.3.1"
-  resolved "https://registry.yarnpkg.com/jest-styled-components/-/jest-styled-components-6.3.1.tgz#fa21a89bfe8c20081c7c083cbaed2200854b60e3"
-  integrity sha512-zie3ajvJbwlbHCAq8/Bv5jdbcYCz0ZMRNNX6adL7wSRpkCVPQtiJigv1140JN1ZOJIODPn8VKrjeFCN+jlPa7w==
+jest-styled-components@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/jest-styled-components/-/jest-styled-components-7.0.0.tgz#3e1b7dcd077800ea5191e1cc95b314917a2ed668"
+  integrity sha512-A1nl8q1ptZj1t5wd0x/UYjnqfld1GhZwRDPS9w0eD5P5R8G+Q4uHaBAbUjf+Arjexqh2BxfrGkTc3tDuhtdifg==
   dependencies:
     css "^2.2.4"
 
@@ -7980,6 +8001,13 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
   integrity sha512-s5kLOcnH0XqDO+FvuaLX8DDjZ18CGFk7VygH40QoKPUQhW4e2rvM0rwUq0t8IQDOwYSeLK01U90OjzBTme2QqA==
 
+klaw-sync@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/klaw-sync/-/klaw-sync-6.0.0.tgz#1fd2cfd56ebb6250181114f0a581167099c2b28c"
+  integrity sha512-nIeuVSzdCCs6TDPTqI8w1Yre34sSq7AkZ4B3sfOBbI2CgVSB4Du4aLQijFU2+lhAFCwt9+42Hel6lQNIv6AntQ==
+  dependencies:
+    graceful-fs "^4.1.11"
+
 kleur@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
@@ -8052,7 +8080,7 @@ less-loader@^4.1.0:
     loader-utils "^1.1.0"
     pify "^3.0.0"
 
-less@^3.9.0:
+less@~3.9.0:
   version "3.9.0"
   resolved "https://registry.yarnpkg.com/less/-/less-3.9.0.tgz#b7511c43f37cf57dc87dffd9883ec121289b1474"
   integrity sha512-31CmtPEZraNUtuUREYjSqRkeETFdyEHSEPAGq4erDlUXtda7pzNmctdljdIagSb589d/qXGWiiP31R5JVf+v0w==
@@ -11036,6 +11064,11 @@ prettier@1.17.1:
   version "1.17.1"
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.17.1.tgz#ed64b4e93e370cb8a25b9ef7fef3e4fd1c0995db"
   integrity sha512-TzGRNvuUSmPgwivDqkZ9tM/qTGW9hqDKWOE9YHiyQdixlKbv7kvEqsmDPrcHJTKwthU774TQwZXVtaQ/mMsvjg==
+
+prettier@^1.18.2:
+  version "1.19.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
+  integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
 
 pretty-bytes@^3.0.0:
   version "3.0.1"

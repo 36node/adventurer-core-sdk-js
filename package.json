@@ -24,7 +24,7 @@
   "scripts": {
     "build": "sketch build",
     "format": "prettier --trailing-comma es5 --write 'src/**/*.js'",
-    "gen": "swagen sdk ../../zzswang/adventurer-core/openapi.yml",
+    "gen": "swagen sdk https://api.adventurer.tech/core/v0/openapi.yml && npm run format",
     "lint": "sketch lint src",
     "release": "standard-version",
     "start": "bin/mock-server.js",
@@ -56,8 +56,8 @@
   "devDependencies": {
     "@36node/eslint-config": "^0.6.2",
     "@36node/mock-server": "^0.0.9",
-    "@36node/sketch": "^0.13.13",
-    "@36node/swagen": "^0.13.4",
+    "@36node/sketch": "^0.13.29",
+    "@36node/swagen": "^0.13.8",
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
     "@types/faker": "^4.1.5",

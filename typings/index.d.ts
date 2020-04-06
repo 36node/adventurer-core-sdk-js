@@ -779,6 +779,12 @@ declare namespace SDK {
     planEndAt: string;
     state: "DOING" | "ARCHIVED";
     logo: string;
+    owner: string;
+    industry: string;
+    manager: {
+      staff: string;
+      position: string;
+    };
   };
   type Project = {
     id: string;
@@ -793,6 +799,12 @@ declare namespace SDK {
     planEndAt: string;
     state: "DOING" | "ARCHIVED";
     logo: string;
+    owner: string;
+    industry: string;
+    manager: {
+      staff: string;
+      position: string;
+    };
   };
   type ProjectEvent = {
     name: "CHANGE_TOTAL" | "SHARED";
@@ -813,6 +825,8 @@ declare namespace SDK {
     name: string;
     planStartAt: string;
     planEndAt: string;
+    startAt: string;
+    endAt: string;
     project: string;
     description: string;
   };
@@ -850,6 +864,8 @@ declare namespace SDK {
     name: string;
     planStartAt: string;
     planEndAt: string;
+    startAt: string;
+    endAt: string;
     project: string;
     description: string;
   };

@@ -202,6 +202,26 @@ export default class SDK {
     },
   };
   /**
+   * pr's methods
+   */
+  pr = {
+    /**
+     * List all all prs
+     *
+     * @param {ListPrsRequest} req listPrs request
+     * @returns {Promise<ListPrsResponse>} A paged array of prs
+     */
+    listPrs: (req = {}) => {
+      const { query, headers } = req;
+
+      return fetch(`${this.base}/prs`, {
+        method: "GET",
+        query: denormalize(query),
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+  };
+  /**
    * label's methods
    */
   label = {

@@ -9,6 +9,7 @@ declare class SDK {
 
   repository: SDK.RepositoryAPI;
   issue: SDK.IssueAPI;
+  pr: SDK.PrAPI;
   label: SDK.LabelAPI;
   ticket: SDK.TicketAPI;
   project: SDK.ProjectAPI;
@@ -64,6 +65,12 @@ declare namespace SDK {
      * Find issue comments by issue&#x27;s id and driver
      */
     getComments(req: GetCommentsRequest): Promise<GetCommentsResponse>;
+  }
+  export interface PrAPI {
+    /**
+     * List all all prs
+     */
+    listPrs(req: ListPrsRequest): Promise<ListPrsResponse>;
   }
   export interface LabelAPI {
     /**
@@ -322,6 +329,28 @@ declare namespace SDK {
 
   type GetCommentsResponse = {
     body: [IssueComment];
+  };
+
+  type ListPrsRequest = {
+    query: {
+      limit?: number;
+      offset?: number;
+      sort?: string;
+      select?: string;
+
+      filter: {
+        id?: string;
+        repository?: string;
+        state?: "OPEN" | "CLOSED";
+      };
+    };
+  };
+
+  type ListPrsResponse = {
+    body: [Pr];
+    headers: {
+      xTotalCount: number;
+    };
   };
 
   type ListLabelsRequest = {
@@ -906,6 +935,20 @@ declare namespace SDK {
     updatedAt: string;
     htmlUrl: string;
     authorAssociation: string;
+  };
+  type Pr = {
+    id: string;
+    title: string;
+    repository: string;
+    number: number;
+    labels: [string];
+    state: "OPEN" | "CLOSED";
+    closeAt: string;
+    htmlUrl: string;
+    user: string;
+    assignees: [string];
+    createdAt: string;
+    updatedAt: string;
   };
   type TicketDoc = {
     issue: string;

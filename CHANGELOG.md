@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/36node/adventurer-core-sdk-js/compare/v0.2.2...v0.3.0) (2020-04-12)
+
+
+### Features
+
+* pr list ([aec473d](https://github.com/36node/adventurer-core-sdk-js/commit/aec473d))
+
+
+
 ### [0.2.2](https://github.com/36node/adventurer-core-sdk-js/compare/v0.2.1...v0.2.2) (2020-04-06)
 
 

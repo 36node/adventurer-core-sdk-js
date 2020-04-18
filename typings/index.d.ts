@@ -179,6 +179,16 @@ declare namespace SDK {
     getTradeSummaryByMonth(
       req: GetTradeSummaryByMonthRequest
     ): Promise<GetTradeSummaryByMonthResponse>;
+    /**
+     * Get ticket done summary
+     */
+    getTicketDoneSummary(req: GetTicketDoneSummaryRequest): Promise<GetTicketDoneSummaryResponse>;
+    /**
+     * Get ticket coverage summary
+     */
+    getTicketCoverageSummary(
+      req: GetTicketCoverageSummaryRequest
+    ): Promise<GetTicketCoverageSummaryResponse>;
   }
   export interface StaffAPI {
     /**
@@ -666,6 +676,32 @@ declare namespace SDK {
 
   type GetTradeSummaryByMonthResponse = {
     body: [TradeSummary];
+  };
+
+  type GetTicketDoneSummaryRequest = {
+    query: {
+      filter: {
+        start?: string;
+        end?: string;
+      };
+    };
+  };
+
+  type GetTicketDoneSummaryResponse = {
+    body: [TicketDoneSummary];
+  };
+
+  type GetTicketCoverageSummaryRequest = {
+    query: {
+      filter: {
+        start?: string;
+        end?: string;
+      };
+    };
+  };
+
+  type GetTicketCoverageSummaryResponse = {
+    body: [TicketCoverageSummary];
   };
 
   type ListStaffsRequest = {
@@ -1186,6 +1222,8 @@ declare namespace SDK {
     handler: string;
     totalExp: string;
   };
+  type TicketDoneSummary = {};
+  type TicketCoverageSummary = {};
   type CreateInvitationBody = {
     expiredAt: string;
     email: string;

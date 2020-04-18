@@ -671,6 +671,36 @@ export default class SDK {
         headers: { Authorization: this.auth, ...headers },
       });
     },
+    /**
+     * Get ticket done summary
+     *
+     * @param {GetTicketDoneSummaryRequest} req getTicketDoneSummary request
+     * @returns {Promise<GetTicketDoneSummaryResponse>} A paged array of tickets done summaries
+     */
+    getTicketDoneSummary: (req = {}) => {
+      const { query, headers } = req;
+
+      return fetch(`${this.base}/summary/ticketDone`, {
+        method: "GET",
+        query: denormalize(query),
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
+     * Get ticket coverage summary
+     *
+     * @param {GetTicketCoverageSummaryRequest} req getTicketCoverageSummary request
+     * @returns {Promise<GetTicketCoverageSummaryResponse>} A paged array of tickets coverage summaries
+     */
+    getTicketCoverageSummary: (req = {}) => {
+      const { query, headers } = req;
+
+      return fetch(`${this.base}/summary/ticketCoverage`, {
+        method: "GET",
+        query: denormalize(query),
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
   };
   /**
    * staff's methods

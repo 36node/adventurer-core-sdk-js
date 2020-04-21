@@ -44,6 +44,10 @@ declare namespace SDK {
      */
     createRelease(req: CreateReleaseRequest): Promise<CreateReleaseResponse>;
     /**
+     * Delete all invitatings
+     */
+    deleteInvitatings(req: DeleteInvitatingsRequest): Promise<DeleteInvitatingsResponse>;
+    /**
      * add repository collaborator
      */
     addCollaborator(req: AddCollaboratorRequest): Promise<AddCollaboratorResponse>;
@@ -287,6 +291,14 @@ declare namespace SDK {
 
   type CreateReleaseResponse = {
     body: Release;
+  };
+
+  type DeleteInvitatingsRequest = {
+    repositoryId: string;
+  };
+
+  type DeleteInvitatingsResponse = {
+    body: Repository;
   };
 
   type AddCollaboratorRequest = {

@@ -107,6 +107,23 @@ export default class SDK {
       });
     },
     /**
+     * Delete all invitatings
+     *
+     * @param {DeleteInvitatingsRequest} req deleteInvitatings request
+     * @returns {Promise<DeleteInvitatingsResponse>} collaborator deleted
+     */
+    deleteInvitatings: (req = {}) => {
+      const { repositoryId, headers } = req;
+
+      if (!repositoryId)
+        throw new Error("repositoryId is required for deleteInvitatings");
+
+      return fetch(`${this.base}/repositories/${repositoryId}/invitatings`, {
+        method: "DELETE",
+        headers: { Authorization: this.auth, ...headers },
+      });
+    },
+    /**
      * add repository collaborator
      *
      * @param {AddCollaboratorRequest} req addCollaborator request

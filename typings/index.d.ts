@@ -1,1060 +1,1493 @@
-export = SDK;
-
 declare class SDK {
-  constructor(opts?: SDK.Options);
+  constructor(opts?: Options);
 
   base: string;
-  token: string;
+  token: string | (() => string);
   auth: string;
 
-  repository: SDK.RepositoryAPI;
-  issue: SDK.IssueAPI;
-  pr: SDK.PrAPI;
-  label: SDK.LabelAPI;
-  ticket: SDK.TicketAPI;
-  project: SDK.ProjectAPI;
-  summary: SDK.SummaryAPI;
-  staff: SDK.StaffAPI;
-  wallet: SDK.WalletAPI;
-  trade: SDK.TradeAPI;
-  invitation: SDK.InvitationAPI;
+  repository: RepositoryAPI;
+  issue: IssueAPI;
+  pr: PrAPI;
+  label: LabelAPI;
+  ticket: TicketAPI;
+  project: ProjectAPI;
+  summary: SummaryAPI;
+  staff: StaffAPI;
+  wallet: WalletAPI;
+  trade: TradeAPI;
+  invitation: InvitationAPI;
 }
 
-declare namespace SDK {
-  export interface Options {
-    base?: string;
-    token?: string;
-  }
+export interface Options {
+  base?: string;
+  token?: string | (() => string);
+}
 
-  export interface RepositoryAPI {
+export interface RepositoryAPI {
+  /**
+   * List all all repositories
+   */
+  listRepositories(req: ListRepositoriesRequest): Promise<ListRepositoriesResponse>;
+  /**
+   * Find repository by id
+   */
+  getRepository(req: GetRepositoryRequest): Promise<GetRepositoryResponse>;
+  /**
+   * Update repository by id
+   */
+  updateRepository(req: UpdateRepositoryRequest): Promise<UpdateRepositoryResponse>;
+  /**
+   * Create a release
+   */
+  createRelease(req: CreateReleaseRequest): Promise<CreateReleaseResponse>;
+  /**
+   * Delete all invitatings
+   */
+  deleteInvitatings(req: DeleteInvitatingsRequest): Promise<DeleteInvitatingsResponse>;
+  /**
+   * add repository collaborator
+   */
+  addCollaborator(req: AddCollaboratorRequest): Promise<AddCollaboratorResponse>;
+  /**
+   * Delete collaborator
+   */
+  deleteCollaborator(req: DeleteCollaboratorRequest): Promise<void>;
+}
+export interface IssueAPI {
+  /**
+   * List all all issues
+   */
+  listIssues(req: ListIssuesRequest): Promise<ListIssuesResponse>;
+  /**
+   * Find issue by id and driver
+   */
+  getIssue(req: GetIssueRequest): Promise<GetIssueResponse>;
+  /**
+   * Find issue comments by issue&#x27;s id and driver
+   */
+  getComments(req: GetCommentsRequest): Promise<GetCommentsResponse>;
+}
+export interface PrAPI {
+  /**
+   * List all all prs
+   */
+  listPrs(req: ListPrsRequest): Promise<ListPrsResponse>;
+}
+export interface LabelAPI {
+  /**
+   * List all all labels
+   */
+  listLabels(req: ListLabelsRequest): Promise<ListLabelsResponse>;
+}
+export interface TicketAPI {
+  /**
+   * Create a ticket
+   */
+  createTicket(req: CreateTicketRequest): Promise<CreateTicketResponse>;
+  /**
+   * List all all tickets
+   */
+  listTickets(req: ListTicketsRequest): Promise<ListTicketsResponse>;
+  /**
+   * Find ticket by id
+   */
+  getTicket(req: GetTicketRequest): Promise<GetTicketResponse>;
+  /**
+   * Delete ticket
+   */
+  deleteTicket(req: DeleteTicketRequest): Promise<void>;
+  /**
+   * Create ticket event
+   */
+  createTicketEvent(req: CreateTicketEventRequest): Promise<CreateTicketEventResponse>;
+}
+export interface ProjectAPI {
+  /**
+   * List all interations of project
+   */
+  listInterations(req: ListInterationsRequest): Promise<ListInterationsResponse>;
+  /**
+   * Create a interation
+   */
+  createInteraction(req: CreateInteractionRequest): Promise<CreateInteractionResponse>;
+  /**
+   * Find interation by id
+   */
+  getInteration(req: GetInterationRequest): Promise<GetInterationResponse>;
+  /**
+   * Update interation
+   */
+  updateInteration(req: UpdateInterationRequest): Promise<UpdateInterationResponse>;
+  /**
+   * Delete interation
+   */
+  deleteInteration(req: DeleteInterationRequest): Promise<void>;
+  /**
+   * List all projects
+   */
+  listProjects(req: ListProjectsRequest): Promise<ListProjectsResponse>;
+  /**
+   * Create a project
+   */
+  createProject(req: CreateProjectRequest): Promise<CreateProjectResponse>;
+  /**
+   * Find project by id
+   */
+  getProject(req: GetProjectRequest): Promise<GetProjectResponse>;
+  /**
+   * Update project
+   */
+  updateProject(req: UpdateProjectRequest): Promise<UpdateProjectResponse>;
+  /**
+   * Delete project
+   */
+  deleteProject(req: DeleteProjectRequest): Promise<void>;
+  /**
+   * Create a project document
+   */
+  createProjectDoc(req: CreateProjectDocRequest): Promise<CreateProjectDocResponse>;
+  /**
+   * get a project summary
+   */
+  getProjectSummary(req: GetProjectSummaryRequest): Promise<GetProjectSummaryResponse>;
+  /**
+   * Update a project document
+   */
+  updateProjectDoc(req: UpdateProjectDocRequest): Promise<UpdateProjectDocResponse>;
+  /**
+   * Create a project event
+   */
+  createProjectEvent(req: CreateProjectEventRequest): Promise<CreateProjectEventResponse>;
+}
+export interface SummaryAPI {
+  /**
+   * Get interations summary
+   */
+  getInteractionsSummary(
+    req: GetInteractionsSummaryRequest
+  ): Promise<GetInteractionsSummaryResponse>;
+  /**
+   * Get tickets summary
+   */
+  getTicketsSummary(req: GetTicketsSummaryRequest): Promise<GetTicketsSummaryResponse>;
+  /**
+   * Get trades summary
+   */
+  getTradeSummary(req: GetTradeSummaryRequest): Promise<GetTradeSummaryResponse>;
+  /**
+   * Get trades summary by month
+   */
+  getTradeSummaryByMonth(
+    req: GetTradeSummaryByMonthRequest
+  ): Promise<GetTradeSummaryByMonthResponse>;
+  /**
+   * Get ticket done summary
+   */
+  getTicketDoneSummary(req: GetTicketDoneSummaryRequest): Promise<GetTicketDoneSummaryResponse>;
+  /**
+   * Get ticket coverage summary
+   */
+  getTicketCoverageSummary(
+    req: GetTicketCoverageSummaryRequest
+  ): Promise<GetTicketCoverageSummaryResponse>;
+}
+export interface StaffAPI {
+  /**
+   * List staffs
+   */
+  listStaffs(req: ListStaffsRequest): Promise<ListStaffsResponse>;
+  /**
+   * Create a staff
+   */
+  createStaff(req: CreateStaffRequest): Promise<CreateStaffResponse>;
+  /**
+   * upsert staff(only for development)
+   */
+  upsertStaff(req: UpsertStaffRequest): Promise<UpsertStaffResponse>;
+  /**
+   * update a staff
+   */
+  updateStaff(req: UpdateStaffRequest): Promise<UpdateStaffResponse>;
+  /**
+   * Find staff by id
+   */
+  getStaff(req: GetStaffRequest): Promise<GetStaffResponse>;
+  /**
+   * Delete staff
+   */
+  deleteStaff(req: DeleteStaffRequest): Promise<void>;
+}
+export interface WalletAPI {
+  /**
+   * Find staff wallet by id
+   */
+  getStaffWallet(req: GetStaffWalletRequest): Promise<GetStaffWalletResponse>;
+  /**
+   * List wallets
+   */
+  listWallets(req: ListWalletsRequest): Promise<ListWalletsResponse>;
+}
+export interface TradeAPI {
+  /**
+   * List trades
+   */
+  listTrades(req: ListTradesRequest): Promise<ListTradesResponse>;
+  /**
+   * Create a trade
+   */
+  createTrade(req: CreateTradeRequest): Promise<CreateTradeResponse>;
+}
+export interface InvitationAPI {
+  /**
+   * Create a invitation, 用于发送邀请码
+   */
+  createInvitation(req: CreateInvitationRequest): Promise<CreateInvitationResponse>;
+}
+
+export interface ListRepositoriesRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+    _sort?: string;
+    _select?: string;
+    id?: string;
+  };
+}
+export interface ListRepositoriesResponse {
+  body: {
     /**
-     * List all all repositories
+     * 在第三方服务中的id
      */
-    listRepositories(req: ListRepositoriesRequest): Promise<ListRepositoriesResponse>;
+    id?: string;
     /**
-     * Find repository by id
+     * 仓库名称
      */
-    getRepository(req: GetRepositoryRequest): Promise<GetRepositoryResponse>;
+    name?: string;
     /**
-     * Update repository by id
+     * 仓库全称
      */
-    updateRepository(req: UpdateRepositoryRequest): Promise<UpdateRepositoryResponse>;
+    fullName?: string;
     /**
-     * Create a release
+     * url for clone
      */
-    createRelease(req: CreateReleaseRequest): Promise<CreateReleaseResponse>;
+    gitUrl?: string;
     /**
-     * Delete all invitatings
+     * url
      */
-    deleteInvitatings(req: DeleteInvitatingsRequest): Promise<DeleteInvitatingsResponse>;
+    htmlUrl?: string;
     /**
-     * add repository collaborator
+     * github user username
      */
-    addCollaborator(req: AddCollaboratorRequest): Promise<AddCollaboratorResponse>;
+    owner?: string;
     /**
-     * Delete collaborator
+     * 是否私有
      */
-    deleteCollaborator(req: DeleteCollaboratorRequest): Promise<DeleteCollaboratorResponse>;
-  }
-  export interface IssueAPI {
+    private?: boolean;
     /**
-     * List all all issues
+     * 最近push时间
      */
-    listIssues(req: ListIssuesRequest): Promise<ListIssuesResponse>;
+    pushedAt?: string;
     /**
-     * Find issue by id and driver
+     * 创建时间
      */
-    getIssue(req: GetIssueRequest): Promise<GetIssueResponse>;
+    createdAt?: string;
     /**
-     * Find issue comments by issue&#x27;s id and driver
+     * 更新时间
      */
-    getComments(req: GetCommentsRequest): Promise<GetCommentsResponse>;
-  }
-  export interface PrAPI {
+    updatedAt?: string;
     /**
-     * List all all prs
+     * readme 内容
      */
-    listPrs(req: ListPrsRequest): Promise<ListPrsResponse>;
-  }
-  export interface LabelAPI {
+    readme?: string;
     /**
-     * List all all labels
+     * 主题
      */
-    listLabels(req: ListLabelsRequest): Promise<ListLabelsResponse>;
-  }
-  export interface TicketAPI {
+    topics?: string[];
+    collaborators?: string[];
+    technologies?: string[];
+    types?: string[];
+  }[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface GetRepositoryRequest {
+  repositoryId: string;
+}
+export interface GetRepositoryResponse {
+  /**
+   * Repo Doc
+   */
+  body: {
     /**
-     * Create a ticket
+     * 在第三方服务中的id
      */
-    createTicket(req: CreateTicketRequest): Promise<CreateTicketResponse>;
+    id?: string;
     /**
-     * List all all tickets
+     * 仓库名称
      */
-    listTickets(req: ListTicketsRequest): Promise<ListTicketsResponse>;
+    name?: string;
     /**
-     * Find ticket by id
+     * 仓库全称
      */
-    getTicket(req: GetTicketRequest): Promise<GetTicketResponse>;
+    fullName?: string;
     /**
-     * Delete ticket
+     * url for clone
      */
-    deleteTicket(req: DeleteTicketRequest): Promise<DeleteTicketResponse>;
+    gitUrl?: string;
     /**
-     * Create ticket event
+     * url
      */
-    createTicketEvent(req: CreateTicketEventRequest): Promise<CreateTicketEventResponse>;
-  }
-  export interface ProjectAPI {
+    htmlUrl?: string;
     /**
-     * List all interations of project
+     * github user username
      */
-    listInterations(req: ListInterationsRequest): Promise<ListInterationsResponse>;
+    owner?: string;
     /**
-     * Create a interation
+     * 是否私有
      */
-    createInteraction(req: CreateInteractionRequest): Promise<CreateInteractionResponse>;
+    private?: boolean;
     /**
-     * Find interation by id
+     * 最近push时间
      */
-    getInteration(req: GetInterationRequest): Promise<GetInterationResponse>;
+    pushedAt?: string;
     /**
-     * Update interation
+     * 创建时间
      */
-    updateInteration(req: UpdateInterationRequest): Promise<UpdateInterationResponse>;
+    createdAt?: string;
     /**
-     * Delete interation
+     * 更新时间
      */
-    deleteInteration(req: DeleteInterationRequest): Promise<DeleteInterationResponse>;
+    updatedAt?: string;
     /**
-     * List all projects
+     * readme 内容
      */
-    listProjects(req: ListProjectsRequest): Promise<ListProjectsResponse>;
+    readme?: string;
     /**
-     * Create a project
+     * 主题
      */
-    createProject(req: CreateProjectRequest): Promise<CreateProjectResponse>;
+    topics?: string[];
+    collaborators?: string[];
+    technologies?: string[];
+    types?: string[];
+  };
+}
+export interface UpdateRepositoryRequest {
+  repositoryId: string;
+  /**
+   * Repo Doc
+   */
+  body: {
     /**
-     * Find project by id
+     * 在第三方服务中的id
      */
-    getProject(req: GetProjectRequest): Promise<GetProjectResponse>;
+    id?: string;
     /**
-     * Update project
+     * 仓库名称
      */
-    updateProject(req: UpdateProjectRequest): Promise<UpdateProjectResponse>;
+    name?: string;
     /**
-     * Delete project
+     * 仓库全称
      */
-    deleteProject(req: DeleteProjectRequest): Promise<DeleteProjectResponse>;
+    fullName?: string;
     /**
-     * Create a project document
+     * url for clone
      */
-    createProjectDoc(req: CreateProjectDocRequest): Promise<CreateProjectDocResponse>;
+    gitUrl?: string;
     /**
-     * get a project summary
+     * url
      */
-    getProjectSummary(req: GetProjectSummaryRequest): Promise<GetProjectSummaryResponse>;
+    htmlUrl?: string;
     /**
-     * Update a project document
+     * github user username
      */
-    updateProjectDoc(req: UpdateProjectDocRequest): Promise<UpdateProjectDocResponse>;
+    owner?: string;
     /**
-     * Create a project event
+     * 是否私有
      */
-    createProjectEvent(req: CreateProjectEventRequest): Promise<CreateProjectEventResponse>;
-  }
-  export interface SummaryAPI {
+    private?: boolean;
     /**
-     * Get interations summary
+     * 最近push时间
      */
-    getInteractionsSummary(
-      req: GetInteractionsSummaryRequest
-    ): Promise<GetInteractionsSummaryResponse>;
+    pushedAt?: string;
     /**
-     * Get tickets summary
+     * 创建时间
      */
-    getTicketsSummary(req: GetTicketsSummaryRequest): Promise<GetTicketsSummaryResponse>;
+    createdAt?: string;
     /**
-     * Get trades summary
+     * 更新时间
      */
-    getTradeSummary(req: GetTradeSummaryRequest): Promise<GetTradeSummaryResponse>;
+    updatedAt?: string;
     /**
-     * Get trades summary by month
+     * readme 内容
      */
-    getTradeSummaryByMonth(
-      req: GetTradeSummaryByMonthRequest
-    ): Promise<GetTradeSummaryByMonthResponse>;
+    readme?: string;
     /**
-     * Get ticket done summary
+     * 主题
      */
-    getTicketDoneSummary(req: GetTicketDoneSummaryRequest): Promise<GetTicketDoneSummaryResponse>;
+    topics?: string[];
+    collaborators?: string[];
+    technologies?: string[];
+    types?: string[];
+  };
+}
+export interface UpdateRepositoryResponse {
+  /**
+   * Repo Doc
+   */
+  body: {
     /**
-     * Get ticket coverage summary
+     * 在第三方服务中的id
      */
-    getTicketCoverageSummary(
-      req: GetTicketCoverageSummaryRequest
-    ): Promise<GetTicketCoverageSummaryResponse>;
-  }
-  export interface StaffAPI {
+    id?: string;
     /**
-     * List staffs
+     * 仓库名称
      */
-    listStaffs(req: ListStaffsRequest): Promise<ListStaffsResponse>;
+    name?: string;
     /**
-     * Create a staff
+     * 仓库全称
      */
-    createStaff(req: CreateStaffRequest): Promise<CreateStaffResponse>;
+    fullName?: string;
     /**
-     * upsert staff(only for development)
+     * url for clone
      */
-    upsertStaff(req: UpsertStaffRequest): Promise<UpsertStaffResponse>;
+    gitUrl?: string;
     /**
-     * update a staff
+     * url
      */
-    updateStaff(req: UpdateStaffRequest): Promise<UpdateStaffResponse>;
+    htmlUrl?: string;
     /**
-     * Find staff by id
+     * github user username
      */
-    getStaff(req: GetStaffRequest): Promise<GetStaffResponse>;
+    owner?: string;
     /**
-     * Delete staff
+     * 是否私有
      */
-    deleteStaff(req: DeleteStaffRequest): Promise<DeleteStaffResponse>;
-  }
-  export interface WalletAPI {
+    private?: boolean;
     /**
-     * Find staff wallet by id
+     * 最近push时间
      */
-    getStaffWallet(req: GetStaffWalletRequest): Promise<GetStaffWalletResponse>;
+    pushedAt?: string;
     /**
-     * List wallets
+     * 创建时间
      */
-    listWallets(req: ListWalletsRequest): Promise<ListWalletsResponse>;
-  }
-  export interface TradeAPI {
+    createdAt?: string;
     /**
-     * List trades
+     * 更新时间
      */
-    listTrades(req: ListTradesRequest): Promise<ListTradesResponse>;
+    updatedAt?: string;
     /**
-     * Create a trade
+     * readme 内容
      */
-    createTrade(req: CreateTradeRequest): Promise<CreateTradeResponse>;
-  }
-  export interface InvitationAPI {
+    readme?: string;
     /**
-     * Create a invitation, 用于发送邀请码
+     * 主题
      */
-    createInvitation(req: CreateInvitationRequest): Promise<CreateInvitationResponse>;
-  }
-
-  type ListRepositoriesRequest = {
-    query: {
-      limit?: number;
-      offset?: number;
-      sort?: string;
-      select?: string;
-
-      filter: {
-        id?: string;
-      };
-    };
-  };
-
-  type ListRepositoriesResponse = {
-    body: [Repository];
-    headers: {
-      xTotalCount: number;
-    };
-  };
-
-  type GetRepositoryRequest = {
-    repositoryId: string;
-  };
-
-  type GetRepositoryResponse = {
-    body: Repository;
-  };
-
-  type UpdateRepositoryRequest = {
-    repositoryId: string;
-    body: Repository;
-  };
-
-  type UpdateRepositoryResponse = {
-    body: Repository;
-  };
-
-  type CreateReleaseRequest = {
-    repositoryId: string;
-    body: Release;
-  };
-
-  type CreateReleaseResponse = {
-    body: Release;
-  };
-
-  type DeleteInvitatingsRequest = {
-    repositoryId: string;
-  };
-
-  type DeleteInvitatingsResponse = {
-    body: Repository;
-  };
-
-  type AddCollaboratorRequest = {
-    repositoryId: string;
-    github: string;
-  };
-
-  type AddCollaboratorResponse = {
-    body: Repository;
-  };
-
-  type DeleteCollaboratorRequest = {
-    repositoryId: string;
-    github: string;
-  };
-
-  type ListIssuesRequest = {
-    query: {
-      limit?: number;
-      offset?: number;
-      sort?: string;
-      select?: string;
-
-      filter: {
-        id?: string;
-        repository?: string;
-        state?: "OPEN" | "CLOSED";
-      };
-    };
-  };
-
-  type ListIssuesResponse = {
-    body: [Issue];
-    headers: {
-      xTotalCount: number;
-    };
-  };
-
-  type GetIssueRequest = {
-    issueId: string;
-  };
-
-  type GetIssueResponse = {
-    body: Issue;
-  };
-
-  type GetCommentsRequest = {
-    issueId: string;
-  };
-
-  type GetCommentsResponse = {
-    body: [IssueComment];
-  };
-
-  type ListPrsRequest = {
-    query: {
-      limit?: number;
-      offset?: number;
-      sort?: string;
-      select?: string;
-
-      filter: {
-        id?: string;
-        repository?: string;
-        state?: "OPEN" | "CLOSED";
-      };
-    };
-  };
-
-  type ListPrsResponse = {
-    body: [Pr];
-    headers: {
-      xTotalCount: number;
-    };
-  };
-
-  type ListLabelsRequest = {
-    query: {
-      limit?: number;
-      offset?: number;
-      sort?: string;
-      select?: string;
-
-      filter: {
-        id?: string;
-        name?: string;
-      };
-    };
-  };
-
-  type ListLabelsResponse = {
-    body: [Label];
-    headers: {
-      xTotalCount: number;
-    };
-  };
-
-  type CreateTicketRequest = {
-    body: TicketDoc;
-  };
-
-  type CreateTicketResponse = {
-    body: Ticket;
-  };
-
-  type ListTicketsRequest = {
-    query: {
-      limit?: number;
-      offset?: number;
-      sort?: string;
-      select?: string;
-      group?: string;
-
-      filter: {
-        id?: string;
-        repository?: string;
-        driver?: string;
-        interation?: string;
-        project?: string;
-        state?: "PLANNING" | "TODO" | "DOING" | "DONE";
-        priority?: 0 | 1 | 2;
-        deadline: {
-          $gt?: string;
-          $lt?: string;
-        };
-        takenAt: {
-          $gt?: string;
-          $lt?: string;
-        };
-        title: {
-          $regex?: string;
-        };
-        takenBy?: string;
-      };
-    };
-  };
-
-  type ListTicketsResponse = {
-    body: [Ticket];
-    headers: {
-      xTotalCount: number;
-    };
-  };
-
-  type GetTicketRequest = {
-    ticketId: string;
-  };
-
-  type GetTicketResponse = {
-    body: Ticket;
-  };
-
-  type DeleteTicketRequest = {
-    ticketId: string;
-  };
-
-  type CreateTicketEventRequest = {
-    ticketId: string;
-    body: TicketEvent;
-  };
-
-  type CreateTicketEventResponse = {
-    body: Ticket;
-  };
-
-  type ListInterationsRequest = {
-    projectId: string;
-
-    query: {
-      limit?: number;
-      offset?: number;
-      sort?: string;
-      select?: string;
-
-      filter: {
-        planStart: {
-          $gt?: string;
-          $lt?: string;
-        };
-        planEnd: {
-          $gt?: string;
-          $lt?: string;
-        };
-        id?: string;
-      };
-    };
-  };
-
-  type ListInterationsResponse = {
-    body: [Interation];
-    headers: {
-      xTotalCount: number;
-    };
-  };
-
-  type CreateInteractionRequest = {
-    projectId: string;
-    body: InterationDoc;
-  };
-
-  type CreateInteractionResponse = {
-    body: Interation;
-  };
-
-  type GetInterationRequest = {
-    projectId: string;
-    interationId: string;
-  };
-
-  type GetInterationResponse = {
-    body: Interation;
-  };
-
-  type UpdateInterationRequest = {
-    projectId: string;
-    interationId: string;
-    body: InterationDoc;
-  };
-
-  type UpdateInterationResponse = {
-    body: Interation;
-  };
-
-  type DeleteInterationRequest = {
-    projectId: string;
-    interationId: string;
-  };
-
-  type ListProjectsRequest = {
-    query: {
-      limit?: number;
-      offset?: number;
-      sort?: string;
-      select?: string;
-
-      filter: {
-        name?: string;
-        po?: string;
-        cm?: string;
-        state?: "DOING" | "ARCHIVED";
-        planStart: {
-          $gt?: string;
-          $lt?: string;
-        };
-        planEnd: {
-          $gt?: string;
-          $lt?: string;
-        };
-        id?: string;
-      };
-    };
-  };
-
-  type ListProjectsResponse = {
-    body: [Project];
-    headers: {
-      xTotalCount: number;
-    };
-  };
-
-  type CreateProjectRequest = {
-    body: ProjectDoc;
-  };
-
-  type CreateProjectResponse = {
-    body: Project;
-  };
-
-  type GetProjectRequest = {
-    projectId: string;
-  };
-
-  type GetProjectResponse = {
-    body: Project;
-  };
-
-  type UpdateProjectRequest = {
-    projectId: string;
-    body: ProjectDoc;
-  };
-
-  type UpdateProjectResponse = {
-    body: Project;
-  };
-
-  type DeleteProjectRequest = {
-    projectId: string;
-  };
-
-  type CreateProjectDocRequest = {
-    projectId: string;
-    body: ProjectDocument;
-  };
-
-  type CreateProjectDocResponse = {
-    body: ProjectDocument;
-  };
-
-  type GetProjectSummaryRequest = {
-    projectId: string;
-  };
-
-  type GetProjectSummaryResponse = {
-    body: ProjectSummary;
-  };
-
-  type UpdateProjectDocRequest = {
-    projectId: string;
-    docId: string;
-    body: ProjectDocument;
-  };
-
-  type UpdateProjectDocResponse = {
-    body: Project;
-  };
-
-  type CreateProjectEventRequest = {
-    projectId: string;
-    body: ProjectEvent;
-  };
-
-  type CreateProjectEventResponse = {
-    body: Project;
-  };
-
-  type GetInteractionsSummaryRequest = {
-    query: {
-      group: [string];
-
-      filter: {
-        project?: string;
-        planStart: {
-          $gt?: string;
-          $lt?: string;
-        };
-        planEnd: {
-          $gt?: string;
-          $lt?: string;
-        };
-      };
-    };
-  };
-
-  type GetInteractionsSummaryResponse = {
-    body: [InterationSummary];
-  };
-
-  type GetTicketsSummaryRequest = {
-    query: {
-      group: [string];
-
-      filter: {
-        state?: "PLANNING" | "TODO" | "DOING" | "DONE";
-        takenBy?: string;
-        project?: string;
-        interation?: string;
-      };
-    };
-  };
-
-  type GetTicketsSummaryResponse = {
-    body: [TicketsSummary];
-  };
-
-  type GetTradeSummaryRequest = {
-    query: {
-      group: [string];
-
-      filter: {
-        project?: string;
-        staff?: string;
-      };
-    };
-  };
-
-  type GetTradeSummaryResponse = {
-    body: [TradeSummary];
-  };
-
-  type GetTradeSummaryByMonthRequest = {
-    query: {
-      filter: {
-        staff?: string;
-      };
-    };
-  };
-
-  type GetTradeSummaryByMonthResponse = {
-    body: [TradeSummary];
-  };
-
-  type GetTicketDoneSummaryRequest = {
-    query: {
-      filter: {
-        start?: string;
-        end?: string;
-      };
-    };
-  };
-
-  type GetTicketDoneSummaryResponse = {
-    body: [TicketDoneSummary];
-  };
-
-  type GetTicketCoverageSummaryRequest = {
-    query: {
-      filter: {
-        start?: string;
-        end?: string;
-      };
-    };
-  };
-
-  type GetTicketCoverageSummaryResponse = {
-    body: [TicketCoverageSummary];
-  };
-
-  type ListStaffsRequest = {
-    query: {
-      limit?: number;
-      offset?: number;
-      sort?: string;
-      select?: string;
-
-      filter: {
-        name?: string;
-        type?: string;
-        position?: string;
-      };
-    };
-  };
-
-  type ListStaffsResponse = {
-    body: [Staff];
-    headers: {
-      xTotalCount: number;
-    };
-  };
-
-  type CreateStaffRequest = {
-    body: CreateStaffDoc;
-  };
-
-  type CreateStaffResponse = {
-    body: Staff;
-  };
-
-  type UpsertStaffRequest = {
-    body: CreateStaffDoc;
-  };
-
-  type UpsertStaffResponse = {
-    body: Staff;
-  };
-
-  type UpdateStaffRequest = {
-    staffId: string;
-    body: StaffDoc;
-  };
-
-  type UpdateStaffResponse = {
-    body: Staff;
-  };
-
-  type GetStaffRequest = {
-    staffId: string;
-  };
-
-  type GetStaffResponse = {
-    body: Staff;
-  };
-
-  type DeleteStaffRequest = {
-    staffId: string;
-  };
-
-  type GetStaffWalletRequest = {
-    staffId: string;
-  };
-
-  type GetStaffWalletResponse = {
-    body: Wallet;
-  };
-
-  type ListWalletsRequest = {
-    query: {
-      limit?: number;
-      offset?: number;
-      sort?: string;
-      select?: string;
-
-      filter: {
-        staff?: string;
-      };
-    };
-  };
-
-  type ListWalletsResponse = {
-    body: [Wallet];
-    headers: {
-      xTotalCount: number;
-    };
-  };
-
-  type ListTradesRequest = {
-    query: {
-      limit?: number;
-      offset?: number;
-      sort?: string;
-      select?: string;
-
-      filter: {
-        staff?: string;
-        type?: string;
-        staffName?: string;
-        staffGithub?: string;
-        createdAt: {
-          $gt?: string;
-          $lt?: string;
-        };
-      };
-    };
-  };
-
-  type ListTradesResponse = {
-    body: [Trade];
-    headers: {
-      xTotalCount: number;
-    };
-  };
-
-  type CreateTradeRequest = {
-    body: TradeDoc;
-  };
-
-  type CreateTradeResponse = {
-    body: Trade;
-  };
-
-  type CreateInvitationRequest = {
-    body: InvitationDoc;
-  };
-
-  type CreateInvitationResponse = {
-    body: Invitation;
-  };
-
-  type ProjectDoc = {
-    name: string;
-    description: string;
-    po: [string];
-    cm: [string];
-    repositories: [string];
-    planStartAt: string;
-    planEndAt: string;
-    state: "DOING" | "ARCHIVED";
-    logo: string;
-    owner: string;
-    industry: string;
-    manager: {
-      staff: string;
-      position: string;
-    };
-  };
-  type Project = {
-    id: string;
-    updatedAt: string;
-    createdAt: string;
-    name: string;
-    description: string;
-    po: [string];
-    cm: [string];
-    repositories: [string];
-    planStartAt: string;
-    planEndAt: string;
-    state: "DOING" | "ARCHIVED";
-    logo: string;
-    owner: string;
-    industry: string;
-    manager: {
-      staff: string;
-      position: string;
-    };
-  };
-  type ProjectEvent = {
-    name: "CHANGE_TOTAL" | "SHARED";
-    total: number;
-    shared: {
-      total: number;
-      remark: string;
-      detail: [
-        {
-          staff: string;
-          position: "PO" | "CM";
-          percent: number;
-        }
-      ];
-    };
-  };
-  type InterationDoc = {
-    name: string;
-    planStartAt: string;
-    planEndAt: string;
-    startAt: string;
-    endAt: string;
-    project: string;
-    description: string;
-  };
-  type ProjectSummary = [
-    {
-      type: string;
-      data: [
-        {
-          name: string;
-          value: string;
-        }
-      ];
-      total: number;
-    }
-  ];
-  type ProjectDocumentDoc = {
-    title: string;
-    content: string;
-    updatedBy: string;
-    createdBy: string;
-  };
-  type ProjectDocument = {
-    id: string;
-    updatedAt: string;
-    createdAt: string;
-    title: string;
-    content: string;
-    updatedBy: string;
-    createdBy: string;
-  };
-  type Interation = {
-    id: string;
-    updatedAt: string;
-    createdAt: string;
-    name: string;
-    planStartAt: string;
-    planEndAt: string;
-    startAt: string;
-    endAt: string;
-    project: string;
-    description: string;
-  };
-  type TicketsSummary = {};
-  type InterationSummary = {};
-  type Repository = {
-    id: string;
-    name: string;
-    fullName: string;
-    gitUrl: string;
-    htmlUrl: string;
-    owner: string;
-    private: boolean;
-    pushedAt: string;
-    createdAt: string;
-    updatedAt: string;
-    readme: string;
-    topics: [string];
-    collaborators: [string];
-  };
-  type Issue = {
-    id: string;
-    title: string;
-    repository: string;
-    number: number;
-    labels: [string];
-    state: "OPEN" | "CLOSED";
-    closeAt: string;
-    htmlUrl: string;
-    user: string;
-    assignees: [string];
-    createdAt: string;
-    updatedAt: string;
-  };
-  type IssueComment = {
-    body: string;
-    user: string;
-    updatedAt: string;
-    htmlUrl: string;
-    authorAssociation: string;
-  };
-  type Pr = {
-    id: string;
-    title: string;
-    repository: string;
-    number: number;
-    labels: [string];
-    state: "OPEN" | "CLOSED";
-    closeAt: string;
-    htmlUrl: string;
-    user: string;
-    assignees: [string];
-    createdAt: string;
-    updatedAt: string;
-  };
-  type TicketDoc = {
+    topics?: string[];
+    collaborators?: string[];
+    technologies?: string[];
+    types?: string[];
+  };
+}
+export interface CreateReleaseRequest {
+  repositoryId: string;
+  /**
+   * release of repository
+   */
+  body: {
+    /**
+     * 暂时不提供
+     */
+    version?: string;
+  };
+}
+export interface CreateReleaseResponse {
+  /**
+   * release of repository
+   */
+  body: {
+    /**
+     * 暂时不提供
+     */
+    version?: string;
+  };
+}
+export interface DeleteInvitatingsRequest {
+  repositoryId: string;
+}
+export interface DeleteInvitatingsResponse {
+  /**
+   * Repo Doc
+   */
+  body: {
+    /**
+     * 在第三方服务中的id
+     */
+    id?: string;
+    /**
+     * 仓库名称
+     */
+    name?: string;
+    /**
+     * 仓库全称
+     */
+    fullName?: string;
+    /**
+     * url for clone
+     */
+    gitUrl?: string;
+    /**
+     * url
+     */
+    htmlUrl?: string;
+    /**
+     * github user username
+     */
+    owner?: string;
+    /**
+     * 是否私有
+     */
+    private?: boolean;
+    /**
+     * 最近push时间
+     */
+    pushedAt?: string;
+    /**
+     * 创建时间
+     */
+    createdAt?: string;
+    /**
+     * 更新时间
+     */
+    updatedAt?: string;
+    /**
+     * readme 内容
+     */
+    readme?: string;
+    /**
+     * 主题
+     */
+    topics?: string[];
+    collaborators?: string[];
+    technologies?: string[];
+    types?: string[];
+  };
+}
+export interface AddCollaboratorRequest {
+  repositoryId: string;
+  github: string;
+}
+export interface AddCollaboratorResponse {
+  /**
+   * Repo Doc
+   */
+  body: {
+    /**
+     * 在第三方服务中的id
+     */
+    id?: string;
+    /**
+     * 仓库名称
+     */
+    name?: string;
+    /**
+     * 仓库全称
+     */
+    fullName?: string;
+    /**
+     * url for clone
+     */
+    gitUrl?: string;
+    /**
+     * url
+     */
+    htmlUrl?: string;
+    /**
+     * github user username
+     */
+    owner?: string;
+    /**
+     * 是否私有
+     */
+    private?: boolean;
+    /**
+     * 最近push时间
+     */
+    pushedAt?: string;
+    /**
+     * 创建时间
+     */
+    createdAt?: string;
+    /**
+     * 更新时间
+     */
+    updatedAt?: string;
+    /**
+     * readme 内容
+     */
+    readme?: string;
+    /**
+     * 主题
+     */
+    topics?: string[];
+    collaborators?: string[];
+    technologies?: string[];
+    types?: string[];
+  };
+}
+export interface DeleteCollaboratorRequest {
+  repositoryId: string;
+  github: string;
+}
+export interface ListIssuesRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+    _sort?: string;
+    _select?: string;
+    id?: string;
+    repository?: string;
+    state?: "OPEN" | "CLOSED";
+  };
+}
+export interface ListIssuesResponse {
+  body: {
+    /**
+     * 在第三方服务中的id
+     */
+    id?: string;
+    /**
+     * 标题
+     */
+    title?: string;
+    /**
+     * 所属repo (repositoryId)
+     */
+    repository?: string;
+    /**
+     * issue 号
+     */
+    number?: number;
+    /**
+     * 标签
+     */
+    labels?: string[];
+    /**
+     * 创建者
+     */
+    state?: "OPEN" | "CLOSED";
+    /**
+     * 关闭时间
+     */
+    closeAt?: string;
+    /**
+     * url
+     */
+    htmlUrl?: string;
+    /**
+     * github user username
+     */
+    user?: string;
+    assignees?: string[];
+    /**
+     * 创建时间
+     */
+    createdAt?: string;
+    /**
+     * 更新时间
+     */
+    updatedAt?: string;
+  }[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface GetIssueRequest {
+  issueId: string;
+}
+export interface GetIssueResponse {
+  /**
+   * Issue Doc
+   */
+  body: {
+    /**
+     * 在第三方服务中的id
+     */
+    id?: string;
+    /**
+     * 标题
+     */
+    title?: string;
+    /**
+     * 所属repo (repositoryId)
+     */
+    repository?: string;
+    /**
+     * issue 号
+     */
+    number?: number;
+    /**
+     * 标签
+     */
+    labels?: string[];
+    /**
+     * 创建者
+     */
+    state?: "OPEN" | "CLOSED";
+    /**
+     * 关闭时间
+     */
+    closeAt?: string;
+    /**
+     * url
+     */
+    htmlUrl?: string;
+    /**
+     * github user username
+     */
+    user?: string;
+    assignees?: string[];
+    /**
+     * 创建时间
+     */
+    createdAt?: string;
+    /**
+     * 更新时间
+     */
+    updatedAt?: string;
+  };
+}
+export interface GetCommentsRequest {
+  issueId: string;
+}
+export interface GetCommentsResponse {
+  body: {
+    /**
+     * content of comment
+     */
+    body?: string;
+    /**
+     * writer of comment
+     */
+    user?: string;
+    /**
+     * 更新时间
+     */
+    updatedAt?: string;
+    /**
+     * github url of comment
+     */
+    htmlUrl?: string;
+    /**
+     * role of user
+     */
+    authorAssociation?: string;
+  }[];
+}
+export interface ListPrsRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+    _sort?: string;
+    _select?: string;
+    id?: string;
+    repository?: string;
+    state?: "OPEN" | "CLOSED";
+  };
+}
+export interface ListPrsResponse {
+  body: {
+    /**
+     * 在第三方服务中的id
+     */
+    id?: string;
+    /**
+     * 标题
+     */
+    title?: string;
+    /**
+     * 所属repo (repositoryId)
+     */
+    repository?: string;
+    /**
+     * pr 号
+     */
+    number?: number;
+    /**
+     * 标签
+     */
+    labels?: string[];
+    /**
+     * pr状态
+     */
+    state?: "OPEN" | "CLOSED";
+    /**
+     * 关闭时间
+     */
+    closeAt?: string;
+    /**
+     * url
+     */
+    htmlUrl?: string;
+    /**
+     * github user username
+     */
+    user?: string;
+    assignees?: string[];
+    /**
+     * 创建时间
+     */
+    createdAt?: string;
+    /**
+     * 更新时间
+     */
+    updatedAt?: string;
+  }[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface ListLabelsRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+    _sort?: string;
+    _select?: string;
+    id?: string;
+    name?: string;
+  };
+}
+export interface ListLabelsResponse {
+  body: {
+    /**
+     * label id
+     */
+    id?: string;
+    /**
+     * label name
+     */
+    name?: string;
+    /**
+     * label color
+     */
+    color?: string;
+  }[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface CreateTicketRequest {
+  /**
+   * Ticket Doc
+   */
+  body: {
+    /**
+     * 关联的issue (第三方服务中的issueid)
+     */
     issue: string;
-    title: string;
-    repository: string;
-    level: number;
-    state: "PLANNING" | "TODO" | "DOING" | "DONE";
-    priority: 0 | 1 | 2;
-    deadline: string;
-    interation: string;
-    project: string;
-    takenBy: string;
-    publishBy: string;
-    takenAt: string;
-    doneAt: string;
-    publishedAt: string;
-    remark: string;
-    bonus: number;
-    labels: [string];
-    events: [
-      {
-        name:
-          | "PUBLISH"
-          | "UNPUBLISH"
-          | "ASSIGN"
-          | "UNASSIGN"
-          | "LEVEL"
-          | "PRIORITY"
-          | "BONUS"
-          | "DEADLINE"
-          | "DONE"
-          | "REOPEN"
-          | "LABEL"
-          | "REMARK"
-          | "INTERATION";
-        user: string;
-        level: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-        createdAt: string;
-        priority: 0 | 1 | 2;
-        deadline: string;
-        interation: string;
-        bonus: number;
-        takenBy: string;
-        publishBy: string;
-        foreignTakenBy: string;
-        labels: [string];
-        remark: string;
-      }
-    ];
-    reopened: boolean;
-    reopenedAt: string;
+    /**
+     * ticket titile
+     */
+    title?: string;
+    /**
+     * 所属repo (第三方服务中的 repositoryId)
+     */
+    repository?: string;
+    /**
+     * 级别
+     */
+    level?: number;
+    /**
+     * 状态
+     */
+    state?: "PLANNING" | "TODO" | "DOING" | "DONE";
+    /**
+     * 优先级
+     */
+    priority?: 0 | 1 | 2;
+    /**
+     * 截止时间
+     */
+    deadline?: string;
+    /**
+     * 所属迭代 (interationId)
+     */
+    interation?: string;
+    /**
+     * 所属项目 (projectId)
+     */
+    project?: string;
+    /**
+     * 领取人 (userId)
+     */
+    takenBy?: string;
+    /**
+     * 发布人 (userId)
+     */
+    publishBy?: string;
+    /**
+     * 领取时间
+     */
+    takenAt?: string;
+    /**
+     * 完成时间
+     */
+    doneAt?: string;
+    /**
+     * 发布时间
+     */
+    publishedAt?: string;
+    /**
+     * 备注
+     */
+    remark?: string;
+    /**
+     * 额外暴击奖励
+     */
+    bonus?: number;
+    labels?: string[];
+    events?: {
+      name:
+        | "PUBLISH"
+        | "UNPUBLISH"
+        | "ASSIGN"
+        | "UNASSIGN"
+        | "LEVEL"
+        | "PRIORITY"
+        | "BONUS"
+        | "DEADLINE"
+        | "DONE"
+        | "REOPEN"
+        | "LABEL"
+        | "REMARK"
+        | "INTERATION";
+      /**
+       * 操作人 (userId)
+       */
+      user: string;
+      /**
+       * 级别
+       */
+      level?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+      /**
+       * 创建时间
+       */
+      createdAt?: string;
+      /**
+       * 优先级
+       */
+      priority?: 0 | 1 | 2;
+      /**
+       * 截止时间
+       */
+      deadline?: string;
+      /**
+       * 所属迭代 (interationId)
+       */
+      interation?: string;
+      /**
+       * 额外暴击奖励
+       */
+      bonus?: number;
+      /**
+       * 领取人 (userId)
+       */
+      takenBy?: string;
+      /**
+       * 发布人 (userId)
+       */
+      publishBy?: string;
+      /**
+       * 领取人 外部id
+       */
+      foreignTakenBy?: string;
+      /**
+       * ticket labels
+       */
+      labels?: string[];
+      /**
+       * ticket remark
+       */
+      remark?: string;
+      relatedRepos?: string[];
+    }[];
+    /**
+     * 是否 reopened 过
+     */
+    reopened?: boolean;
+    reopenedAt?: string;
+    relatedRepos?: string[];
   };
-  type Label = {
+}
+export interface CreateTicketResponse {
+  body: {
+    /**
+     * 关联的issue (第三方服务中的issueid)
+     */
+    issue: string;
+    /**
+     * ticket titile
+     */
+    title?: string;
+    /**
+     * 所属repo (第三方服务中的 repositoryId)
+     */
+    repository?: string;
+    /**
+     * 级别
+     */
+    level?: number;
+    /**
+     * 状态
+     */
+    state?: "PLANNING" | "TODO" | "DOING" | "DONE";
+    /**
+     * 优先级
+     */
+    priority?: 0 | 1 | 2;
+    /**
+     * 截止时间
+     */
+    deadline?: string;
+    /**
+     * 所属迭代 (interationId)
+     */
+    interation?: string;
+    /**
+     * 所属项目 (projectId)
+     */
+    project?: string;
+    /**
+     * 领取人 (userId)
+     */
+    takenBy?: string;
+    /**
+     * 发布人 (userId)
+     */
+    publishBy?: string;
+    /**
+     * 领取时间
+     */
+    takenAt?: string;
+    /**
+     * 完成时间
+     */
+    doneAt?: string;
+    /**
+     * 发布时间
+     */
+    publishedAt?: string;
+    /**
+     * 备注
+     */
+    remark?: string;
+    /**
+     * 额外暴击奖励
+     */
+    bonus?: number;
+    labels?: string[];
+    events?: {
+      name:
+        | "PUBLISH"
+        | "UNPUBLISH"
+        | "ASSIGN"
+        | "UNASSIGN"
+        | "LEVEL"
+        | "PRIORITY"
+        | "BONUS"
+        | "DEADLINE"
+        | "DONE"
+        | "REOPEN"
+        | "LABEL"
+        | "REMARK"
+        | "INTERATION";
+      /**
+       * 操作人 (userId)
+       */
+      user: string;
+      /**
+       * 级别
+       */
+      level?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+      /**
+       * 创建时间
+       */
+      createdAt?: string;
+      /**
+       * 优先级
+       */
+      priority?: 0 | 1 | 2;
+      /**
+       * 截止时间
+       */
+      deadline?: string;
+      /**
+       * 所属迭代 (interationId)
+       */
+      interation?: string;
+      /**
+       * 额外暴击奖励
+       */
+      bonus?: number;
+      /**
+       * 领取人 (userId)
+       */
+      takenBy?: string;
+      /**
+       * 发布人 (userId)
+       */
+      publishBy?: string;
+      /**
+       * 领取人 外部id
+       */
+      foreignTakenBy?: string;
+      /**
+       * ticket labels
+       */
+      labels?: string[];
+      /**
+       * ticket remark
+       */
+      remark?: string;
+      relatedRepos?: string[];
+    }[];
+    /**
+     * 是否 reopened 过
+     */
+    reopened?: boolean;
+    reopenedAt?: string;
+    relatedRepos?: string[];
+  } & {
     id: string;
-    name: string;
-    color: string;
+    updatedAt?: string;
+    createdAt?: string;
   };
-  type TicketEvent = {
+}
+export interface ListTicketsRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+    _sort?: string;
+    _select?: string;
+    _group?: string;
+    id?: string;
+    repository?: string;
+    driver?: string;
+    interation?: string;
+    project?: string;
+    state?: "PLANNING" | "TODO" | "DOING" | "DONE";
+    priority?: 0 | 1 | 2;
+    deadline_gt?: string;
+    deadline_lt?: string;
+    takenAt_gt?: string;
+    takenAt_lt?: string;
+    title_like?: string;
+    takenBy?: string;
+  };
+}
+export interface ListTicketsResponse {
+  body: ({
+    /**
+     * 关联的issue (第三方服务中的issueid)
+     */
+    issue: string;
+    /**
+     * ticket titile
+     */
+    title?: string;
+    /**
+     * 所属repo (第三方服务中的 repositoryId)
+     */
+    repository?: string;
+    /**
+     * 级别
+     */
+    level?: number;
+    /**
+     * 状态
+     */
+    state?: "PLANNING" | "TODO" | "DOING" | "DONE";
+    /**
+     * 优先级
+     */
+    priority?: 0 | 1 | 2;
+    /**
+     * 截止时间
+     */
+    deadline?: string;
+    /**
+     * 所属迭代 (interationId)
+     */
+    interation?: string;
+    /**
+     * 所属项目 (projectId)
+     */
+    project?: string;
+    /**
+     * 领取人 (userId)
+     */
+    takenBy?: string;
+    /**
+     * 发布人 (userId)
+     */
+    publishBy?: string;
+    /**
+     * 领取时间
+     */
+    takenAt?: string;
+    /**
+     * 完成时间
+     */
+    doneAt?: string;
+    /**
+     * 发布时间
+     */
+    publishedAt?: string;
+    /**
+     * 备注
+     */
+    remark?: string;
+    /**
+     * 额外暴击奖励
+     */
+    bonus?: number;
+    labels?: string[];
+    events?: {
+      name:
+        | "PUBLISH"
+        | "UNPUBLISH"
+        | "ASSIGN"
+        | "UNASSIGN"
+        | "LEVEL"
+        | "PRIORITY"
+        | "BONUS"
+        | "DEADLINE"
+        | "DONE"
+        | "REOPEN"
+        | "LABEL"
+        | "REMARK"
+        | "INTERATION";
+      /**
+       * 操作人 (userId)
+       */
+      user: string;
+      /**
+       * 级别
+       */
+      level?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+      /**
+       * 创建时间
+       */
+      createdAt?: string;
+      /**
+       * 优先级
+       */
+      priority?: 0 | 1 | 2;
+      /**
+       * 截止时间
+       */
+      deadline?: string;
+      /**
+       * 所属迭代 (interationId)
+       */
+      interation?: string;
+      /**
+       * 额外暴击奖励
+       */
+      bonus?: number;
+      /**
+       * 领取人 (userId)
+       */
+      takenBy?: string;
+      /**
+       * 发布人 (userId)
+       */
+      publishBy?: string;
+      /**
+       * 领取人 外部id
+       */
+      foreignTakenBy?: string;
+      /**
+       * ticket labels
+       */
+      labels?: string[];
+      /**
+       * ticket remark
+       */
+      remark?: string;
+      relatedRepos?: string[];
+    }[];
+    /**
+     * 是否 reopened 过
+     */
+    reopened?: boolean;
+    reopenedAt?: string;
+    relatedRepos?: string[];
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  })[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface GetTicketRequest {
+  ticketId: string;
+}
+export interface GetTicketResponse {
+  body: {
+    /**
+     * 关联的issue (第三方服务中的issueid)
+     */
+    issue: string;
+    /**
+     * ticket titile
+     */
+    title?: string;
+    /**
+     * 所属repo (第三方服务中的 repositoryId)
+     */
+    repository?: string;
+    /**
+     * 级别
+     */
+    level?: number;
+    /**
+     * 状态
+     */
+    state?: "PLANNING" | "TODO" | "DOING" | "DONE";
+    /**
+     * 优先级
+     */
+    priority?: 0 | 1 | 2;
+    /**
+     * 截止时间
+     */
+    deadline?: string;
+    /**
+     * 所属迭代 (interationId)
+     */
+    interation?: string;
+    /**
+     * 所属项目 (projectId)
+     */
+    project?: string;
+    /**
+     * 领取人 (userId)
+     */
+    takenBy?: string;
+    /**
+     * 发布人 (userId)
+     */
+    publishBy?: string;
+    /**
+     * 领取时间
+     */
+    takenAt?: string;
+    /**
+     * 完成时间
+     */
+    doneAt?: string;
+    /**
+     * 发布时间
+     */
+    publishedAt?: string;
+    /**
+     * 备注
+     */
+    remark?: string;
+    /**
+     * 额外暴击奖励
+     */
+    bonus?: number;
+    labels?: string[];
+    events?: {
+      name:
+        | "PUBLISH"
+        | "UNPUBLISH"
+        | "ASSIGN"
+        | "UNASSIGN"
+        | "LEVEL"
+        | "PRIORITY"
+        | "BONUS"
+        | "DEADLINE"
+        | "DONE"
+        | "REOPEN"
+        | "LABEL"
+        | "REMARK"
+        | "INTERATION";
+      /**
+       * 操作人 (userId)
+       */
+      user: string;
+      /**
+       * 级别
+       */
+      level?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+      /**
+       * 创建时间
+       */
+      createdAt?: string;
+      /**
+       * 优先级
+       */
+      priority?: 0 | 1 | 2;
+      /**
+       * 截止时间
+       */
+      deadline?: string;
+      /**
+       * 所属迭代 (interationId)
+       */
+      interation?: string;
+      /**
+       * 额外暴击奖励
+       */
+      bonus?: number;
+      /**
+       * 领取人 (userId)
+       */
+      takenBy?: string;
+      /**
+       * 发布人 (userId)
+       */
+      publishBy?: string;
+      /**
+       * 领取人 外部id
+       */
+      foreignTakenBy?: string;
+      /**
+       * ticket labels
+       */
+      labels?: string[];
+      /**
+       * ticket remark
+       */
+      remark?: string;
+      relatedRepos?: string[];
+    }[];
+    /**
+     * 是否 reopened 过
+     */
+    reopened?: boolean;
+    reopenedAt?: string;
+    relatedRepos?: string[];
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface DeleteTicketRequest {
+  ticketId: string;
+}
+export interface CreateTicketEventRequest {
+  ticketId: string;
+  /**
+   * Ticket evnet
+   */
+  body: {
     name:
       | "PUBLISH"
       | "UNPUBLISH"
@@ -1069,209 +1502,3391 @@ declare namespace SDK {
       | "LABEL"
       | "REMARK"
       | "INTERATION";
+    /**
+     * 操作人 (userId)
+     */
     user: string;
-    level: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-    createdAt: string;
-    priority: 0 | 1 | 2;
-    deadline: string;
-    interation: string;
-    bonus: number;
-    takenBy: string;
-    publishBy: string;
-    foreignTakenBy: string;
-    labels: [string];
-    remark: string;
-  };
-  type Ticket = {
-    id: string;
-    updatedAt: string;
-    createdAt: string;
-    issue: string;
-    title: string;
-    repository: string;
-    level: number;
-    state: "PLANNING" | "TODO" | "DOING" | "DONE";
-    priority: 0 | 1 | 2;
-    deadline: string;
-    interation: string;
-    project: string;
-    takenBy: string;
-    publishBy: string;
-    takenAt: string;
-    doneAt: string;
-    publishedAt: string;
-    remark: string;
-    bonus: number;
-    labels: [string];
-    events: [
-      {
-        name:
-          | "PUBLISH"
-          | "UNPUBLISH"
-          | "ASSIGN"
-          | "UNASSIGN"
-          | "LEVEL"
-          | "PRIORITY"
-          | "BONUS"
-          | "DEADLINE"
-          | "DONE"
-          | "REOPEN"
-          | "LABEL"
-          | "REMARK"
-          | "INTERATION";
-        user: string;
-        level: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-        createdAt: string;
-        priority: 0 | 1 | 2;
-        deadline: string;
-        interation: string;
-        bonus: number;
-        takenBy: string;
-        publishBy: string;
-        foreignTakenBy: string;
-        labels: [string];
-        remark: string;
-      }
-    ];
-    reopened: boolean;
-    reopenedAt: string;
-  };
-  type StaffDoc = {
-    id: string;
-    number: number;
-    name: string;
-    type: "36NODE" | "ADVENTURE";
-    position: "PM" | "DEVELOPER" | "DESIGNER";
-    level: number;
-    bankCard: string;
-    idNumber: string;
-    city: string;
-    weixin: string;
-    phone: string;
-    email: string;
-    companyEmail: string;
-    google: string;
-    icloud: string;
-    github: string;
-    avatar: string;
-  };
-  type Staff = {
-    id: string;
-    updatedAt: string;
-    createdAt: string;
-    number: number;
-    name: string;
-    type: "36NODE" | "ADVENTURE";
-    position: "PM" | "DEVELOPER" | "DESIGNER";
-    level: number;
-    bankCard: string;
-    idNumber: string;
-    city: string;
-    weixin: string;
-    phone: string;
-    email: string;
-    companyEmail: string;
-    google: string;
-    icloud: string;
-    github: string;
-    avatar: string;
-  };
-  type CreateStaffDoc = {
-    code: string;
-    id: string;
-    number: number;
-    name: string;
-    type: "36NODE" | "ADVENTURE";
-    position: "PM" | "DEVELOPER" | "DESIGNER";
-    level: number;
-    bankCard: string;
-    idNumber: string;
-    city: string;
-    weixin: string;
-    phone: string;
-    email: string;
-    companyEmail: string;
-    google: string;
-    icloud: string;
-    github: string;
-    avatar: string;
-  };
-  type WalletDoc = {
-    balance: number;
-    staff: string;
-  };
-  type Wallet = {
-    id: string;
-    updatedAt: string;
-    createdAt: string;
-    balance: number;
-    staff: string;
-  };
-  type TradeDoc = {
-    project: string;
-    staff: string;
-    type: "SHARED" | "TICKET" | "SETTLE";
-    amount: number;
-    handler: string;
-    staffName: string;
-    staffGithub: string;
-  };
-  type Trade = {
-    id: string;
-    updatedAt: string;
-    createdAt: string;
-    project: string;
-    staff: string;
-    type: "SHARED" | "TICKET" | "SETTLE";
-    amount: number;
-    handler: string;
-    staffName: string;
-    staffGithub: string;
-  };
-  type TradeSummary = {
-    project: string;
-    staff: string;
-    handler: string;
-    totalExp: string;
-  };
-  type TicketDoneSummary = {};
-  type TicketCoverageSummary = {};
-  type CreateInvitationBody = {
-    expiredAt: string;
-    email: string;
-    remark: string;
-  };
-  type InvitationDoc = {
-    code: string;
-    email: string;
-    sent: boolean;
-    expiredAt: string;
-    used: boolean;
-    usedAt: string;
-    remark: string;
-  };
-  type Invitation = {
-    id: string;
-    updatedAt: string;
-    createdAt: string;
-    code: string;
-    email: string;
-    sent: boolean;
-    expiredAt: string;
-    used: boolean;
-    usedAt: string;
-    remark: string;
-  };
-  type Release = {
-    version: string;
-  };
-  type MongoDefault = {
-    id: string;
-    updatedAt: string;
-    createdAt: string;
-  };
-  type Err = {
-    code: string;
-    message: string;
+    /**
+     * 级别
+     */
+    level?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+    /**
+     * 创建时间
+     */
+    createdAt?: string;
+    /**
+     * 优先级
+     */
+    priority?: 0 | 1 | 2;
+    /**
+     * 截止时间
+     */
+    deadline?: string;
+    /**
+     * 所属迭代 (interationId)
+     */
+    interation?: string;
+    /**
+     * 额外暴击奖励
+     */
+    bonus?: number;
+    /**
+     * 领取人 (userId)
+     */
+    takenBy?: string;
+    /**
+     * 发布人 (userId)
+     */
+    publishBy?: string;
+    /**
+     * 领取人 外部id
+     */
+    foreignTakenBy?: string;
+    /**
+     * ticket labels
+     */
+    labels?: string[];
+    /**
+     * ticket remark
+     */
+    remark?: string;
+    relatedRepos?: string[];
   };
 }
+export interface CreateTicketEventResponse {
+  body: {
+    /**
+     * 关联的issue (第三方服务中的issueid)
+     */
+    issue: string;
+    /**
+     * ticket titile
+     */
+    title?: string;
+    /**
+     * 所属repo (第三方服务中的 repositoryId)
+     */
+    repository?: string;
+    /**
+     * 级别
+     */
+    level?: number;
+    /**
+     * 状态
+     */
+    state?: "PLANNING" | "TODO" | "DOING" | "DONE";
+    /**
+     * 优先级
+     */
+    priority?: 0 | 1 | 2;
+    /**
+     * 截止时间
+     */
+    deadline?: string;
+    /**
+     * 所属迭代 (interationId)
+     */
+    interation?: string;
+    /**
+     * 所属项目 (projectId)
+     */
+    project?: string;
+    /**
+     * 领取人 (userId)
+     */
+    takenBy?: string;
+    /**
+     * 发布人 (userId)
+     */
+    publishBy?: string;
+    /**
+     * 领取时间
+     */
+    takenAt?: string;
+    /**
+     * 完成时间
+     */
+    doneAt?: string;
+    /**
+     * 发布时间
+     */
+    publishedAt?: string;
+    /**
+     * 备注
+     */
+    remark?: string;
+    /**
+     * 额外暴击奖励
+     */
+    bonus?: number;
+    labels?: string[];
+    events?: {
+      name:
+        | "PUBLISH"
+        | "UNPUBLISH"
+        | "ASSIGN"
+        | "UNASSIGN"
+        | "LEVEL"
+        | "PRIORITY"
+        | "BONUS"
+        | "DEADLINE"
+        | "DONE"
+        | "REOPEN"
+        | "LABEL"
+        | "REMARK"
+        | "INTERATION";
+      /**
+       * 操作人 (userId)
+       */
+      user: string;
+      /**
+       * 级别
+       */
+      level?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+      /**
+       * 创建时间
+       */
+      createdAt?: string;
+      /**
+       * 优先级
+       */
+      priority?: 0 | 1 | 2;
+      /**
+       * 截止时间
+       */
+      deadline?: string;
+      /**
+       * 所属迭代 (interationId)
+       */
+      interation?: string;
+      /**
+       * 额外暴击奖励
+       */
+      bonus?: number;
+      /**
+       * 领取人 (userId)
+       */
+      takenBy?: string;
+      /**
+       * 发布人 (userId)
+       */
+      publishBy?: string;
+      /**
+       * 领取人 外部id
+       */
+      foreignTakenBy?: string;
+      /**
+       * ticket labels
+       */
+      labels?: string[];
+      /**
+       * ticket remark
+       */
+      remark?: string;
+      relatedRepos?: string[];
+    }[];
+    /**
+     * 是否 reopened 过
+     */
+    reopened?: boolean;
+    reopenedAt?: string;
+    relatedRepos?: string[];
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface ListInterationsRequest {
+  projectId: string;
+  query?: {
+    _limit?: number;
+    _offset?: number;
+    _sort?: string;
+    _select?: string;
+    planStart_gt?: string;
+    planStart_lt?: string;
+    planEnd_gt?: string;
+    planEnd_lt?: string;
+    id?: string;
+  };
+}
+export interface ListInterationsResponse {
+  body: ({
+    /**
+     * 迭代名称
+     */
+    name: string;
+    /**
+     * 计划开始时间
+     */
+    planStartAt: string;
+    /**
+     * 计划结束时间
+     */
+    planEndAt: string;
+    /**
+     * 实际开始时间
+     */
+    startAt?: string;
+    /**
+     * 实际结束时间
+     */
+    endAt?: string;
+    /**
+     * 所属的 project (projectId)
+     */
+    project?: string;
+    /**
+     * 迭代描述
+     */
+    description?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  })[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface CreateInteractionRequest {
+  projectId: string;
+  /**
+   * 迭代 Doc
+   */
+  body: {
+    /**
+     * 迭代名称
+     */
+    name: string;
+    /**
+     * 计划开始时间
+     */
+    planStartAt: string;
+    /**
+     * 计划结束时间
+     */
+    planEndAt: string;
+    /**
+     * 实际开始时间
+     */
+    startAt?: string;
+    /**
+     * 实际结束时间
+     */
+    endAt?: string;
+    /**
+     * 所属的 project (projectId)
+     */
+    project?: string;
+    /**
+     * 迭代描述
+     */
+    description?: string;
+  };
+}
+export interface CreateInteractionResponse {
+  body: {
+    /**
+     * 迭代名称
+     */
+    name: string;
+    /**
+     * 计划开始时间
+     */
+    planStartAt: string;
+    /**
+     * 计划结束时间
+     */
+    planEndAt: string;
+    /**
+     * 实际开始时间
+     */
+    startAt?: string;
+    /**
+     * 实际结束时间
+     */
+    endAt?: string;
+    /**
+     * 所属的 project (projectId)
+     */
+    project?: string;
+    /**
+     * 迭代描述
+     */
+    description?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface GetInterationRequest {
+  projectId: string;
+  interationId: string;
+}
+export interface GetInterationResponse {
+  body: {
+    /**
+     * 迭代名称
+     */
+    name: string;
+    /**
+     * 计划开始时间
+     */
+    planStartAt: string;
+    /**
+     * 计划结束时间
+     */
+    planEndAt: string;
+    /**
+     * 实际开始时间
+     */
+    startAt?: string;
+    /**
+     * 实际结束时间
+     */
+    endAt?: string;
+    /**
+     * 所属的 project (projectId)
+     */
+    project?: string;
+    /**
+     * 迭代描述
+     */
+    description?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface UpdateInterationRequest {
+  projectId: string;
+  interationId: string;
+  /**
+   * 迭代 Doc
+   */
+  body: {
+    /**
+     * 迭代名称
+     */
+    name: string;
+    /**
+     * 计划开始时间
+     */
+    planStartAt: string;
+    /**
+     * 计划结束时间
+     */
+    planEndAt: string;
+    /**
+     * 实际开始时间
+     */
+    startAt?: string;
+    /**
+     * 实际结束时间
+     */
+    endAt?: string;
+    /**
+     * 所属的 project (projectId)
+     */
+    project?: string;
+    /**
+     * 迭代描述
+     */
+    description?: string;
+  };
+}
+export interface UpdateInterationResponse {
+  body: {
+    /**
+     * 迭代名称
+     */
+    name: string;
+    /**
+     * 计划开始时间
+     */
+    planStartAt: string;
+    /**
+     * 计划结束时间
+     */
+    planEndAt: string;
+    /**
+     * 实际开始时间
+     */
+    startAt?: string;
+    /**
+     * 实际结束时间
+     */
+    endAt?: string;
+    /**
+     * 所属的 project (projectId)
+     */
+    project?: string;
+    /**
+     * 迭代描述
+     */
+    description?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface DeleteInterationRequest {
+  projectId: string;
+  interationId: string;
+}
+export interface ListProjectsRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+    _sort?: string;
+    _select?: string;
+    name?: string;
+    po?: string;
+    cm?: string;
+    state?: "DOING" | "ARCHIVED";
+    planStart_gt?: string;
+    planStart_lt?: string;
+    planEnd_gt?: string;
+    planEnd_lt?: string;
+    id?: string;
+  };
+}
+export interface ListProjectsResponse {
+  body: ({
+    /**
+     * 项目名称
+     */
+    name: string;
+    /**
+     * 项目描述
+     */
+    description?: string;
+    /**
+     * 产品负责人 (userId)
+     */
+    po?: string[];
+    /**
+     * 技术负责人 (userId)
+     */
+    cm?: string[];
+    /**
+     * 包含的工程
+     */
+    repositories?: string[];
+    /**
+     * 计划开始时间
+     */
+    planStartAt: string;
+    /**
+     * 计划结束时间
+     */
+    planEndAt: string;
+    /**
+     * 项目状态
+     */
+    state?: "DOING" | "ARCHIVED";
+    /**
+     * 项目logo
+     */
+    logo?: string;
+    /**
+     * 项目负责人
+     */
+    owner?: string;
+    /**
+     * 行业
+     */
+    industry?: string;
+    /**
+     * 项目管理人员
+     */
+    manager?: {
+      /**
+       * 人员
+       */
+      staff?: string;
+      /**
+       * 职位
+       */
+      position?: string;
+    };
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  })[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface CreateProjectRequest {
+  body: {
+    /**
+     * 项目名称
+     */
+    name: string;
+    /**
+     * 项目描述
+     */
+    description?: string;
+    /**
+     * 产品负责人 (userId)
+     */
+    po?: string[];
+    /**
+     * 技术负责人 (userId)
+     */
+    cm?: string[];
+    /**
+     * 包含的工程
+     */
+    repositories?: string[];
+    /**
+     * 计划开始时间
+     */
+    planStartAt: string;
+    /**
+     * 计划结束时间
+     */
+    planEndAt: string;
+    /**
+     * 项目状态
+     */
+    state?: "DOING" | "ARCHIVED";
+    /**
+     * 项目logo
+     */
+    logo?: string;
+    /**
+     * 项目负责人
+     */
+    owner?: string;
+    /**
+     * 行业
+     */
+    industry?: string;
+    /**
+     * 项目管理人员
+     */
+    manager?: {
+      /**
+       * 人员
+       */
+      staff?: string;
+      /**
+       * 职位
+       */
+      position?: string;
+    };
+  };
+}
+export interface CreateProjectResponse {
+  body: {
+    /**
+     * 项目名称
+     */
+    name: string;
+    /**
+     * 项目描述
+     */
+    description?: string;
+    /**
+     * 产品负责人 (userId)
+     */
+    po?: string[];
+    /**
+     * 技术负责人 (userId)
+     */
+    cm?: string[];
+    /**
+     * 包含的工程
+     */
+    repositories?: string[];
+    /**
+     * 计划开始时间
+     */
+    planStartAt: string;
+    /**
+     * 计划结束时间
+     */
+    planEndAt: string;
+    /**
+     * 项目状态
+     */
+    state?: "DOING" | "ARCHIVED";
+    /**
+     * 项目logo
+     */
+    logo?: string;
+    /**
+     * 项目负责人
+     */
+    owner?: string;
+    /**
+     * 行业
+     */
+    industry?: string;
+    /**
+     * 项目管理人员
+     */
+    manager?: {
+      /**
+       * 人员
+       */
+      staff?: string;
+      /**
+       * 职位
+       */
+      position?: string;
+    };
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface GetProjectRequest {
+  projectId: string;
+}
+export interface GetProjectResponse {
+  body: {
+    /**
+     * 项目名称
+     */
+    name: string;
+    /**
+     * 项目描述
+     */
+    description?: string;
+    /**
+     * 产品负责人 (userId)
+     */
+    po?: string[];
+    /**
+     * 技术负责人 (userId)
+     */
+    cm?: string[];
+    /**
+     * 包含的工程
+     */
+    repositories?: string[];
+    /**
+     * 计划开始时间
+     */
+    planStartAt: string;
+    /**
+     * 计划结束时间
+     */
+    planEndAt: string;
+    /**
+     * 项目状态
+     */
+    state?: "DOING" | "ARCHIVED";
+    /**
+     * 项目logo
+     */
+    logo?: string;
+    /**
+     * 项目负责人
+     */
+    owner?: string;
+    /**
+     * 行业
+     */
+    industry?: string;
+    /**
+     * 项目管理人员
+     */
+    manager?: {
+      /**
+       * 人员
+       */
+      staff?: string;
+      /**
+       * 职位
+       */
+      position?: string;
+    };
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface UpdateProjectRequest {
+  projectId: string;
+  body: {
+    /**
+     * 项目名称
+     */
+    name: string;
+    /**
+     * 项目描述
+     */
+    description?: string;
+    /**
+     * 产品负责人 (userId)
+     */
+    po?: string[];
+    /**
+     * 技术负责人 (userId)
+     */
+    cm?: string[];
+    /**
+     * 包含的工程
+     */
+    repositories?: string[];
+    /**
+     * 计划开始时间
+     */
+    planStartAt: string;
+    /**
+     * 计划结束时间
+     */
+    planEndAt: string;
+    /**
+     * 项目状态
+     */
+    state?: "DOING" | "ARCHIVED";
+    /**
+     * 项目logo
+     */
+    logo?: string;
+    /**
+     * 项目负责人
+     */
+    owner?: string;
+    /**
+     * 行业
+     */
+    industry?: string;
+    /**
+     * 项目管理人员
+     */
+    manager?: {
+      /**
+       * 人员
+       */
+      staff?: string;
+      /**
+       * 职位
+       */
+      position?: string;
+    };
+  };
+}
+export interface UpdateProjectResponse {
+  body: {
+    /**
+     * 项目名称
+     */
+    name: string;
+    /**
+     * 项目描述
+     */
+    description?: string;
+    /**
+     * 产品负责人 (userId)
+     */
+    po?: string[];
+    /**
+     * 技术负责人 (userId)
+     */
+    cm?: string[];
+    /**
+     * 包含的工程
+     */
+    repositories?: string[];
+    /**
+     * 计划开始时间
+     */
+    planStartAt: string;
+    /**
+     * 计划结束时间
+     */
+    planEndAt: string;
+    /**
+     * 项目状态
+     */
+    state?: "DOING" | "ARCHIVED";
+    /**
+     * 项目logo
+     */
+    logo?: string;
+    /**
+     * 项目负责人
+     */
+    owner?: string;
+    /**
+     * 行业
+     */
+    industry?: string;
+    /**
+     * 项目管理人员
+     */
+    manager?: {
+      /**
+       * 人员
+       */
+      staff?: string;
+      /**
+       * 职位
+       */
+      position?: string;
+    };
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface DeleteProjectRequest {
+  projectId: string;
+}
+export interface CreateProjectDocRequest {
+  projectId: string;
+  body: {
+    /**
+     * 文档标题
+     */
+    title: string;
+    /**
+     * 文档内容
+     */
+    content: string;
+    /**
+     * 更新人(userId)
+     */
+    updatedBy?: string;
+    /**
+     * 创建人(userId)
+     */
+    createdBy?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface CreateProjectDocResponse {
+  body: {
+    /**
+     * 文档标题
+     */
+    title: string;
+    /**
+     * 文档内容
+     */
+    content: string;
+    /**
+     * 更新人(userId)
+     */
+    updatedBy?: string;
+    /**
+     * 创建人(userId)
+     */
+    createdBy?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface GetProjectSummaryRequest {
+  projectId: string;
+}
+export interface GetProjectSummaryResponse {
+  /**
+   * 项目统计
+   */
+  body: {
+    /**
+     * 统计类型
+     */
+    type?: string;
+    /**
+     * 统计数据
+     */
+    data?: {
+      /**
+       * 名称
+       */
+      name?: string;
+      /**
+       * 值
+       */
+      value?: string;
+    }[];
+    /**
+     * 总数
+     */
+    total?: number;
+  }[];
+}
+export interface UpdateProjectDocRequest {
+  projectId: string;
+  docId: string;
+  body: {
+    /**
+     * 文档标题
+     */
+    title: string;
+    /**
+     * 文档内容
+     */
+    content: string;
+    /**
+     * 更新人(userId)
+     */
+    updatedBy?: string;
+    /**
+     * 创建人(userId)
+     */
+    createdBy?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface UpdateProjectDocResponse {
+  body: {
+    /**
+     * 项目名称
+     */
+    name: string;
+    /**
+     * 项目描述
+     */
+    description?: string;
+    /**
+     * 产品负责人 (userId)
+     */
+    po?: string[];
+    /**
+     * 技术负责人 (userId)
+     */
+    cm?: string[];
+    /**
+     * 包含的工程
+     */
+    repositories?: string[];
+    /**
+     * 计划开始时间
+     */
+    planStartAt: string;
+    /**
+     * 计划结束时间
+     */
+    planEndAt: string;
+    /**
+     * 项目状态
+     */
+    state?: "DOING" | "ARCHIVED";
+    /**
+     * 项目logo
+     */
+    logo?: string;
+    /**
+     * 项目负责人
+     */
+    owner?: string;
+    /**
+     * 行业
+     */
+    industry?: string;
+    /**
+     * 项目管理人员
+     */
+    manager?: {
+      /**
+       * 人员
+       */
+      staff?: string;
+      /**
+       * 职位
+       */
+      position?: string;
+    };
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface CreateProjectEventRequest {
+  projectId: string;
+  /**
+   * 项目事件
+   */
+  body: {
+    /**
+     * 事件名称
+     */
+    name?: "CHANGE_TOTAL" | "SHARED";
+    /**
+     * 项目金额总数
+     */
+    total?: number;
+    /**
+     * 分成细则
+     */
+    shared?: {
+      /**
+       * 分成总金额
+       */
+      total?: number;
+      /**
+       * 分成事项
+       */
+      remark?: string;
+      detail?: {
+        /**
+         * 员工id
+         */
+        staff?: string;
+        /**
+         * 在项目中的职位
+         */
+        position?: "PO" | "CM";
+        /**
+         * 分成中的比例，百分比
+         */
+        percent?: number;
+      }[];
+    };
+  };
+}
+export interface CreateProjectEventResponse {
+  body: {
+    /**
+     * 项目名称
+     */
+    name: string;
+    /**
+     * 项目描述
+     */
+    description?: string;
+    /**
+     * 产品负责人 (userId)
+     */
+    po?: string[];
+    /**
+     * 技术负责人 (userId)
+     */
+    cm?: string[];
+    /**
+     * 包含的工程
+     */
+    repositories?: string[];
+    /**
+     * 计划开始时间
+     */
+    planStartAt: string;
+    /**
+     * 计划结束时间
+     */
+    planEndAt: string;
+    /**
+     * 项目状态
+     */
+    state?: "DOING" | "ARCHIVED";
+    /**
+     * 项目logo
+     */
+    logo?: string;
+    /**
+     * 项目负责人
+     */
+    owner?: string;
+    /**
+     * 行业
+     */
+    industry?: string;
+    /**
+     * 项目管理人员
+     */
+    manager?: {
+      /**
+       * 人员
+       */
+      staff?: string;
+      /**
+       * 职位
+       */
+      position?: string;
+    };
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface GetInteractionsSummaryRequest {
+  query?: {
+    _group: string[];
+    project?: string;
+    planStart_gt?: string;
+    planStart_lt?: string;
+    planEnd_gt?: string;
+    planEnd_lt?: string;
+  };
+}
+export interface GetInteractionsSummaryResponse {
+  body: {}[];
+}
+export interface GetTicketsSummaryRequest {
+  query?: {
+    _group: string[];
+    _exist?: string[];
+    state?: "PLANNING" | "TODO" | "DOING" | "DONE";
+    takenBy?: string;
+    project?: string;
+    interation?: string;
+  };
+}
+export interface GetTicketsSummaryResponse {
+  body: {}[];
+}
+export interface GetTradeSummaryRequest {
+  query?: {
+    _group: string[];
+    project?: string;
+    staff?: string;
+  };
+}
+export interface GetTradeSummaryResponse {
+  body: {
+    /**
+     * 对应项目
+     */
+    project?: string;
+    /**
+     * 对应员工
+     */
+    staff?: string;
+    /**
+     * 对应操作者
+     */
+    handler?: string;
+    /**
+     * 总支出
+     */
+    totalExp?: string;
+  }[];
+}
+export interface GetTradeSummaryByMonthRequest {
+  query?: {
+    staff?: string;
+  };
+}
+export interface GetTradeSummaryByMonthResponse {
+  body: {
+    /**
+     * 对应项目
+     */
+    project?: string;
+    /**
+     * 对应员工
+     */
+    staff?: string;
+    /**
+     * 对应操作者
+     */
+    handler?: string;
+    /**
+     * 总支出
+     */
+    totalExp?: string;
+  }[];
+}
+export interface GetTicketDoneSummaryRequest {
+  query?: {
+    start?: string;
+    end?: string;
+  };
+}
+export interface GetTicketDoneSummaryResponse {
+  body: {}[];
+}
+export interface GetTicketCoverageSummaryRequest {
+  query?: {
+    start?: string;
+    end?: string;
+  };
+}
+export interface GetTicketCoverageSummaryResponse {
+  body: {}[];
+}
+export interface ListStaffsRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+    _sort?: string;
+    _select?: string;
+    name?: string;
+    type?: string;
+    position?: string;
+  };
+}
+export interface ListStaffsResponse {
+  body: ({
+    /**
+     * 员工id， 同stargate 中的id
+     */
+    id: string;
+    /**
+     * 工号
+     */
+    number?: number;
+    /**
+     * 姓名
+     */
+    name?: string;
+    /**
+     * 用户类型
+     */
+    type?: "36NODE" | "ADVENTURE";
+    /**
+     * 职位
+     */
+    position?: "PM" | "DEVELOPER" | "DESIGNER";
+    /**
+     * 等级
+     */
+    level?: number;
+    /**
+     * 银行卡号
+     */
+    bankCard?: string;
+    /**
+     * 身份证号
+     */
+    idNumber?: string;
+    /**
+     * 城市
+     */
+    city?: string;
+    /**
+     * 微信
+     */
+    weixin?: string;
+    /**
+     * 电话
+     */
+    phone?: string;
+    /**
+     * 个人邮箱
+     */
+    email?: string;
+    /**
+     * 公司邮箱
+     */
+    companyEmail?: string;
+    /**
+     * google账号
+     */
+    google?: string;
+    /**
+     * icloud账号
+     */
+    icloud?: string;
+    /**
+     * github账号
+     */
+    github?: string;
+    /**
+     * 用户头像url
+     */
+    avatar?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  })[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface CreateStaffRequest {
+  body: {
+    /**
+     * 员工id， 同stargate 中的id
+     */
+    id: string;
+    /**
+     * 工号
+     */
+    number?: number;
+    /**
+     * 姓名
+     */
+    name?: string;
+    /**
+     * 用户类型
+     */
+    type?: "36NODE" | "ADVENTURE";
+    /**
+     * 职位
+     */
+    position?: "PM" | "DEVELOPER" | "DESIGNER";
+    /**
+     * 等级
+     */
+    level?: number;
+    /**
+     * 银行卡号
+     */
+    bankCard?: string;
+    /**
+     * 身份证号
+     */
+    idNumber?: string;
+    /**
+     * 城市
+     */
+    city?: string;
+    /**
+     * 微信
+     */
+    weixin?: string;
+    /**
+     * 电话
+     */
+    phone?: string;
+    /**
+     * 个人邮箱
+     */
+    email?: string;
+    /**
+     * 公司邮箱
+     */
+    companyEmail?: string;
+    /**
+     * google账号
+     */
+    google?: string;
+    /**
+     * icloud账号
+     */
+    icloud?: string;
+    /**
+     * github账号
+     */
+    github?: string;
+    /**
+     * 用户头像url
+     */
+    avatar?: string;
+  } & {
+    /**
+     * 邀请码
+     */
+    code?: string;
+  };
+}
+export interface CreateStaffResponse {
+  body: {
+    /**
+     * 员工id， 同stargate 中的id
+     */
+    id: string;
+    /**
+     * 工号
+     */
+    number?: number;
+    /**
+     * 姓名
+     */
+    name?: string;
+    /**
+     * 用户类型
+     */
+    type?: "36NODE" | "ADVENTURE";
+    /**
+     * 职位
+     */
+    position?: "PM" | "DEVELOPER" | "DESIGNER";
+    /**
+     * 等级
+     */
+    level?: number;
+    /**
+     * 银行卡号
+     */
+    bankCard?: string;
+    /**
+     * 身份证号
+     */
+    idNumber?: string;
+    /**
+     * 城市
+     */
+    city?: string;
+    /**
+     * 微信
+     */
+    weixin?: string;
+    /**
+     * 电话
+     */
+    phone?: string;
+    /**
+     * 个人邮箱
+     */
+    email?: string;
+    /**
+     * 公司邮箱
+     */
+    companyEmail?: string;
+    /**
+     * google账号
+     */
+    google?: string;
+    /**
+     * icloud账号
+     */
+    icloud?: string;
+    /**
+     * github账号
+     */
+    github?: string;
+    /**
+     * 用户头像url
+     */
+    avatar?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface UpsertStaffRequest {
+  body: {
+    /**
+     * 员工id， 同stargate 中的id
+     */
+    id: string;
+    /**
+     * 工号
+     */
+    number?: number;
+    /**
+     * 姓名
+     */
+    name?: string;
+    /**
+     * 用户类型
+     */
+    type?: "36NODE" | "ADVENTURE";
+    /**
+     * 职位
+     */
+    position?: "PM" | "DEVELOPER" | "DESIGNER";
+    /**
+     * 等级
+     */
+    level?: number;
+    /**
+     * 银行卡号
+     */
+    bankCard?: string;
+    /**
+     * 身份证号
+     */
+    idNumber?: string;
+    /**
+     * 城市
+     */
+    city?: string;
+    /**
+     * 微信
+     */
+    weixin?: string;
+    /**
+     * 电话
+     */
+    phone?: string;
+    /**
+     * 个人邮箱
+     */
+    email?: string;
+    /**
+     * 公司邮箱
+     */
+    companyEmail?: string;
+    /**
+     * google账号
+     */
+    google?: string;
+    /**
+     * icloud账号
+     */
+    icloud?: string;
+    /**
+     * github账号
+     */
+    github?: string;
+    /**
+     * 用户头像url
+     */
+    avatar?: string;
+  } & {
+    /**
+     * 邀请码
+     */
+    code?: string;
+  };
+}
+export interface UpsertStaffResponse {
+  body: {
+    /**
+     * 员工id， 同stargate 中的id
+     */
+    id: string;
+    /**
+     * 工号
+     */
+    number?: number;
+    /**
+     * 姓名
+     */
+    name?: string;
+    /**
+     * 用户类型
+     */
+    type?: "36NODE" | "ADVENTURE";
+    /**
+     * 职位
+     */
+    position?: "PM" | "DEVELOPER" | "DESIGNER";
+    /**
+     * 等级
+     */
+    level?: number;
+    /**
+     * 银行卡号
+     */
+    bankCard?: string;
+    /**
+     * 身份证号
+     */
+    idNumber?: string;
+    /**
+     * 城市
+     */
+    city?: string;
+    /**
+     * 微信
+     */
+    weixin?: string;
+    /**
+     * 电话
+     */
+    phone?: string;
+    /**
+     * 个人邮箱
+     */
+    email?: string;
+    /**
+     * 公司邮箱
+     */
+    companyEmail?: string;
+    /**
+     * google账号
+     */
+    google?: string;
+    /**
+     * icloud账号
+     */
+    icloud?: string;
+    /**
+     * github账号
+     */
+    github?: string;
+    /**
+     * 用户头像url
+     */
+    avatar?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface UpdateStaffRequest {
+  staffId: string;
+  body: {
+    /**
+     * 员工id， 同stargate 中的id
+     */
+    id: string;
+    /**
+     * 工号
+     */
+    number?: number;
+    /**
+     * 姓名
+     */
+    name?: string;
+    /**
+     * 用户类型
+     */
+    type?: "36NODE" | "ADVENTURE";
+    /**
+     * 职位
+     */
+    position?: "PM" | "DEVELOPER" | "DESIGNER";
+    /**
+     * 等级
+     */
+    level?: number;
+    /**
+     * 银行卡号
+     */
+    bankCard?: string;
+    /**
+     * 身份证号
+     */
+    idNumber?: string;
+    /**
+     * 城市
+     */
+    city?: string;
+    /**
+     * 微信
+     */
+    weixin?: string;
+    /**
+     * 电话
+     */
+    phone?: string;
+    /**
+     * 个人邮箱
+     */
+    email?: string;
+    /**
+     * 公司邮箱
+     */
+    companyEmail?: string;
+    /**
+     * google账号
+     */
+    google?: string;
+    /**
+     * icloud账号
+     */
+    icloud?: string;
+    /**
+     * github账号
+     */
+    github?: string;
+    /**
+     * 用户头像url
+     */
+    avatar?: string;
+  };
+}
+export interface UpdateStaffResponse {
+  body: {
+    /**
+     * 员工id， 同stargate 中的id
+     */
+    id: string;
+    /**
+     * 工号
+     */
+    number?: number;
+    /**
+     * 姓名
+     */
+    name?: string;
+    /**
+     * 用户类型
+     */
+    type?: "36NODE" | "ADVENTURE";
+    /**
+     * 职位
+     */
+    position?: "PM" | "DEVELOPER" | "DESIGNER";
+    /**
+     * 等级
+     */
+    level?: number;
+    /**
+     * 银行卡号
+     */
+    bankCard?: string;
+    /**
+     * 身份证号
+     */
+    idNumber?: string;
+    /**
+     * 城市
+     */
+    city?: string;
+    /**
+     * 微信
+     */
+    weixin?: string;
+    /**
+     * 电话
+     */
+    phone?: string;
+    /**
+     * 个人邮箱
+     */
+    email?: string;
+    /**
+     * 公司邮箱
+     */
+    companyEmail?: string;
+    /**
+     * google账号
+     */
+    google?: string;
+    /**
+     * icloud账号
+     */
+    icloud?: string;
+    /**
+     * github账号
+     */
+    github?: string;
+    /**
+     * 用户头像url
+     */
+    avatar?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface GetStaffRequest {
+  staffId: string;
+}
+export interface GetStaffResponse {
+  body: {
+    /**
+     * 员工id， 同stargate 中的id
+     */
+    id: string;
+    /**
+     * 工号
+     */
+    number?: number;
+    /**
+     * 姓名
+     */
+    name?: string;
+    /**
+     * 用户类型
+     */
+    type?: "36NODE" | "ADVENTURE";
+    /**
+     * 职位
+     */
+    position?: "PM" | "DEVELOPER" | "DESIGNER";
+    /**
+     * 等级
+     */
+    level?: number;
+    /**
+     * 银行卡号
+     */
+    bankCard?: string;
+    /**
+     * 身份证号
+     */
+    idNumber?: string;
+    /**
+     * 城市
+     */
+    city?: string;
+    /**
+     * 微信
+     */
+    weixin?: string;
+    /**
+     * 电话
+     */
+    phone?: string;
+    /**
+     * 个人邮箱
+     */
+    email?: string;
+    /**
+     * 公司邮箱
+     */
+    companyEmail?: string;
+    /**
+     * google账号
+     */
+    google?: string;
+    /**
+     * icloud账号
+     */
+    icloud?: string;
+    /**
+     * github账号
+     */
+    github?: string;
+    /**
+     * 用户头像url
+     */
+    avatar?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface DeleteStaffRequest {
+  staffId: string;
+}
+export interface GetStaffWalletRequest {
+  staffId: string;
+}
+export interface GetStaffWalletResponse {
+  body: {
+    /**
+     * 钱包总余额
+     */
+    balance?: number;
+    /**
+     * 对应员工
+     */
+    staff?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface ListWalletsRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+    _sort?: string;
+    _select?: string;
+    staff?: string;
+  };
+}
+export interface ListWalletsResponse {
+  body: ({
+    /**
+     * 钱包总余额
+     */
+    balance?: number;
+    /**
+     * 对应员工
+     */
+    staff?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  })[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface ListTradesRequest {
+  query?: {
+    _limit?: number;
+    _offset?: number;
+    _sort?: string;
+    _select?: string;
+    staff?: string;
+    type?: string;
+    staffName?: string;
+    staffGithub?: string;
+    createdAt_gt?: string;
+    createdAt_lt?: string;
+  };
+}
+export interface ListTradesResponse {
+  body: ({
+    /**
+     * 对应的项目
+     */
+    project?: string;
+    /**
+     * 对应的员工
+     */
+    staff: string;
+    /**
+     * 交易类型, 分成, 任务, 结算
+     */
+    type: "SHARED" | "TICKET" | "SETTLE";
+    /**
+     * 本次交易总金额
+     */
+    amount: number;
+    /**
+     * 操作人
+     */
+    handler: string;
+    /**
+     * staff name
+     */
+    staffName?: string;
+    /**
+     * staff github
+     */
+    staffGithub?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  })[];
+  headers: {
+    "x-total-count"?: number;
+  };
+}
+export interface CreateTradeRequest {
+  /**
+   * 项目交易记录
+   */
+  body: {
+    /**
+     * 对应的项目
+     */
+    project?: string;
+    /**
+     * 对应的员工
+     */
+    staff: string;
+    /**
+     * 交易类型, 分成, 任务, 结算
+     */
+    type: "SHARED" | "TICKET" | "SETTLE";
+    /**
+     * 本次交易总金额
+     */
+    amount: number;
+    /**
+     * 操作人
+     */
+    handler: string;
+    /**
+     * staff name
+     */
+    staffName?: string;
+    /**
+     * staff github
+     */
+    staffGithub?: string;
+  };
+}
+export interface CreateTradeResponse {
+  body: {
+    /**
+     * 对应的项目
+     */
+    project?: string;
+    /**
+     * 对应的员工
+     */
+    staff: string;
+    /**
+     * 交易类型, 分成, 任务, 结算
+     */
+    type: "SHARED" | "TICKET" | "SETTLE";
+    /**
+     * 本次交易总金额
+     */
+    amount: number;
+    /**
+     * 操作人
+     */
+    handler: string;
+    /**
+     * staff name
+     */
+    staffName?: string;
+    /**
+     * staff github
+     */
+    staffGithub?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface CreateInvitationRequest {
+  /**
+   * 邀请函，包含邀请码
+   */
+  body: {
+    code?: string;
+    email?: string;
+    /**
+     * 邮件是否已经发送
+     */
+    sent?: boolean;
+    /**
+     * 邀请码过期时间
+     */
+    expiredAt?: Date;
+    /**
+     * 邀请码是否已经使用
+     */
+    used?: boolean;
+    /**
+     * 邀请码使用时间
+     */
+    usedAt?: Date;
+    /**
+     * 备注
+     */
+    remark?: string;
+  };
+}
+export interface CreateInvitationResponse {
+  body: {
+    code?: string;
+    email?: string;
+    /**
+     * 邮件是否已经发送
+     */
+    sent?: boolean;
+    /**
+     * 邀请码过期时间
+     */
+    expiredAt?: Date;
+    /**
+     * 邀请码是否已经使用
+     */
+    used?: boolean;
+    /**
+     * 邀请码使用时间
+     */
+    usedAt?: Date;
+    /**
+     * 备注
+     */
+    remark?: string;
+  } & {
+    id: string;
+    updatedAt?: string;
+    createdAt?: string;
+  };
+}
+export interface ProjectDoc {
+  /**
+   * 项目名称
+   */
+  name: string;
+  /**
+   * 项目描述
+   */
+  description?: string;
+  /**
+   * 产品负责人 (userId)
+   */
+  po?: string[];
+  /**
+   * 技术负责人 (userId)
+   */
+  cm?: string[];
+  /**
+   * 包含的工程
+   */
+  repositories?: string[];
+  /**
+   * 计划开始时间
+   */
+  planStartAt: string;
+  /**
+   * 计划结束时间
+   */
+  planEndAt: string;
+  /**
+   * 项目状态
+   */
+  state?: "DOING" | "ARCHIVED";
+  /**
+   * 项目logo
+   */
+  logo?: string;
+  /**
+   * 项目负责人
+   */
+  owner?: string;
+  /**
+   * 行业
+   */
+  industry?: string;
+  /**
+   * 项目管理人员
+   */
+  manager?: {
+    /**
+     * 人员
+     */
+    staff?: string;
+    /**
+     * 职位
+     */
+    position?: string;
+  };
+}
+
+export type Project = {
+  /**
+   * 项目名称
+   */
+  name: string;
+  /**
+   * 项目描述
+   */
+  description?: string;
+  /**
+   * 产品负责人 (userId)
+   */
+  po?: string[];
+  /**
+   * 技术负责人 (userId)
+   */
+  cm?: string[];
+  /**
+   * 包含的工程
+   */
+  repositories?: string[];
+  /**
+   * 计划开始时间
+   */
+  planStartAt: string;
+  /**
+   * 计划结束时间
+   */
+  planEndAt: string;
+  /**
+   * 项目状态
+   */
+  state?: "DOING" | "ARCHIVED";
+  /**
+   * 项目logo
+   */
+  logo?: string;
+  /**
+   * 项目负责人
+   */
+  owner?: string;
+  /**
+   * 行业
+   */
+  industry?: string;
+  /**
+   * 项目管理人员
+   */
+  manager?: {
+    /**
+     * 人员
+     */
+    staff?: string;
+    /**
+     * 职位
+     */
+    position?: string;
+  };
+} & {
+  id: string;
+  updatedAt?: string;
+  createdAt?: string;
+};
+
+/**
+ * 项目事件
+ */
+export interface ProjectEvent {
+  /**
+   * 事件名称
+   */
+  name?: "CHANGE_TOTAL" | "SHARED";
+  /**
+   * 项目金额总数
+   */
+  total?: number;
+  /**
+   * 分成细则
+   */
+  shared?: {
+    /**
+     * 分成总金额
+     */
+    total?: number;
+    /**
+     * 分成事项
+     */
+    remark?: string;
+    detail?: {
+      /**
+       * 员工id
+       */
+      staff?: string;
+      /**
+       * 在项目中的职位
+       */
+      position?: "PO" | "CM";
+      /**
+       * 分成中的比例，百分比
+       */
+      percent?: number;
+    }[];
+  };
+}
+
+/**
+ * 迭代 Doc
+ */
+export interface InterationDoc {
+  /**
+   * 迭代名称
+   */
+  name: string;
+  /**
+   * 计划开始时间
+   */
+  planStartAt: string;
+  /**
+   * 计划结束时间
+   */
+  planEndAt: string;
+  /**
+   * 实际开始时间
+   */
+  startAt?: string;
+  /**
+   * 实际结束时间
+   */
+  endAt?: string;
+  /**
+   * 所属的 project (projectId)
+   */
+  project?: string;
+  /**
+   * 迭代描述
+   */
+  description?: string;
+}
+
+/**
+ * 项目统计
+ */
+export type ProjectSummary = {
+  /**
+   * 统计类型
+   */
+  type?: string;
+  /**
+   * 统计数据
+   */
+  data?: {
+    /**
+     * 名称
+     */
+    name?: string;
+    /**
+     * 值
+     */
+    value?: string;
+  }[];
+  /**
+   * 总数
+   */
+  total?: number;
+}[];
+
+/**
+ * 项目文档
+ */
+export interface ProjectDocumentDoc {
+  /**
+   * 文档标题
+   */
+  title: string;
+  /**
+   * 文档内容
+   */
+  content: string;
+  /**
+   * 更新人(userId)
+   */
+  updatedBy?: string;
+  /**
+   * 创建人(userId)
+   */
+  createdBy?: string;
+}
+
+export type ProjectDocument = {
+  /**
+   * 文档标题
+   */
+  title: string;
+  /**
+   * 文档内容
+   */
+  content: string;
+  /**
+   * 更新人(userId)
+   */
+  updatedBy?: string;
+  /**
+   * 创建人(userId)
+   */
+  createdBy?: string;
+} & {
+  id: string;
+  updatedAt?: string;
+  createdAt?: string;
+};
+
+export type Interation = {
+  /**
+   * 迭代名称
+   */
+  name: string;
+  /**
+   * 计划开始时间
+   */
+  planStartAt: string;
+  /**
+   * 计划结束时间
+   */
+  planEndAt: string;
+  /**
+   * 实际开始时间
+   */
+  startAt?: string;
+  /**
+   * 实际结束时间
+   */
+  endAt?: string;
+  /**
+   * 所属的 project (projectId)
+   */
+  project?: string;
+  /**
+   * 迭代描述
+   */
+  description?: string;
+} & {
+  id: string;
+  updatedAt?: string;
+  createdAt?: string;
+};
+
+/**
+ * 任务统计
+ */
+export interface TicketsSummary {}
+
+/**
+ * 迭代统计
+ */
+export interface InterationSummary {}
+
+/**
+ * Repo Doc
+ */
+export interface Repository {
+  /**
+   * 在第三方服务中的id
+   */
+  id?: string;
+  /**
+   * 仓库名称
+   */
+  name?: string;
+  /**
+   * 仓库全称
+   */
+  fullName?: string;
+  /**
+   * url for clone
+   */
+  gitUrl?: string;
+  /**
+   * url
+   */
+  htmlUrl?: string;
+  /**
+   * github user username
+   */
+  owner?: string;
+  /**
+   * 是否私有
+   */
+  private?: boolean;
+  /**
+   * 最近push时间
+   */
+  pushedAt?: string;
+  /**
+   * 创建时间
+   */
+  createdAt?: string;
+  /**
+   * 更新时间
+   */
+  updatedAt?: string;
+  /**
+   * readme 内容
+   */
+  readme?: string;
+  /**
+   * 主题
+   */
+  topics?: string[];
+  collaborators?: string[];
+  technologies?: string[];
+  types?: string[];
+}
+
+/**
+ * Issue Doc
+ */
+export interface Issue {
+  /**
+   * 在第三方服务中的id
+   */
+  id?: string;
+  /**
+   * 标题
+   */
+  title?: string;
+  /**
+   * 所属repo (repositoryId)
+   */
+  repository?: string;
+  /**
+   * issue 号
+   */
+  number?: number;
+  /**
+   * 标签
+   */
+  labels?: string[];
+  /**
+   * 创建者
+   */
+  state?: "OPEN" | "CLOSED";
+  /**
+   * 关闭时间
+   */
+  closeAt?: string;
+  /**
+   * url
+   */
+  htmlUrl?: string;
+  /**
+   * github user username
+   */
+  user?: string;
+  assignees?: string[];
+  /**
+   * 创建时间
+   */
+  createdAt?: string;
+  /**
+   * 更新时间
+   */
+  updatedAt?: string;
+}
+
+/**
+ * Issue Comment Doc
+ */
+export interface IssueComment {
+  /**
+   * content of comment
+   */
+  body?: string;
+  /**
+   * writer of comment
+   */
+  user?: string;
+  /**
+   * 更新时间
+   */
+  updatedAt?: string;
+  /**
+   * github url of comment
+   */
+  htmlUrl?: string;
+  /**
+   * role of user
+   */
+  authorAssociation?: string;
+}
+
+/**
+ * Pr Doc
+ */
+export interface Pr {
+  /**
+   * 在第三方服务中的id
+   */
+  id?: string;
+  /**
+   * 标题
+   */
+  title?: string;
+  /**
+   * 所属repo (repositoryId)
+   */
+  repository?: string;
+  /**
+   * pr 号
+   */
+  number?: number;
+  /**
+   * 标签
+   */
+  labels?: string[];
+  /**
+   * pr状态
+   */
+  state?: "OPEN" | "CLOSED";
+  /**
+   * 关闭时间
+   */
+  closeAt?: string;
+  /**
+   * url
+   */
+  htmlUrl?: string;
+  /**
+   * github user username
+   */
+  user?: string;
+  assignees?: string[];
+  /**
+   * 创建时间
+   */
+  createdAt?: string;
+  /**
+   * 更新时间
+   */
+  updatedAt?: string;
+}
+
+/**
+ * Ticket Doc
+ */
+export interface TicketDoc {
+  /**
+   * 关联的issue (第三方服务中的issueid)
+   */
+  issue: string;
+  /**
+   * ticket titile
+   */
+  title?: string;
+  /**
+   * 所属repo (第三方服务中的 repositoryId)
+   */
+  repository?: string;
+  /**
+   * 级别
+   */
+  level?: number;
+  /**
+   * 状态
+   */
+  state?: "PLANNING" | "TODO" | "DOING" | "DONE";
+  /**
+   * 优先级
+   */
+  priority?: 0 | 1 | 2;
+  /**
+   * 截止时间
+   */
+  deadline?: string;
+  /**
+   * 所属迭代 (interationId)
+   */
+  interation?: string;
+  /**
+   * 所属项目 (projectId)
+   */
+  project?: string;
+  /**
+   * 领取人 (userId)
+   */
+  takenBy?: string;
+  /**
+   * 发布人 (userId)
+   */
+  publishBy?: string;
+  /**
+   * 领取时间
+   */
+  takenAt?: string;
+  /**
+   * 完成时间
+   */
+  doneAt?: string;
+  /**
+   * 发布时间
+   */
+  publishedAt?: string;
+  /**
+   * 备注
+   */
+  remark?: string;
+  /**
+   * 额外暴击奖励
+   */
+  bonus?: number;
+  labels?: string[];
+  events?: {
+    name:
+      | "PUBLISH"
+      | "UNPUBLISH"
+      | "ASSIGN"
+      | "UNASSIGN"
+      | "LEVEL"
+      | "PRIORITY"
+      | "BONUS"
+      | "DEADLINE"
+      | "DONE"
+      | "REOPEN"
+      | "LABEL"
+      | "REMARK"
+      | "INTERATION";
+    /**
+     * 操作人 (userId)
+     */
+    user: string;
+    /**
+     * 级别
+     */
+    level?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+    /**
+     * 创建时间
+     */
+    createdAt?: string;
+    /**
+     * 优先级
+     */
+    priority?: 0 | 1 | 2;
+    /**
+     * 截止时间
+     */
+    deadline?: string;
+    /**
+     * 所属迭代 (interationId)
+     */
+    interation?: string;
+    /**
+     * 额外暴击奖励
+     */
+    bonus?: number;
+    /**
+     * 领取人 (userId)
+     */
+    takenBy?: string;
+    /**
+     * 发布人 (userId)
+     */
+    publishBy?: string;
+    /**
+     * 领取人 外部id
+     */
+    foreignTakenBy?: string;
+    /**
+     * ticket labels
+     */
+    labels?: string[];
+    /**
+     * ticket remark
+     */
+    remark?: string;
+    relatedRepos?: string[];
+  }[];
+  /**
+   * 是否 reopened 过
+   */
+  reopened?: boolean;
+  reopenedAt?: string;
+  relatedRepos?: string[];
+}
+
+/**
+ * Ticket Label
+ */
+export interface Label {
+  /**
+   * label id
+   */
+  id?: string;
+  /**
+   * label name
+   */
+  name?: string;
+  /**
+   * label color
+   */
+  color?: string;
+}
+
+/**
+ * Ticket evnet
+ */
+export interface TicketEvent {
+  name:
+    | "PUBLISH"
+    | "UNPUBLISH"
+    | "ASSIGN"
+    | "UNASSIGN"
+    | "LEVEL"
+    | "PRIORITY"
+    | "BONUS"
+    | "DEADLINE"
+    | "DONE"
+    | "REOPEN"
+    | "LABEL"
+    | "REMARK"
+    | "INTERATION";
+  /**
+   * 操作人 (userId)
+   */
+  user: string;
+  /**
+   * 级别
+   */
+  level?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  /**
+   * 创建时间
+   */
+  createdAt?: string;
+  /**
+   * 优先级
+   */
+  priority?: 0 | 1 | 2;
+  /**
+   * 截止时间
+   */
+  deadline?: string;
+  /**
+   * 所属迭代 (interationId)
+   */
+  interation?: string;
+  /**
+   * 额外暴击奖励
+   */
+  bonus?: number;
+  /**
+   * 领取人 (userId)
+   */
+  takenBy?: string;
+  /**
+   * 发布人 (userId)
+   */
+  publishBy?: string;
+  /**
+   * 领取人 外部id
+   */
+  foreignTakenBy?: string;
+  /**
+   * ticket labels
+   */
+  labels?: string[];
+  /**
+   * ticket remark
+   */
+  remark?: string;
+  relatedRepos?: string[];
+}
+
+export type Ticket = {
+  /**
+   * 关联的issue (第三方服务中的issueid)
+   */
+  issue: string;
+  /**
+   * ticket titile
+   */
+  title?: string;
+  /**
+   * 所属repo (第三方服务中的 repositoryId)
+   */
+  repository?: string;
+  /**
+   * 级别
+   */
+  level?: number;
+  /**
+   * 状态
+   */
+  state?: "PLANNING" | "TODO" | "DOING" | "DONE";
+  /**
+   * 优先级
+   */
+  priority?: 0 | 1 | 2;
+  /**
+   * 截止时间
+   */
+  deadline?: string;
+  /**
+   * 所属迭代 (interationId)
+   */
+  interation?: string;
+  /**
+   * 所属项目 (projectId)
+   */
+  project?: string;
+  /**
+   * 领取人 (userId)
+   */
+  takenBy?: string;
+  /**
+   * 发布人 (userId)
+   */
+  publishBy?: string;
+  /**
+   * 领取时间
+   */
+  takenAt?: string;
+  /**
+   * 完成时间
+   */
+  doneAt?: string;
+  /**
+   * 发布时间
+   */
+  publishedAt?: string;
+  /**
+   * 备注
+   */
+  remark?: string;
+  /**
+   * 额外暴击奖励
+   */
+  bonus?: number;
+  labels?: string[];
+  events?: {
+    name:
+      | "PUBLISH"
+      | "UNPUBLISH"
+      | "ASSIGN"
+      | "UNASSIGN"
+      | "LEVEL"
+      | "PRIORITY"
+      | "BONUS"
+      | "DEADLINE"
+      | "DONE"
+      | "REOPEN"
+      | "LABEL"
+      | "REMARK"
+      | "INTERATION";
+    /**
+     * 操作人 (userId)
+     */
+    user: string;
+    /**
+     * 级别
+     */
+    level?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+    /**
+     * 创建时间
+     */
+    createdAt?: string;
+    /**
+     * 优先级
+     */
+    priority?: 0 | 1 | 2;
+    /**
+     * 截止时间
+     */
+    deadline?: string;
+    /**
+     * 所属迭代 (interationId)
+     */
+    interation?: string;
+    /**
+     * 额外暴击奖励
+     */
+    bonus?: number;
+    /**
+     * 领取人 (userId)
+     */
+    takenBy?: string;
+    /**
+     * 发布人 (userId)
+     */
+    publishBy?: string;
+    /**
+     * 领取人 外部id
+     */
+    foreignTakenBy?: string;
+    /**
+     * ticket labels
+     */
+    labels?: string[];
+    /**
+     * ticket remark
+     */
+    remark?: string;
+    relatedRepos?: string[];
+  }[];
+  /**
+   * 是否 reopened 过
+   */
+  reopened?: boolean;
+  reopenedAt?: string;
+  relatedRepos?: string[];
+} & {
+  id: string;
+  updatedAt?: string;
+  createdAt?: string;
+};
+
+export interface StaffDoc {
+  /**
+   * 员工id， 同stargate 中的id
+   */
+  id: string;
+  /**
+   * 工号
+   */
+  number?: number;
+  /**
+   * 姓名
+   */
+  name?: string;
+  /**
+   * 用户类型
+   */
+  type?: "36NODE" | "ADVENTURE";
+  /**
+   * 职位
+   */
+  position?: "PM" | "DEVELOPER" | "DESIGNER";
+  /**
+   * 等级
+   */
+  level?: number;
+  /**
+   * 银行卡号
+   */
+  bankCard?: string;
+  /**
+   * 身份证号
+   */
+  idNumber?: string;
+  /**
+   * 城市
+   */
+  city?: string;
+  /**
+   * 微信
+   */
+  weixin?: string;
+  /**
+   * 电话
+   */
+  phone?: string;
+  /**
+   * 个人邮箱
+   */
+  email?: string;
+  /**
+   * 公司邮箱
+   */
+  companyEmail?: string;
+  /**
+   * google账号
+   */
+  google?: string;
+  /**
+   * icloud账号
+   */
+  icloud?: string;
+  /**
+   * github账号
+   */
+  github?: string;
+  /**
+   * 用户头像url
+   */
+  avatar?: string;
+}
+
+export type Staff = {
+  /**
+   * 员工id， 同stargate 中的id
+   */
+  id: string;
+  /**
+   * 工号
+   */
+  number?: number;
+  /**
+   * 姓名
+   */
+  name?: string;
+  /**
+   * 用户类型
+   */
+  type?: "36NODE" | "ADVENTURE";
+  /**
+   * 职位
+   */
+  position?: "PM" | "DEVELOPER" | "DESIGNER";
+  /**
+   * 等级
+   */
+  level?: number;
+  /**
+   * 银行卡号
+   */
+  bankCard?: string;
+  /**
+   * 身份证号
+   */
+  idNumber?: string;
+  /**
+   * 城市
+   */
+  city?: string;
+  /**
+   * 微信
+   */
+  weixin?: string;
+  /**
+   * 电话
+   */
+  phone?: string;
+  /**
+   * 个人邮箱
+   */
+  email?: string;
+  /**
+   * 公司邮箱
+   */
+  companyEmail?: string;
+  /**
+   * google账号
+   */
+  google?: string;
+  /**
+   * icloud账号
+   */
+  icloud?: string;
+  /**
+   * github账号
+   */
+  github?: string;
+  /**
+   * 用户头像url
+   */
+  avatar?: string;
+} & {
+  id: string;
+  updatedAt?: string;
+  createdAt?: string;
+};
+
+export type CreateStaffDoc = {
+  /**
+   * 员工id， 同stargate 中的id
+   */
+  id: string;
+  /**
+   * 工号
+   */
+  number?: number;
+  /**
+   * 姓名
+   */
+  name?: string;
+  /**
+   * 用户类型
+   */
+  type?: "36NODE" | "ADVENTURE";
+  /**
+   * 职位
+   */
+  position?: "PM" | "DEVELOPER" | "DESIGNER";
+  /**
+   * 等级
+   */
+  level?: number;
+  /**
+   * 银行卡号
+   */
+  bankCard?: string;
+  /**
+   * 身份证号
+   */
+  idNumber?: string;
+  /**
+   * 城市
+   */
+  city?: string;
+  /**
+   * 微信
+   */
+  weixin?: string;
+  /**
+   * 电话
+   */
+  phone?: string;
+  /**
+   * 个人邮箱
+   */
+  email?: string;
+  /**
+   * 公司邮箱
+   */
+  companyEmail?: string;
+  /**
+   * google账号
+   */
+  google?: string;
+  /**
+   * icloud账号
+   */
+  icloud?: string;
+  /**
+   * github账号
+   */
+  github?: string;
+  /**
+   * 用户头像url
+   */
+  avatar?: string;
+} & {
+  /**
+   * 邀请码
+   */
+  code?: string;
+};
+
+/**
+ * 项目钱包
+ */
+export interface WalletDoc {
+  /**
+   * 钱包总余额
+   */
+  balance?: number;
+  /**
+   * 对应员工
+   */
+  staff?: string;
+}
+
+export type Wallet = {
+  /**
+   * 钱包总余额
+   */
+  balance?: number;
+  /**
+   * 对应员工
+   */
+  staff?: string;
+} & {
+  id: string;
+  updatedAt?: string;
+  createdAt?: string;
+};
+
+/**
+ * 项目交易记录
+ */
+export interface TradeDoc {
+  /**
+   * 对应的项目
+   */
+  project?: string;
+  /**
+   * 对应的员工
+   */
+  staff: string;
+  /**
+   * 交易类型, 分成, 任务, 结算
+   */
+  type: "SHARED" | "TICKET" | "SETTLE";
+  /**
+   * 本次交易总金额
+   */
+  amount: number;
+  /**
+   * 操作人
+   */
+  handler: string;
+  /**
+   * staff name
+   */
+  staffName?: string;
+  /**
+   * staff github
+   */
+  staffGithub?: string;
+}
+
+export type Trade = {
+  /**
+   * 对应的项目
+   */
+  project?: string;
+  /**
+   * 对应的员工
+   */
+  staff: string;
+  /**
+   * 交易类型, 分成, 任务, 结算
+   */
+  type: "SHARED" | "TICKET" | "SETTLE";
+  /**
+   * 本次交易总金额
+   */
+  amount: number;
+  /**
+   * 操作人
+   */
+  handler: string;
+  /**
+   * staff name
+   */
+  staffName?: string;
+  /**
+   * staff github
+   */
+  staffGithub?: string;
+} & {
+  id: string;
+  updatedAt?: string;
+  createdAt?: string;
+};
+
+export interface TradeSummary {
+  /**
+   * 对应项目
+   */
+  project?: string;
+  /**
+   * 对应员工
+   */
+  staff?: string;
+  /**
+   * 对应操作者
+   */
+  handler?: string;
+  /**
+   * 总支出
+   */
+  totalExp?: string;
+}
+
+export interface TicketDoneSummary {}
+
+export interface TicketCoverageSummary {}
+
+/**
+ * 创建邀请函所需参数
+ */
+export interface CreateInvitationBody {
+  /**
+   * 邀请码过期时间，默认7天
+   */
+  expiredAt?: Date;
+  email: string;
+  /**
+   * 备注
+   */
+  remark?: string;
+}
+
+/**
+ * 邀请函，包含邀请码
+ */
+export interface InvitationDoc {
+  code?: string;
+  email?: string;
+  /**
+   * 邮件是否已经发送
+   */
+  sent?: boolean;
+  /**
+   * 邀请码过期时间
+   */
+  expiredAt?: Date;
+  /**
+   * 邀请码是否已经使用
+   */
+  used?: boolean;
+  /**
+   * 邀请码使用时间
+   */
+  usedAt?: Date;
+  /**
+   * 备注
+   */
+  remark?: string;
+}
+
+export type Invitation = {
+  code?: string;
+  email?: string;
+  /**
+   * 邮件是否已经发送
+   */
+  sent?: boolean;
+  /**
+   * 邀请码过期时间
+   */
+  expiredAt?: Date;
+  /**
+   * 邀请码是否已经使用
+   */
+  used?: boolean;
+  /**
+   * 邀请码使用时间
+   */
+  usedAt?: Date;
+  /**
+   * 备注
+   */
+  remark?: string;
+} & {
+  id: string;
+  updatedAt?: string;
+  createdAt?: string;
+};
+
+/**
+ * release of repository
+ */
+export interface Release {
+  /**
+   * 暂时不提供
+   */
+  version?: string;
+}
+
+export interface MongoDefault {
+  id: string;
+  updatedAt?: string;
+  createdAt?: string;
+}
+
+export interface Err {
+  code: string;
+  message: string;
+}
+
+export = SDK;
